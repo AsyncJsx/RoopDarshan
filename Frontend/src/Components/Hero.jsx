@@ -1,0 +1,171 @@
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useEffect, useRef } from "react";
+
+gsap.registerPlugin(ScrollTrigger);
+
+function Hero({ language }) {
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Animate the main heading
+      gsap.from(".hero-text1", {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".hero-text1",
+          start: "top 80%",
+          end: "bottom 60%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Animate right side text
+      gsap.from(".hero-text3", {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".hero-text3",
+          start: "top 80%",
+          end: "bottom 60%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Animate images
+      gsap.from(".left .img", {
+        x: -100,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".left .img",
+          start: "top 80%",
+          end: "bottom 60%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.from(".right .img", {
+        x: 100,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".right .img",
+          start: "top 80%",
+          end: "bottom 60%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }, heroRef);
+
+    return () => ctx.revert(); // cleanup
+  }, []);
+
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero heading scroll speed (slower than scroll)
+      gsap.to(".hero-text1", {
+        y: -30, // move upward
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero-text1",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.5, // controls speed (0.5 = slower than scroll, 1 = synced)
+        },
+      });
+
+      // Right text scroll speed (faster than scroll)
+      gsap.to(".hero-text3", {
+        y:-50,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero-text3",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5, // faster scroll effect
+        },
+      });
+
+      // Left image parallax effect
+      gsap.to(".left .img", {
+        y: -10,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".left .img",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1, // synced with scroll
+        },
+      });
+
+      // Right image parallax effect
+      gsap.to(".right .img", {
+        y: 10,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".right .img",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.8, // slower than scroll
+        },
+      });
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+  return (
+    <div ref={heroRef} className="h-[110vh] w-screen flex items-center justify-center relative p-20">
+      <div className="contianer w-full h-full bg-[#151515] flex relative">
+        <div className="left w-[50%] flex flex-col p-12">
+          <h3 className="hero-text1 text-6xl text-white">
+            {language === "en"
+              ? "Timeless Elegance Modern Design -"
+              : "जुन्या कालातिल शोभा , आधुनिक डिझाइन -"}
+          </h3>
+          <div className="img absolute bottom-[10%] left-[5%]">
+            <img src="./h1.jpg" className="h-[300px]" alt="" />
+            <div className="hero-text2 flex justify-between items-center text-white text-sm py-2">
+              <p className="hover:underline cursor-pointer">
+                {language === "en" ? "View More" : "अधिक पहा"}
+              </p>
+              <p className="text-[10px]">{language === "en" ? "Saree" : "साडी"}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="right w-[50%] flex flex-col p-12">
+          <div className="hero-text3 text-xl text-white">
+            <h3>
+              {language === "en"
+                ? `Roopdarshan is not just a name. It’s a commitment! Everyday efforts for the same to live with. The efforts will receive the response, is what we believe. At Roopdarshan we feel fortunate that our motive of; and for living is same, as said by P. L. Deshpande! Yours Roopdarshan!`
+                : `रूपदर्शन – फक्त नाव नाही, अनुभव आणि शैलीचा अनुभव!
+रूपदर्शनमध्ये आम्ही प्रत्येक दिवशी प्रामाणिक प्रयत्न करतो, तुमच्या सौंदर्याला व तुमच्या व्यक्तिमत्त्वाला शोभणारे उत्कृष्ट कपडे सादर करण्यासाठी. आमची कटिबद्धता म्हणजे फक्त कपडे देणे नाही, तर तुमच्या जीवनशैलीला आणि तुमच्या खास क्षणांना शोभा देणारा अनुभव देणे.
+
+पु. ल. देशपांडेंप्रमाणे, आमचे ध्येय एक आहे – तुमचं रूपदर्शन, तुमची शैली, तुमची खूबसूरती उंचावणे!`}
+            </h3>
+          </div>
+          <div className="img absolute bottom-[1%] right-[8%]">
+            <img src="./h2.jpg" className="h-[350px] w-[530px] object-cover" alt="" />
+            <div className="hero-text2 flex justify-between items-center text-white text-sm py-2">
+              <p className="hover:underline cursor-pointer">
+                {language === "en" ? "View More" : "अधिक पहा"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Hero;
