@@ -73,9 +73,9 @@ function Banner({ language }) {
       {/* Image and Video Grid */}
       <div className="img flex justify-evenly mt-24 gap-8">
   {[
-    { img: './b4.jpg', video: './videos/v1.mp4' },
-    { img: './b5.jpg', video: './videos/v2.mp4' },
-    { img: './b3.jpg', video: './videos/v3.mp4' },
+    { img: './b4.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035704/v1_vstcif.mp4' },
+    { img: './b5.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035704/v2_h2epk5.mp4' },
+    { img: './b3.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035767/v3_bzb2e1.mp4' },
   ].map((item, i) => (
     <div
       key={i}
