@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import Navbar from '../Components/Navbar'
-
 import Product from '../Components/Product';
+
+
 
 function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
