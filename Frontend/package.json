@@ -15,7 +15,7 @@
     "@gsap/react": "^2.1.2",
     "@mui/material": "^7.3.5",
     "@tailwindcss/vite": "^4.1.14",
-    "axois": "^0.0.1-security",
+    "axios": "^1.13.2",
     "gsap": "^3.13.0",
     "lucide-react": "^0.545.0",
     "react": "^19.1.1",
