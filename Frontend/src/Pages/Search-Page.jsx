@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Navbar from '../Components/Navbar'
-import Categories from '../Components/Categories'
+
 import Product from '../Components/Product';
 
 function SearchPage() {
