@@ -33,7 +33,6 @@ const validateCategoryModel = (data) => {
         mar_name: Joi.string().min(3).max(100).required(),
         eng_description: Joi.string().min(10).max(500).required(),
         mar_description: Joi.string().min(10).max(500).required(),
-        products: Joi.array().items(Joi.string().hex().length(24))
     });
 
     return schema.validate(data, { abortEarly: false });

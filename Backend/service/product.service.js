@@ -1,9 +1,9 @@
-const { ProductModel } = require('../models/product.model');
+const { ProductModel } = require('../models/product');
 
 const createProductService = async (data) => {
-    const { eng_name, mar_name, img, eng_description, mar_description, category, price } = data;
+    const { eng_name, mar_name, img, eng_description, mar_description, category,tag} = data;
 
-    if (!eng_name || !mar_name || !img || !eng_description || !mar_description || !category || !price) {
+    if (!eng_name || !mar_name || !img || !eng_description || !mar_description || !category ) {
         throw new Error('All fields are required');
     }
 
@@ -15,7 +15,7 @@ const createProductService = async (data) => {
             eng_description,
             mar_description,
             category,
-            price
+            tag
         });
         return product;
     } catch (err) {
@@ -25,13 +25,20 @@ const createProductService = async (data) => {
 
 const findProductById = async (id) => {
     try {
+        const product = await ProductModel.findById(id);
+        return product;
+    } catch (err) {
+        throw new Error('Error finding product by ID: ' + err.message);
+    }
+};
+const findProductByIdWithCategory = async (id) => {
+    try {
         const product = await ProductModel.findById(id).populate('category');
         return product;
     } catch (err) {
         throw new Error('Error finding product by ID: ' + err.message);
     }
 };
-
 const findProductByName = async (eng_name) => {
     try {
         const product = await ProductModel.findOne({ eng_name }).populate('category');
@@ -67,6 +74,14 @@ const deleteProductByName = async (eng_name) => {
         throw new Error('Error deleting product: ' + err.message);
     }
 };
+const deleteProductById = async (id) => {
+    try {
+        const product = await ProductModel.findByIdAndDelete(id);
+        return product;
+    } catch (err) {
+        throw new Error('Error deleting product: ' + err.message);
+    }
+};
 
 module.exports = {
     createProductService,
@@ -74,5 +89,7 @@ module.exports = {
     findProductByName,
     getAllProducts,
     updateProductById,
-    deleteProductByName
+    deleteProductByName,
+    deleteProductById,
+    findProductByIdWithCategory
 };

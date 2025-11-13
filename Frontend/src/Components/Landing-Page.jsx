@@ -57,10 +57,10 @@ function LandingPage({language}) {
     }, "-=2");
     tl.to(box2Ref.current,{
       width : "90vw",
-      height :"85vh",
+      height :"90vh",
       left: "5%",
       duration:1,
-      top:"7%",
+      top:"3%",
     },'-=2')
    tl.fromTo(
       navRef.current,
@@ -158,11 +158,11 @@ function LandingPage({language}) {
 
       {/* Box 2 */}
       {/* div className="box h-[85vh] w-[90%] border border-black/20 absolute bottom-[20%] left-[5%] top-[7%] overflow-hidden  " */}
-      <div ref={box2Ref} className="box h-[65vh] w-[20%]  border-2 border-white/10 absolute bottom-[20%] left-[40%]  overflow-hidden  ">
+      <div ref={box2Ref} className="box md:h-[65vh] h-[20vh] w-[20%]  border-2 border-white/10 absolute md:bottom-[20%] bottom-[40%] left-[40%]  overflow-hidden  ">
         <img
            ref={box2imgRef}
-          src="./l2.jpg"
-          className="absolute w-full h-full object-cover  "
+          src="./l5.jpg"
+          className="absolute w-full h-full object-cover object-top  "
           alt="Landing 2"
         />
       </div>
@@ -177,14 +177,14 @@ function LandingPage({language}) {
         />
       </div>
 
-      <h4 ref={text1Ref}  className='landing-text1 text-6xl text-white absolute z-[50] bottom-[20%] left-32 w-[650px] tracking-wide overflow-hidden'>
+      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[10vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[20%] bottom-[35%] md:left-32 left-[10vw]  tracking-wide overflow-hidden max-w-[80vw] md:max-w-[650px]'>
       {language === "en"
   ? "Exclusive Collections for Every Occasion"
   : "प्रत्येक प्रसंगासाठी खास संग्रह"}
 
       </h4>
 
-      <div ref={text2Ref} className='landing-text2 text-8xl text-[#fdf4f4] z-[50] absolute tracking-wider font-sans right-[15%]'>
+      <div ref={text2Ref} className='cursor-pointer landing-text2 md:text-8xl md:leading-20 leading-14 text-[15vw] text-black z-[50] absolute tracking-wider font-sans md:right-[10%] right-[15%] top-[35%] md:top-[40%]'>
       {language === "en" ? (
   <>
     <h2>Bringing</h2>
@@ -199,9 +199,9 @@ function LandingPage({language}) {
 
       </div>
 
-      <div ref={text3Ref} class="flex flex-col items-center text-white z-60 absolute right-[30%] bottom-[9%]">
+      <div ref={text3Ref} class="flex flex-col items-center text-black z-60 absolute md:right-[20%] right-[10%] md:bottom-[9%] bottom-[43%] cursor-pointer">
 
-  <div class="w-28 h-28 border border-white rounded-full flex items-center justify-center text-lg font-semibold relative">
+  <div class="md:w-28 w-10 h-10 md:h-28 border-2 border-black rounded-full flex items-center justify-center md:text-lg text-[10px] font-semibold relative">
   {language === "en"
   ? "Scrolling"
   : " स्क्रोल करा"}
@@ -209,8 +209,8 @@ function LandingPage({language}) {
   </div>
  
 
-  <div class="w-28 h-28 rounded-full flex items-center justify-center -mt-6  relative">
-    <div class="w-full h-full border border-white rounded-full flex items-center justify-center">
+  <div class="md:w-28 w-10 h-10 md:h-28 rounded-full flex items-center justify-center -mt-6  relative">
+    <div class="w-full h-full border-2 border-black rounded-full flex items-center justify-center">
       <i class="ri-arrow-down-double-line text-2xl"></i>
     </div>
   </div>

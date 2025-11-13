@@ -10,7 +10,7 @@ import { LanguageContext } from '../context/LanguageContext'
 function Home() {
   const { language, setLanguage }  = useContext(LanguageContext)
   return (
-    <div className='w-screen min-h-screen bg-[#151515] overflow-x-hidden'>
+    <div className='w-screen min-h-screen bg-[#fdfbfb] overflow-x-hidden'>
             <LandingPage language ={language}/>
             <Hero language ={language}/>
             <Banner language ={language}/>

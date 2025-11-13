@@ -45,8 +45,8 @@ function Page4({ language }) {
   }, []);
 
   return (
-    <div className='h-screen w-full flex items-center justify-center p-20'>
-      <div ref={textRef} className="content text-white text-3xl text-center px-20 leading-[2.5rem] tracking-wider">
+    <div className='xl:h-screen w-full flex items-center justify-center xl:p-20 px-6 md:mt-0 mt-[-40vw]'>
+      <div ref={textRef} className="content text-black font-bold xl:text-3xl text-xl text-center xl:px-20 leading-[2.5rem] tracking-wider">
         <span className="align-middle">
           {language === "en" 
             ? <>

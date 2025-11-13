@@ -1,40 +1,32 @@
 const express = require('express');
-const upload = require('../config/upload');
+const { upload, optimizeAndUpload } = require('../config/upload');
 const adminAuth = require('../middleware/adminAuth');
 const router = express.Router();
+const productController = require('../controller/product.controller');
 
-
-router.post('/create',adminAuth, upload.array('images', 5), async (req, res) => {
-    res.send("Product created");
+router.post('/',adminAuth, upload.array('images', 5),optimizeAndUpload, async (req, res) => {
+  productController.createController(req,res);
 });
 
 
-router.put('/edit/:id',adminAuth,upload.array('images', 5), async (req, res) => {
-    
+router.put('/:id',adminAuth,upload.array('images', 5),optimizeAndUpload, async (req, res) => {
+    productController.editController(req,res);
 });
 
-router.delete('/delete/:id',adminAuth, async (req, res) => {
-    
+router.delete('/:id',adminAuth, async (req, res) => {
+    productController.deleteController(req,res);
 });
 
-router.delete('/delete/name/:eng_name',adminAuth, async (req, res) => {
-    
+router.get('/:id', async (req, res) => {
+    productController.getController(req,res);
 });
 
-router.delete('/delete/name/:mar_name',adminAuth, async (req, res) => {
-    
-});
-
-router.get('/find/:id', async (req, res) => {
-    
-});
-
-router.get('/find/name/:mar_name', async (req, res) => {
-    
+router.get('/data/:id',adminAuth, async (req, res) => {
+  productController.getDataController(req,res);
 });
 
 router.get('/all', async (req, res) => {
-    
+    productController.getAllProductsController(req,res);
 });
 
 

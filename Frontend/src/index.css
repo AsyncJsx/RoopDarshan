@@ -117,3 +117,27 @@
   font-family: "CustomSansC";
     font-weight: 500;
 }
+.productpage-text1{
+  font-family: "CustomSansA";
+    font-weight: 500;
+}
+.categoryname{
+  font-family: "CustomSansB";
+    font-weight: 700;
+}
+.categorydescription{
+  font-family: "CustomSansD";
+    font-weight: 700;
+}
+.product-name{
+  font-family: "CustomSansB";
+    font-weight: 700;
+}
+.product-description{
+  font-family: "CustomSansC";
+    font-weight: 700;
+}
+.add-category-title{
+  font-family: "CustomSansC";
+  font-weight: 700;
+}

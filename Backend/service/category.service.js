@@ -1,4 +1,4 @@
-const { CategoryModel } = require('../models/category.model');
+const { CategoryModel } = require('../models/category');
 
 const createCategoryService = async (data) => {
     const { eng_name, mar_name, eng_description, mar_description, products } = data;
@@ -39,7 +39,7 @@ const findCategoryByName = async (eng_name) => {
 
 const getAllCategories = async () => {
     try {
-        const categories = await CategoryModel.find().populate('products');
+        const categories = await CategoryModel.find().populate("products");
         return categories;
     } catch (err) {
         throw new Error('Error fetching categories: ' + err.message);

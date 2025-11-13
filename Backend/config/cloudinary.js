@@ -6,4 +6,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-module.exports = cloudinary;
+
+const deleteFromCloudinary = async (public_id) => {
+  try {
+    await cloudinary.uploader.destroy(public_id);
+  } catch (err) {
+    console.error("Error deleting from Cloudinary:", err);
+  }
+};
+
+module.exports = {cloudinary,deleteFromCloudinary};

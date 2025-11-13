@@ -124,27 +124,27 @@ function Hero({ language }) {
     return () => ctx.revert();
   }, []);
   return (
-    <div ref={heroRef} className="h-[110vh] w-screen flex items-center justify-center relative p-20">
-      <div className="contianer w-full h-full bg-[#151515] flex relative">
-        <div className="left w-[50%] flex flex-col p-12">
-          <h3 className="hero-text1 text-6xl text-white">
+    <div ref={heroRef} className="md:h-[110vh] h-[60vh] w-screen flex items-center justify-center relative md:p-20 px-6 mt-32 md:mt-0">
+      <div className="contianer w-full h-full bg-[#fefafa] flex relative gap-[5vw]">
+        <div className="left w-[50%] flex flex-col md:p-12">
+          <h3 className="hero-text1 md:text-6xl text-xl text-black">
             {language === "en"
               ? "Timeless Elegance Modern Design -"
               : "जुन्या कालातिल शोभा , आधुनिक डिझाइन -"}
           </h3>
-          <div className="img absolute bottom-[10%] left-[5%]">
-            <img src="./h1.jpg" className="h-[300px]" alt="" />
-            <div className="hero-text2 flex justify-between items-center text-white text-sm py-2">
+          <div className="img absolute md:bottom-[10%] bottom-[30%] md:left-[5%] left-0">
+            <img src="./h1.jpg" className="md:h-[300px] h-[40vw]" alt="" />
+            <div className="hero-text2 flex justify-between items-center text-black text-sm py-2">
               <p className="hover:underline cursor-pointer">
                 {language === "en" ? "View More" : "अधिक पहा"}
               </p>
-              <p className="text-[10px]">{language === "en" ? "Saree" : "साडी"}</p>
+              <p className="md:text-[10px] text-[8px]">{language === "en" ? "Saree" : "साडी"}</p>
             </div>
           </div>
         </div>
 
-        <div className="right w-[50%] flex flex-col p-12">
-          <div className="hero-text3 text-xl text-white">
+        <div className="right w-[50%] flex flex-col md:p-12">
+          <div className="hero-text3 md:text-xl text-[10px] text-black">
             <h3>
               {language === "en"
                 ? `Roopdarshan is not just a name. It’s a commitment! Everyday efforts for the same to live with. The efforts will receive the response, is what we believe. At Roopdarshan we feel fortunate that our motive of; and for living is same, as said by P. L. Deshpande! Yours Roopdarshan!`
@@ -154,8 +154,8 @@ function Hero({ language }) {
 पु. ल. देशपांडेंप्रमाणे, आमचे ध्येय एक आहे – तुमचं रूपदर्शन, तुमची शैली, तुमची खूबसूरती उंचावणे!`}
             </h3>
           </div>
-          <div className="img absolute bottom-[1%] right-[8%]">
-            <img src="./h2.jpg" className="h-[350px] w-[530px] object-cover" alt="" />
+          <div className="img absolute md:bottom-[1%] bottom-[30%] md:right-[8%] right-0">
+            <img src="./h2.jpg" className="md:h-[350px] h-[40vw] md:w-[530px] object-cover" alt="" />
             <div className="hero-text2 flex justify-between items-center text-white text-sm py-2">
               <p className="hover:underline cursor-pointer">
                 {language === "en" ? "View More" : "अधिक पहा"}
@@ -163,6 +163,7 @@ function Hero({ language }) {
             </div>
           </div>
         </div>
+        <div className="w-full bg-black h-0.5 opacity-65 absolute bottom-[10%] md:bottom-0"></div>
       </div>
     </div>
   );
