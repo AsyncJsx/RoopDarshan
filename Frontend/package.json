@@ -17,7 +17,6 @@ what else can fail
     "@mui/material": "^7.3.5",
     "@tailwindcss/vite": "^4.1.14",
     "axios": "^1.13.2",
-    "axois": "^0.0.1-security",
     "gsap": "^3.13.0",
     "lucide-react": "^0.545.0",
     "react": "^19.1.1",
