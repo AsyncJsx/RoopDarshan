@@ -1,24 +1,51 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../Components/Navbar'
 import Product from '../Product/Product';
-
-
+import axios from '../config/axios';
 
 function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const performSearch = async () => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.get(`/product/search/fuzzy?q=${encodeURIComponent(searchQuery)}`);
+      setSearchResults(response.data.products || []);
+    } catch (error) {
+      console.error("Search error:", error);
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Search query:", searchQuery);
-    // You can trigger API call or filter logic here
+    performSearch();
   };
 
+  useEffect(() => {
+    const delaySearch = setTimeout(() => {
+      if (searchQuery.trim().length >= 2) {
+        performSearch();
+      }
+    }, 500);
+
+    return () => clearTimeout(delaySearch);
+  }, [searchQuery]);
+
   return (
-    <div className='min-h-screen w-full bg-[#151515] text-white relative overflow-hidden'>
+    <div className='min-h-screen w-full  text-white relative overflow-x-hidden'>
       <Navbar/>
 
-      {/* Search Bar */}
-      <div className="w-full flex justify-center mt-6 px-4 fixed top-[35%] z-[9999]">
+      <div className="w-full flex justify-center mt-6 px-4 fixed md:top-[35%] top-[20%] z-[9999]">
         <form 
           onSubmit={handleSubmit} 
           className="w-full max-w-xl flex items-center gap-3"
@@ -27,58 +54,30 @@ function SearchPage() {
             type="text"
             placeholder="Search for products, categories and more..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} // Two-way binding
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full px-4 py-2 rounded-md bg-[#222] border border-gray-600 outline-none focus:border-gray-300"
           />
           <button 
             type="submit" 
             className="px-4 py-2 bg-[#5da7f7] hover:bg-blue-700 rounded-md"
+            disabled={loading}
           >
-            Search
+            {loading ? "..." : "Search"}
           </button>
         </form>
       </div>
-
-      <div className="background relative h-screen w-full overflow-hidden ">
-        <div className="images flex">
-            
-            <img src="./search.jpg" className=' h-screen object-contain' alt="" />
-            <img src="./search1.jpg" className=' w-[35%] object-contain' alt="" />
-            <img src="https://images.unsplash.com/photo-1737514996816-a034a795febe?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" className=' h-screen object-contain' alt="" />
-            
-        </div>
-      </div>
-      <div className="result absolute z-[9999] top-[50%]   flex w-full justify-center gap-4">
       
-<div className="bg-black rounded-xl">
-<Product
-  name="Luxury Bridal Saree"
-  description="Handcrafted premium silk saree with zari border, perfect for weddings."
-  price="2499"
-  image="./l1.jpg"
-  tags={["New", "Wedding", "Silk"]}
-/>
-</div>
-
-
-<div className="bg-black rounded-xl">
-<Product
-  name="Luxury Bridal Saree"
-  description="Handcrafted premium silk saree with zari border, perfect for weddings."
-  price="2499"
-  image="./l1.jpg"
-  tags={["New", "Wedding", "Silk"]}
-/>
-</div>
-<div className="bg-black rounded-xl">
-<Product
-  name="Luxury Bridal Saree"
-  description="Handcrafted premium silk saree with zari border, perfect for weddings."
-  price="2499"
-  image="./l1.jpg"
-  tags={["New", "Wedding", "Silk"]}
-/>
-</div>
+      <div className="result absolute z-[9999] md:top-[50%] top-[25%] products w-full flex flex-wrap justify-center md:gap-6 gap-3 my-8">
+        {searchResults.map((product, index) => (
+         <Product
+         key={index}
+         product ={product}
+        />
+        ))}
+        
+        {searchQuery && searchResults.length === 0 && !loading && (
+          <div className="text-white">No products found</div>
+        )}
       </div>
     </div>
   )

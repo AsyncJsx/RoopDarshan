@@ -8,6 +8,7 @@ function Banner({ language }) {
   const titleRef = useRef(null);
   const descRef = useRef(null);
   const imgRefs = useRef([]);
+  const videoRefs = useRef([]);
 
   const addToRefs = (el) => {
     if (el && !imgRefs.current.includes(el)) {
@@ -15,8 +16,10 @@ function Banner({ language }) {
     }
   };
 
+  videoRefs.current = []; // reset before render
+
   useEffect(() => {
-    // Title and text animations
+    // Title animation
     gsap.from(titleRef.current, {
       y: 100,
       opacity: 0,
@@ -28,6 +31,7 @@ function Banner({ language }) {
       },
     });
 
+    // Description animation
     gsap.from(descRef.current, {
       y: 50,
       opacity: 0,
@@ -58,11 +62,13 @@ function Banner({ language }) {
 
   return (
     <div className="min-h-screen w-full relative md:p-20 p-6 overflow-hidden ">
+      {/* Text Section */}
       <div className="banner-title flex w-full justify-between overflow-hidden">
         <div ref={titleRef} className="md:text-5xl text-xl text-black tracking-wide md:w-[620px] w-[80vw]">
           <h3>{language === 'en' ? 'Unleash Elegance' : 'शोभा उजागर करा'},</h3>
           <h3>{language === 'en' ? 'Redefine Comfort' : 'आरामाची नवी व्याख्या'}</h3>
         </div>
+
         <h3 ref={descRef} className="text-black md:text-xl text-[10px] md:w-[40%] w-[60vw] text-end">
           {language === 'en'
             ? "At Roopdarshan, we don’t just design costumes—we bring characters to life. Blending art, culture, and creativity, we transform imagination into visual reality. Because every form deserves a soul, and every story deserves Roopdarshan."
@@ -70,52 +76,64 @@ function Banner({ language }) {
         </h3>
       </div>
 
-      {/* Image and Video Grid */}
+      {/* Image + Video Grid */}
       <div className="img flex justify-evenly mt-24 gap-8">
-  {[
-    { img: './b4.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035704/v1_vstcif.mp4' },
-    { img: './b5.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035704/v2_h2epk5.mp4' },
-    { img: './b3.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035767/v3_bzb2e1.mp4' },
-  ].map((item, i) => (
-    <div
-      key={i}
-      ref={addToRefs}
-      className="relative md:h-[430px] h-[20vh] w-[30vw] md:w-[380px] rounded-xl overflow-hidden group cursor-pointer"
-    >
-      {/* Image layer (front initially) */}
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-all duration-700 rounded-xl z-20 group-hover:z-0 group-hover:opacity-0"
-        style={{ backgroundImage: `url(${item.img})` }}
-      />
+        {[
+          { img: './b4.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035704/v1_vstcif.mp4' },
+          { img: './b5.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035704/v2_h2epk5.mp4' },
+          { img: './b3.jpg', video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035767/v3_bzb2e1.mp4' },
+        ].map((item, i) => (
+          <div
+            key={i}
+            ref={addToRefs}
+            className="relative md:h-[430px] h-[20vh] w-[30vw] md:w-[380px] rounded-xl overflow-hidden group cursor-pointer"
+          >
+            {/* Image Layer */}
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-all duration-700 rounded-xl z-20 group-hover:z-0 group-hover:opacity-0"
+              style={{ backgroundImage: `url(${item.img})` }}
+            />
 
-      {/* Video layer (hidden behind until hover) */}
-      <video
-        src={item.video}
-        autoPlay
-        muted
-        loop
-        className="absolute inset-0 w-full h-full object-cover rounded-xl z-0 opacity-0 transition-all duration-700 group-hover:z-20 group-hover:opacity-100"
-      />
+            {/* Video Layer WITH SOUND ON HOVER */}
+            <video
+              ref={(el) => (videoRefs.current[i] = el)}
+              src={item.video}
+              loop
+              className="absolute inset-0 w-full h-full object-cover rounded-xl z-0 opacity-0 transition-all duration-700 group-hover:z-20 group-hover:opacity-100"
+              onMouseEnter={() => {
+                const vid = videoRefs.current[i];
+                vid.muted = false;
+                vid.currentTime = 0;
+                vid.play();
+              }}
+              onMouseLeave={() => {
+                const vid = videoRefs.current[i];
+                vid.muted = true;
+                vid.pause();
+              }}
+            />
 
-      {/* Centered logo — appears only on hover */}
-     {i == 1 ? '':  <img
-        src="./logo.png"
-        alt="Logo"
-        className="absolute inset-0 m-auto w-24 h-24 object-contain z-30 opacity-0 transition-all duration-700 group-hover:opacity-100"
-      />}
-    </div>
-  ))}
-</div>
-<div className="link flex items-center gap-2 absolute xl:bottom-[10%] bottom-[33%] right-[5%] text-black cursor-pointer ">
-    <h3 className="hover:underline">
-      {language === 'en' ? 'Keep Exploring' : 'सर्व वर्ग'}
-    </h3>
-    <i className="ri-arrow-right-long-line hover:-rotate-45"></i>
-  </div>
-<div className="w-full bg-black h-0.5 opacity-65 md:mt-24 absolute xl:static bottom-[30%]"></div>
+            {/* Logo */}
+            {i !== 1 && (
+              <img
+                src="./logo.png"
+                alt="Logo"
+                className="absolute inset-0 m-auto w-24 h-24 object-contain z-30 opacity-0 transition-all duration-700 group-hover:opacity-100"
+              />
+            )}
+          </div>
+        ))}
+      </div>
 
+      {/* Link */}
+      <div className="link flex items-center gap-2 absolute xl:bottom-[10%] bottom-[33%] right-[5%] text-black cursor-pointer ">
+        <h3 className="hover:underline">
+          {language === 'en' ? 'Keep Exploring' : 'सर्व वर्ग'}
+        </h3>
+        <i className="ri-arrow-right-long-line hover:-rotate-45"></i>
+      </div>
 
-
+      <div className="w-full bg-black h-0.5 opacity-65 md:mt-24 absolute xl:static bottom-[30%]"></div>
     </div>
   );
 }

@@ -18,6 +18,7 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   tag: [{ type: String }],
+  price: { type: Number }, // Optional field
 }, { timestamps: true });
 
 const validateProductModel = (data) => {
@@ -36,10 +37,11 @@ const validateProductModel = (data) => {
       )
       .min(1)
       .required(),
-    eng_description: Joi.string().min(10).max(500).required(),
-    mar_description: Joi.string().min(10).max(500).required(),
+    eng_description: Joi.string().min(10).max(500).optional(),
+    mar_description: Joi.string().min(10).max(500).optional(),
     category: Joi.string().hex().length(24).required(),
-    tag: Joi.array().items(Joi.string()).optional(), 
+    tag: Joi.array().items(Joi.string()).optional(),
+    price: Joi.number().min(0).optional(), // Optional validation
   });
 
   return schema.validate(data, { abortEarly: false });

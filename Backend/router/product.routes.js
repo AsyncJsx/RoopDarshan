@@ -7,6 +7,9 @@ const productController = require('../controller/product.controller');
 router.post('/',adminAuth, upload.array('images', 5),optimizeAndUpload, async (req, res) => {
   productController.createController(req,res);
 });
+router.get('/all', async (req, res) => {
+  productController.getAllProductsController(req,res);
+});
 
 
 router.put('/:id',adminAuth,upload.array('images', 5),optimizeAndUpload, async (req, res) => {
@@ -25,9 +28,14 @@ router.get('/data/:id',adminAuth, async (req, res) => {
   productController.getDataController(req,res);
 });
 
-router.get('/all', async (req, res) => {
-    productController.getAllProductsController(req,res);
+
+
+router.get('/search/products', async (req, res) => {
+  productController.searchProductsController(req, res);
 });
 
+router.get('/search/fuzzy', async (req, res) => {
+  productController.fuzzySearchController(req, res);
+});
 
 module.exports = router;

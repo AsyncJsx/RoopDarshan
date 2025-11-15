@@ -42,10 +42,14 @@ function Navbar() {
 
       {/* Right: Desktop Icons */}
       <div className="md:flex items-center text-xl gap-4 hidden">
-        <Link to="/search" className="ri-search-line hover:scale-105 transition"></Link>
-        <Link to="/" className="ri-home-4-line hover:scale-105 transition"></Link>
-        <Link to="/products" className="ri-t-shirt-line hover:scale-105 transition"></Link>
-        <Link to="/about" className="ri-information-line hover:scale-105 transition"></Link>
+        <Link to="/search" className="ri-search-line link hover:scale-105 transition text-lg">
+        Search</Link>
+        <Link to="/" className="ri-home-4-line link hover:scale-105 transition text-lg">
+        Home</Link>
+        <Link to="/products" className="ri-t-shirt-line link hover:scale-105 transition text-lg">
+        Products</Link>
+        <Link to="/about" className="ri-information-line link hover:scale-105 transition text-lg">
+        About</Link>
 
         {/* Language Dropdown */}
         <div className="flex items-center gap-1">

@@ -175,4 +175,66 @@ const getAllProductsController = async (req,res)=>{
   }
 }
 
-module.exports = {createController,editController,deleteController,getController,getDataController,getAllProductsController};  
+const searchProductsController = async (req, res) => {
+  try {
+    const { q, category, tags, minPrice, maxPrice, sortBy, page = 1, limit = 12 } = req.query;
+    
+    const searchCriteria = {
+      query: q,
+      category,
+      tags: tags ? (Array.isArray(tags) ? tags : [tags]) : undefined,
+      minPrice: minPrice ? parseFloat(minPrice) : undefined,
+      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
+      sortBy,
+      page: parseInt(page),
+      limit: parseInt(limit)
+    };
+
+    const searchResults = await productService.searchProductsService(searchCriteria);
+    
+    res.status(200).json({
+      success: true,
+      message: "Products found successfully",
+      ...searchResults
+    });
+  } catch (error) {
+    console.error("Error searching products:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error searching products", 
+      error: error.message 
+    });
+  }
+};
+
+const fuzzySearchController = async (req, res) => {
+  try {
+    const { q, limit = 24 } = req.query;
+    
+    if (!q || q.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "Search term must be at least 2 characters long"
+      });
+    }
+
+    const matchedProducts = await productService.fuzzySearchService(q, parseInt(limit));
+    
+    res.status(200).json({
+      success: true,
+      message: "Fuzzy search completed successfully",
+      products: matchedProducts,
+      searchTerm: q,
+      totalMatches: matchedProducts.length
+    });
+  } catch (error) {
+    console.error("Error in fuzzy search:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error in fuzzy search", 
+      error: error.message 
+    });
+  }
+};
+
+module.exports = {createController,editController,deleteController,getController,getDataController,getAllProductsController,searchProductsController,fuzzySearchController};  
