@@ -31,6 +31,10 @@ app.use('/category',categoryRoutes);
 app.use('/product',productRoutes);
 
 
+app.get('/awake',async (req,res)=>{
+    res.send("awaked")
+})
+
 // PORT
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

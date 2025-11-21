@@ -23,7 +23,7 @@ function Product({product}) {
         <img
           src={product.img[0].url}
           alt={product.eng_name}
-          className="relative z-10 w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+          className="relative z-10 w-full h-full object-contain transition-transform duration-500 hover:scale-110"
         />
       </div>
 
@@ -48,7 +48,7 @@ function Product({product}) {
       </span>
     ))
   ) : (
-    <span className="text-gray-400 text-[10px] italic">No tags</span>
+    ''
   )}
 </div>
 

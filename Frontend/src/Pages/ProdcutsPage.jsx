@@ -4,11 +4,11 @@ import Filter from "../Components/Filter";
 import Categories from "../Components/Categories";
 import { RiFilter3Line } from "react-icons/ri"; 
 import gsap from "gsap";
-
 import axios from '../config/axios';
 
 function ProductsPage() {
   const [showFilter, setShowFilter] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const filterRef = useRef(null);
   
   const text1Ref = useRef(null);
@@ -21,13 +21,24 @@ function ProductsPage() {
     console.log(filters);
   };
 
-  const [categorys, setCategorys] = useState([{}]);
+  const [categories, setCategories] = useState([]);
 
-  useEffect(()=>{
-    axios.get('/category/all').then((res)=>{
-     setCategorys(res.data.categories);
-    }).catch((err)=>console.log(err))
-  },[]);
+  useEffect(() => {
+    axios.get('/category/all').then((res) => {
+      setCategories(res.data.categories);
+    }).catch((err) => console.log(err));
+  }, []);
+
+  // Filter categories based on search query - FIXED
+  const filteredCategories = categories.filter(category => {
+    if (!searchQuery) return true;
+    
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      category.eng_name?.toLowerCase().includes(searchLower) ||
+      category.mar_name?.toLowerCase().includes(searchLower)
+    );
+  });
 
   // Set initial filter sidebar position
   useEffect(() => {
@@ -84,53 +95,64 @@ function ProductsPage() {
     );
   }, []);
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <div className="min-h-screen w-screen bg-[#f9f9f9] relative pt-36 overflow-hidden text-gray-900">
       <Navbar/>
       <div className="bg-">
         {/* Filter Toggle Button */}
-      <button
-        onClick={() => setShowFilter(!showFilter)}
-        className="fixed top-28 left-6 z-[9999] p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all border border-gray-200"
-      >
-        <RiFilter3Line size={24} className="text-gray-700" />
-      </button>
+        
 
-      <div className="flex md:p-8 relative">
-        {/* Filter Sidebar */}
-        <div
-          ref={filterRef}
-          className="pt-32 p-4 fixed top-[10%] left-0 z-[9998] bg-white/90 backdrop-blur-md rounded-r-2xl shadow-lg opacity-0 border-r border-gray-200"
-        >
-          <Filter onFilterChange={handleFilterChange} />
-        </div>
-
-        {/* Products Section */}
-        <div className="Products w-screen md:px-8">
-          <h3
-            ref={text1Ref}
-            className="text-center productpage-text1 text-4xl font-bold mb-6 text-gray-800"
+        <div className="flex md:p-8 relative">
+          {/* Filter Sidebar */}
+          <div
+            ref={filterRef}
+            className="pt-32 p-4 fixed top-[10%] left-0 z-[9998] bg-white/90 backdrop-blur-md rounded-r-2xl shadow-lg opacity-0 border-r border-gray-200"
           >
-            Explore Collections
-          </h3>
-
-          {/* Search Bar */}
-          <div ref={searchRef} className="flex justify-center mb-8">
-            <input
-              type="text"
-              placeholder="Search category..."
-              className="w-full max-w-md px-4 py-3 rounded-lg bg-white border border-gray-300 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 outline-none shadow-sm"
-            />
+            <Filter onFilterChange={handleFilterChange} />
           </div>
 
-          {/* Categories Section */}
-          <div ref={categoryRef}>
-           {categorys.map((category)=>{
-            return <Categories category= {category}/>
-           })}
+          {/* Products Section */}
+          <div className="Products w-screen md:px-8">
+            <h3
+              ref={text1Ref}
+              className="text-center productpage-text1 text-4xl font-bold mb-6 text-gray-800"
+            >
+              Explore Collections
+            </h3>
+
+            {/* Search Bar */}
+            <div ref={searchRef} className="flex justify-center mb-8">
+              <input
+                type="text"
+                placeholder="Search category..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="w-full max-w-md px-4 py-3 rounded-lg bg-white border border-gray-300 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 outline-none shadow-sm"
+              />
+            </div>
+
+            {/* Categories Section */}
+            <div ref={categoryRef}>
+              {/* Show all categories when search is empty, otherwise show filtered categories */}
+              {filteredCategories.map((category, index) => (
+                <Categories key={category._id || index} category={category} />
+              ))}
+              
+              {/* Show message when no categories found */}
+              {searchQuery && filteredCategories.length === 0 && (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 text-lg">
+                    No categories found for "{searchQuery}"
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ const { ProductModel } = require('../models/product');
 const createProductService = async (data) => {
     const { eng_name, mar_name, img, eng_description, mar_description, category,tag} = data;
 
-    if (!eng_name || !mar_name || !img || !eng_description || !mar_description || !category ) {
+    if (!eng_name || !mar_name || !img ||  !category ) {
         throw new Error('All fields are required');
     }
 
@@ -19,6 +19,7 @@ const createProductService = async (data) => {
         });
         return product;
     } catch (err) {
+        console.log(err);
         throw new Error('Error creating product: ' + err.message);
     }
 };

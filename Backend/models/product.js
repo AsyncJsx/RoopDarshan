@@ -10,8 +10,8 @@ const productSchema = new mongoose.Schema({
       public_id: { type: String, required: true },
     },
   ],
-  eng_description: { type: String, required: true },
-  mar_description: { type: String, required: true },
+  eng_description: { type: String, required: false },
+  mar_description: { type: String, required: false },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
@@ -37,8 +37,9 @@ const validateProductModel = (data) => {
       )
       .min(1)
       .required(),
-    eng_description: Joi.string().min(10).max(500).optional(),
-    mar_description: Joi.string().min(10).max(500).optional(),
+      eng_description: Joi.string().allow("").optional(),
+mar_description: Joi.string().allow("").optional(),
+
     category: Joi.string().hex().length(24).required(),
     tag: Joi.array().items(Joi.string()).optional(),
     price: Joi.number().min(0).optional(), // Optional validation

@@ -42,7 +42,7 @@ function ProductDetail() {
       </div>
 
       {/* Product Container */}
-      <div className="container bg-[#efefef] border border-black w-[60%] rounded-2xl shadow-md p-6 md:p-8 flex flex-col items-center">
+      <div className="container bg-[#efefef] border border-black md:w-[60%] rounded-2xl shadow-md p-6 md:p-8 flex flex-col items-center">
         {/* Product Section */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           {/* Left: Images */}
@@ -66,8 +66,8 @@ function ProductDetail() {
 
             {/* Side Gallery */}
             <div className="flex md:flex-col gap-3">
-            {Array.isArray(product?.img) && product.img.length > 0 ? (
-  product.img.map((img, index) => (
+            {Array.isArray(product?.img) && product.img.length > 1 ? (
+  product.img.slice(1).map((img, index) => (
     <div
       key={index}
       className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-24 md:h-24 rounded-lg overflow-hidden border border-gray-300 hover:border-gray-500 transition-all cursor-pointer"
@@ -82,13 +82,14 @@ function ProductDetail() {
       {/* Gallery Image */}
       <img
         src={img?.url || "/placeholder.png"}
-        alt={`Gallery ${index + 1}`}
+        alt={`Gallery ${index + 2}`} // +2 because 1st element skipped
         className="relative z-10 w-full h-full object-cover"
       />
     </div>
   ))
-) : (
-  <p className="text-gray-400 text-sm italic mt-4">No images available</p>
+) 
+: (
+  ''
 )}
 
 </div>

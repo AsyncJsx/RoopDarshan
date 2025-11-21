@@ -197,40 +197,33 @@ function AddProductForm() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-2">Description (English) *</label>
-                            <textarea 
-                                {...register('description', { 
-                                    required: 'Description is required',
-                                    minLength: {
-                                        value: 10,
-                                        message: 'Description must be at least 10 characters'
-                                    }
-                                })} 
-                                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                                rows={3}
-                                placeholder="Enter product description in English"
-                            ></textarea>
-                            {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
-                        </div>
-                        
-                        <div>
-                            <label className="block text-sm font-medium mb-2">Description (Marathi) *</label>
-                            <textarea 
-                                {...register('marathiDescription', { 
-                                    required: 'Marathi description is required',
-                                    minLength: {
-                                        value: 10,
-                                        message: 'Marathi description must be at least 10 characters'
-                                    }
-                                })} 
-                                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                                rows={3}
-                                placeholder="उत्पादनाचे वर्णन मराठी मध्ये"
-                            ></textarea>
-                            {errors.marathiDescription && <p className="text-red-500 text-xs mt-1">{errors.marathiDescription.message}</p>}
-                        </div>
-                    </div>
+    <div>
+        <label className="block text-sm font-medium mb-2">Description (English)</label>
+        <textarea 
+            {...register('description')}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows={3}
+            placeholder="Enter product description in English"
+        ></textarea>
+        {errors.description && (
+            <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>
+        )}
+    </div>
+    
+    <div>
+        <label className="block text-sm font-medium mb-2">Description (Marathi)</label>
+        <textarea 
+            {...register('marathiDescription')}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows={3}
+            placeholder="उत्पादनाचे वर्णन मराठी मध्ये"
+        ></textarea>
+        {errors.marathiDescription && (
+            <p className="text-red-500 text-xs mt-1">{errors.marathiDescription.message}</p>
+        )}
+    </div>
+</div>
+
 
                     {/* Category Selection */}
                     <div>
