@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 function MostPopular({ language }) {
   const videoRefs = useRef([]);
@@ -93,12 +94,12 @@ function MostPopular({ language }) {
         ))}
 
         {/* LINK */}
-        <div className="link flex items-center gap-2 absolute bottom-[10%] right-[5%] text-black cursor-pointer">
+        <Link to={'/products'} className="link flex items-center gap-2 absolute bottom-[10%] right-[5%] text-black cursor-pointer">
           <h3 className="hover:underline">
             {language === 'en' ? 'Explore All Categories' : 'सर्व वर्ग'}
           </h3>
           <i className="ri-arrow-right-long-line hover:-rotate-45"></i>
-        </div>
+        </Link>
       </div>
 
     </div>

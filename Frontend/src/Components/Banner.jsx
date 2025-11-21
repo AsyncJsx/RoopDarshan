@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -126,12 +127,12 @@ function Banner({ language }) {
       </div>
 
       {/* Link */}
-      <div className="link flex items-center gap-2 absolute xl:bottom-[10%] bottom-[33%] right-[5%] text-black cursor-pointer ">
+      <Link to={'/products'} className="link flex items-center gap-2 absolute xl:bottom-[10%] bottom-[33%] right-[5%] text-black cursor-pointer ">
         <h3 className="hover:underline">
           {language === 'en' ? 'Keep Exploring' : 'सर्व वर्ग'}
         </h3>
         <i className="ri-arrow-right-long-line hover:-rotate-45"></i>
-      </div>
+      </Link>
 
       <div className="w-full bg-black h-0.5 opacity-65 md:mt-24 absolute xl:static bottom-[30%]"></div>
     </div>

@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -157,9 +158,9 @@ function Hero({ language }) {
           <div className="img absolute md:bottom-[1%] bottom-[30%] md:right-[8%] right-0">
             <img src="./h2.jpg" className="md:h-[350px] h-[40vw] md:w-[530px] object-cover" alt="" />
             <div className="hero-text2 flex justify-between items-center text-white text-sm py-2">
-              <p className="hover:underline cursor-pointer">
+              <Link to={'/products'} className="hover:underline cursor-pointer">
                 {language === "en" ? "View More" : "अधिक पहा"}
-              </p>
+              </Link>
             </div>
           </div>
         </div>
