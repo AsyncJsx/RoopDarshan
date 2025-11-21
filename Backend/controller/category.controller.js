@@ -1,15 +1,29 @@
 const categoryService = require('../service/category.service');
 const { CategoryModel, validateCategoryModel } = require('../models/category');
+const {cloudinary,deleteFromCloudinary} = require('../config/cloudinary');
 
 const createController = async (req, res) => {
   try {
-  
-    const { error } = validateCategoryModel(req.body);
+    const imageData = req.optimizedImages ? req.optimizedImages[0] : null; // Access first element
+   
+    if (!imageData) {
+      return res.status(400).json({ error: "Category image is required" });
+    }
+
+    const categoryData = {
+      ...req.body,
+      image: {
+        url: imageData.url,
+        public_id: imageData.public_id
+      }
+    };
+
+    const { error } = validateCategoryModel(categoryData);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    const category = await categoryService.createCategoryService(req.body)
+    const category = await categoryService.createCategoryService(categoryData);
 
     res.status(201).json({
       message: "Category created successfully",
@@ -20,17 +34,44 @@ const createController = async (req, res) => {
     res.status(500).json({ error: "Error creating category" });
   }
 };
-
   
 
 const editController = async (req, res) => {
   try {
     const { id } = req.params;
-    const updateData = req.body;
+    const updateData = { ...req.body };
 
     const category = await categoryService.findCategoryById(id);
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found' });
+    }
+
+    // Check if user wants to keep existing image or replace it
+    const keepExistingImage = req.body.keepExistingImage === 'true';
+
+    if (req.optimizedImages && req.optimizedImages.length > 0) {
+      // Delete old image from Cloudinary if it exists
+      if (category.image && category.image.public_id) {
+        try {
+          await cloudinary.uploader.destroy(category.image.public_id);
+          console.log("✅ Deleted old category image from Cloudinary:", category.image.public_id);
+        } catch (err) {
+          console.warn("⚠️ Failed to delete old image:", category.image.public_id, err.message);
+        }
+      }
+
+      // Use the new uploaded image
+      updateData.image = {
+        url: req.optimizedImages[0].url,
+        public_id: req.optimizedImages[0].public_id
+      };
+    } else if (!keepExistingImage) {
+      // If user explicitly wants to remove image (though schema requires it, so this might not apply)
+      // This would need schema changes to make image optional for updates
+      updateData.image = category.image; // Keep existing as fallback
+    } else {
+      // Keep existing image
+      updateData.image = category.image;
     }
 
     const updatedCategory = await categoryService.updateCategoryService(id, updateData);

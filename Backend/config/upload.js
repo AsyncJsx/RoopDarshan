@@ -8,37 +8,45 @@ const upload = multer({ dest: "uploads/" });
 
 async function optimizeAndUpload(req, res, next) {
   try {
-    if (!req.files || req.files.length === 0) return next();
+    let files = [];
+
+    // If single file is uploaded (using upload.single)
+    if (req.file) {
+      files = [req.file];
+    }
+    // If multiple files are uploaded (using upload.array)
+    else if (req.files) {
+      files = req.files;
+    }
+
+    if (files.length === 0) {
+      return next();
+    }
 
     const uploadedFiles = [];
 
-    for (const file of req.files) {
+    for (const file of files) {
       let result;
 
       if (file.mimetype.startsWith("image/")) {
         const optimizedPath = path.join("uploads", `optimized-${file.filename}.webp`);
 
-        // ✅ Optimize image first
         await sharp(file.path)
           .resize(800)
           .webp({ quality: 80 })
           .toFile(optimizedPath);
 
-        // ✅ Upload optimized image to Cloudinary
         result = await cloudinary.uploader.upload(optimizedPath, {
           folder: "ecommerce",
           resource_type: "image",
         });
 
-        // ✅ Clean up temp files safely
         await Promise.allSettled([
           fs.unlink(file.path),
           fs.unlink(optimizedPath),
         ]);
       }
-
       else if (file.mimetype.startsWith("video/") || file.mimetype.startsWith("audio/")) {
-        // ✅ Upload videos & audios directly
         result = await cloudinary.uploader.upload(file.path, {
           folder: "ecommerce",
           resource_type: "video",
@@ -47,7 +55,6 @@ async function optimizeAndUpload(req, res, next) {
         await fs.unlink(file.path).catch(() => {});
       } 
       else {
-        // Skip unsupported types
         await fs.unlink(file.path).catch(() => {});
         continue;
       }

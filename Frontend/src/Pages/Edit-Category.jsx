@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../Components/Navbar'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, X, Upload } from "lucide-react"
 import axios from '../config/axios'
 
 function Edit_Category() {
@@ -16,6 +16,9 @@ function Edit_Category() {
     mar_description: ''
   })
 
+  const [image, setImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState('')
+  const [existingImage, setExistingImage] = useState(null)
   const [loading, setLoading] = useState(false)
 
   // Fetch existing category data
@@ -25,7 +28,19 @@ function Edit_Category() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        setCategory(res.data.category)
+        const categoryData = res.data.category
+        setCategory({
+          eng_name: categoryData.eng_name || '',
+          mar_name: categoryData.mar_name || '',
+          eng_description: categoryData.eng_description || '',
+          mar_description: categoryData.mar_description || ''
+        })
+        
+        // Set existing image if available
+        if (categoryData.image && categoryData.image.url) {
+          setExistingImage(categoryData.image)
+          setImagePreview(categoryData.image.url)
+        }
       })
       .catch((err) => {
         console.error("Error fetching category:", err)
@@ -37,15 +52,64 @@ function Edit_Category() {
     setCategory({ ...category, [name]: value })
   }
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file')
+        return
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size should be less than 5MB')
+        return
+      }
+
+      setImage(file)
+
+      // Create preview
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removeImage = () => {
+    setImage(null)
+    setImagePreview(existingImage ? existingImage.url : '')
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
+  
     try {
+      // Create FormData to handle file upload
+      const formData = new FormData()
+      
+      // Append the image if a new one is selected - use 'image' (singular)
+      if (image) {
+        formData.append('image', image) // Changed from 'images' to 'image'
+      }
+      
+      // Append category data
+      formData.append('eng_name', category.eng_name)
+      formData.append('mar_name', category.mar_name)
+      formData.append('eng_description', category.eng_description)
+      formData.append('mar_description', category.mar_description)
+  
       const res = await axios.put(
         `/category/${id}`,
-        category,
+        formData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            // Remove Content-Type header - let axios set it automatically
+          },
         }
       )
       alert("Category updated successfully ✅")
@@ -53,7 +117,6 @@ function Edit_Category() {
     } catch (err) {
       console.error("Error updating category:", err)
       alert("Failed to update category ❌")
-      navigate('/admin/dashboard')
     } finally {
       setLoading(false)
     }
@@ -139,6 +202,62 @@ function Edit_Category() {
                 rows="3"
                 className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-black resize-none"
               ></textarea>
+            </div>
+
+            {/* Image Upload Section */}
+            <div>
+              <label className="block text-gray-700 mb-2 font-medium">
+                Category Image
+                {existingImage && !image && (
+                  <span className="text-sm text-gray-500 ml-2 font-normal">
+                    (Current image - upload new one to replace)
+                  </span>
+                )}
+              </label>
+              
+              {!imagePreview ? (
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    id="image-upload"
+                  />
+                  <label
+                    htmlFor="image-upload"
+                    className="cursor-pointer flex flex-col items-center"
+                  >
+                    <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                    <span className="text-gray-600 font-medium">
+                      Click to upload new image
+                    </span>
+                    <span className="text-gray-500 text-sm mt-1">
+                      PNG, JPG, JPEG up to 5MB
+                    </span>
+                  </label>
+                </div>
+              ) : (
+                <div className="relative inline-block">
+                  <img
+                    src={imagePreview}
+                    alt="Category preview"
+                    className="w-48 h-48 object-cover rounded-lg border border-gray-300"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                  {image && (
+                    <div className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                      New Image
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Submit */}

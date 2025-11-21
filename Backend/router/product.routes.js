@@ -38,7 +38,5 @@ router.get('/search/fuzzy', async (req, res) => {
   productController.fuzzySearchController(req, res);
 });
 
-router.get('/awake',async (req,res)=>{
-  res.send("Awaken");
-})
+
 module.exports = router;

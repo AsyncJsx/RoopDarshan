@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Navbar from '../Components/Navbar'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, X, Upload } from 'lucide-react'
 import axios from '../config/axios'
 
 function Add_Category() {
@@ -12,6 +12,8 @@ function Add_Category() {
     mar_description: ''
   })
 
+  const [image, setImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const token = localStorage.getItem('Admin-Token')
@@ -22,28 +24,75 @@ function Add_Category() {
     setCategory({ ...category, [name]: value })
   }
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setError('Please select a valid image file')
+        return
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size should be less than 5MB')
+        return
+      }
+
+      setImage(file)
+      setError('')
+
+      // Create preview
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removeImage = () => {
+    setImage(null)
+    setImagePreview('')
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
+    // Validate image
+    if (!image) {
+      setError('Category image is required')
+      setLoading(false)
+      return
+    }
+
     try {
+      // Create FormData to handle file upload
+      const formData = new FormData()
+      formData.append('image', image)
+      formData.append('eng_name', category.eng_name)
+      formData.append('mar_name', category.mar_name)
+      formData.append('eng_description', category.eng_description)
+      formData.append('mar_description', category.mar_description)
+
       const response = await axios.post(
         '/category/create',
-        { ...category },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
           },
         }
       )
+      
       alert('Category created successfully!')
       navigate(-1)
     } catch (err) {
       console.error('Error creating category:', err);
-      alert('Something Went Wrong Category!');
-      navigate(-1);
-      setError(err.response?.data?.message || 'Something went wrong')
+      setError(err.response?.data?.error || 'Something went wrong')
     } finally {
       setLoading(false)
     }
@@ -129,6 +178,52 @@ function Add_Category() {
                 rows="3"
                 className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-black resize-none"
               ></textarea>
+            </div>
+
+            {/* Image Upload Section */}
+            <div>
+              <label className="block text-gray-700 mb-2 font-medium">
+                Category Image
+              </label>
+              
+              {!imagePreview ? (
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    id="image-upload"
+                  />
+                  <label
+                    htmlFor="image-upload"
+                    className="cursor-pointer flex flex-col items-center"
+                  >
+                    <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                    <span className="text-gray-600 font-medium">
+                      Click to upload image
+                    </span>
+                    <span className="text-gray-500 text-sm mt-1">
+                      PNG, JPG, JPEG up to 5MB
+                    </span>
+                  </label>
+                </div>
+              ) : (
+                <div className="relative inline-block">
+                  <img
+                    src={imagePreview}
+                    alt="Category preview"
+                    className="w-48 h-48 object-cover rounded-lg border border-gray-300"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Error Message */}

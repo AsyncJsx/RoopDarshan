@@ -5,6 +5,7 @@ import Categories from "../Components/Categories";
 import { RiFilter3Line } from "react-icons/ri"; 
 import gsap from "gsap";
 import axios from '../config/axios';
+import CategoryCard from "../Components/Category-Card";
 
 function ProductsPage() {
   const [showFilter, setShowFilter] = useState(false);
@@ -99,6 +100,7 @@ function ProductsPage() {
     setSearchQuery(e.target.value);
   };
 
+
   return (
     <div className="min-h-screen w-screen bg-[#f9f9f9] relative pt-36 overflow-hidden text-gray-900">
       <Navbar/>
@@ -136,10 +138,11 @@ function ProductsPage() {
             </div>
 
             {/* Categories Section */}
-            <div ref={categoryRef}>
+            <div ref={categoryRef} className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 my-8">
               {/* Show all categories when search is empty, otherwise show filtered categories */}
               {filteredCategories.map((category, index) => (
-                <Categories key={category._id || index} category={category} />
+                <CategoryCard key={category._id || index} category={category}/>
+               
               ))}
               
               {/* Show message when no categories found */}

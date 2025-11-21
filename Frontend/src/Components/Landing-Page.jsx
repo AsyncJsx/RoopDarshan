@@ -161,7 +161,7 @@ function LandingPage({language}) {
       <div ref={box2Ref} className="box md:h-[65vh] h-[20vh] w-[20%]  border-2 border-white/10 absolute md:bottom-[20%] bottom-[40%] left-[40%]  overflow-hidden  ">
         <img
            ref={box2imgRef}
-          src="./l5.jpg"
+          src="./landing4.jpg"
           className="absolute w-full h-full object-cover object-top  "
           alt="Landing 2"
         />

@@ -24,7 +24,17 @@ const categorySchema = new mongoose.Schema({
             ref: "Product",
             default: []
         }
-    ]
+    ],
+    image: {
+        url: { 
+            type: String, 
+            required: true 
+        },
+        public_id: { 
+            type: String, 
+            required: true 
+        },
+    },
 }, { timestamps: true });
 
 const validateCategoryModel = (data) => {
@@ -33,6 +43,17 @@ const validateCategoryModel = (data) => {
         mar_name: Joi.string().min(3).max(100).required(),
         eng_description: Joi.string().min(10).max(500).required(),
         mar_description: Joi.string().min(10).max(500).required(),
+        image: Joi.object({
+            url: Joi.string().uri().required().messages({
+                'string.uri': 'Image URL must be a valid URI',
+                'any.required': 'Image URL is required'
+            }),
+            public_id: Joi.string().required().messages({
+                'any.required': 'Image public ID is required'
+            })
+        }).required().messages({
+            'any.required': 'Image object is required'
+        })
     });
 
     return schema.validate(data, { abortEarly: false });

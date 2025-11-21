@@ -1,17 +1,25 @@
 const { CategoryModel } = require('../models/category');
 
 const createCategoryService = async (data) => {
-    const { eng_name, mar_name, eng_description, mar_description, products } = data;
-    if (!eng_name || !mar_name || !eng_description || !mar_description) {
+    const { eng_name, mar_name, eng_description, mar_description, products, image } = data;
+    
+    if (!eng_name || !mar_name || !eng_description || !mar_description || !image) {
         throw new Error('All fields are required');
     }
+
+    // Additional validation for image object
+    if (!image.url || !image.public_id) {
+        throw new Error('Image URL and public ID are required');
+    }
+
     try {
         const category = await CategoryModel.create({
             eng_name,
             mar_name,
             eng_description,
             mar_description,
-            products
+            products,
+            image // Add the image field here
         });
         return category;
     } catch (err) {
