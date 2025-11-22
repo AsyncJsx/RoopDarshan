@@ -34,7 +34,7 @@ function Router() {
         <Route path='/product/edit/:id' element ={<AdminAuth><Edit_Product/></AdminAuth>} />
         <Route path='/product/delete/:id' element ={<AdminAuth><Delete_Product/></AdminAuth>} />
         <Route path='/category/add' element={<AdminAuth> <Add_Category/></AdminAuth>}/>
-        <Route path='/category/:id' element ={<AdminAuth><Categories/></AdminAuth>} />
+        <Route path='/category/:id' element ={<Categories/>} />
         <Route path='/admin-category/:id' element ={<AdminAuth><Admin_Categories/></AdminAuth>} />
         <Route path='/category/edit/:id' element ={<AdminAuth><Edit_Category/></AdminAuth>} />
         <Route path='/category/delete/:id' element ={<AdminAuth><Delete_Category/></AdminAuth>} />
