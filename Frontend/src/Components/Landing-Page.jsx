@@ -31,78 +31,32 @@ function LandingPage({language}) {
 
   },[])
 
+
+  
   useEffect(() => {
     const tl = gsap.timeline();
-   tl.fromTo(
-      [box1imgRef.current, box2imgRef.current, box3imgRef.current],
-      {
-        clipPath: "inset(100% 0% 0% 0%)", // fully hidden from bottom
-      },
-      {
-        delay:0.7,
-        clipPath: "inset(0% 0% 0% 0%)", // fully visible
-        duration: 2,
-        ease: "power4.out",
-       
-      }
-    );
-    tl.to(box1Ref.current, {
-      x: -1000,
-      duration: 2,
-    });
     
-    tl.to(box3Ref.current, {
-      x: 1000,
-      duration: 2,
-    }, "-=2");
-    tl.to(box2Ref.current,{
-      width : "90vw",
-      height :"90vh",
-      left: "5%",
-      duration:1,
-      top:"3%",
-    },'-=2')
-   tl.fromTo(
-      navRef.current,
-      {
-        opacity: 0,
-        top: "15% !important",
-      },
-      {
-        opacity: 1,
-        top: "8% !important",
-        duration: 1.2,
-        ease: "power3.out",
-      },"-=0.5"
-    );
     tl.fromTo(
-      text1Ref.current,
-      {
-        opacity: 0,
-        y: 50, // start slightly below
-      },
-      {
-        opacity: 1,
-        y: 0,   // final position
-        duration: 1,
-        ease: "power3.out",
-        stagger: 0.2, // each text comes after the previous
-      },"-=2"
-    );
-   
-   
-  
-  }, []);
-  useEffect(() => {
-    const tl = gsap.timeline();
-  
+          text1Ref.current,
+          {
+            opacity: 0,
+            y: 50, // start slightly below
+          },
+          {
+            opacity: 1,
+            y: 0,   // final position
+            duration: 1,
+            ease: "power3.out",
+            stagger: 0.2, // each text comes after the previous
+          },"-=2"
+        );
     tl.fromTo(
       text3Ref.current,
       {
         opacity: 0,
         y: 50,
       },
-      { delay:5,
+      { delay:1,
         opacity: 1,
         y: 0,
         duration: 1,
@@ -147,48 +101,48 @@ function LandingPage({language}) {
       <Navbar/>
       </div>
       {/* Box 1 */}
-      <div ref={box1Ref} className="box h-[65vh] w-[20%] border-2 border-white/10 absolute bottom-[20%] left-[15%] overflow-hidden  ">
+      {/* <div ref={box1Ref} className="box h-[65vh] w-[20%] border-2 border-white/10 absolute bottom-[20%] left-[15%] overflow-hidden  ">
         <img
           ref={box1imgRef}
           src="./landing1.jpg"
           className="absolute w-full h-full object-contain scale-125"
           alt="Landing 1"
         />
-      </div>
+      </div> */}
 
       {/* Box 2 */}
       {/* div className="box h-[85vh] w-[90%] border border-black/20 absolute bottom-[20%] left-[5%] top-[7%] overflow-hidden  " */}
-      <div ref={box2Ref} className="box md:h-[65vh] h-[20vh] w-[20%]  border-2 border-white/10 absolute md:bottom-[20%] bottom-[40%] left-[40%]  overflow-hidden  ">
+      <div  className="box md:h-screen md:w-[30vw] w-full    h-[80vh]  border-2 border-white/10 absolute md:bottom-[0%] bottom-[-5%] right-[5%]  overflow-hidden  ">
         <img
-           ref={box2imgRef}
-          src="./landing4.jpg"
-          className="absolute w-full h-full object-cover object-top  "
+          
+          src="./landing.png"
+          className="absolute w-full md:h-screen h-[80vh] object-cover object-top  "
           alt="Landing 2"
         />
       </div>
 
       {/* Box 3 */}
-      <div ref={box3Ref} className="box h-[65vh] w-[20%] border-2 border-white/10 absolute bottom-[20%] left-[65%] overflow-hidden ">
+      {/* <div ref={box3Ref} className="box h-[65vh] w-[20%] border-2 border-white/10 absolute bottom-[20%] left-[65%] overflow-hidden ">
         <img
           ref={box3imgRef}
           src="./landing3.jpg"
           className="absolute w-full h-full object-contain scale-125"
           alt="Landing 3"
         />
-      </div>
+      </div> */}
 
-      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[10vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[20%] bottom-[35%] md:left-32 left-[10vw]  tracking-wide overflow-hidden max-w-[80vw] md:max-w-[650px]'>
+      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[9vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[20%] bottom-[70%] md:left-32 left-[10vw]  tracking-wide  max-w-none md:max-w-[650px] font-bold'>
       {language === "en"
   ? "Exclusive Collections for Every Occasion"
   : "प्रत्येक प्रसंगासाठी खास संग्रह"}
 
       </h4>
 
-      <div ref={text2Ref} className='cursor-pointer landing-text2 md:text-8xl md:leading-20 leading-14 text-[15vw] text-black z-[50] absolute tracking-wider font-sans md:right-[10%] right-[15%] top-[35%] md:top-[40%]'>
+      <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-8xl md:leading-20 leading-14 text-[10vw] text-black z-[50] absolute tracking-wider font-sans md:left-[5vw] text-center top-[30%] md:top-[30%] text-nowrap '>
       {language === "en" ? (
   <>
-    <h2>Bringing</h2>
-    <h3 className="pl-12">Art Alive.</h3>
+    <h2 className='font-semibold'>Bringing</h2>
+    <h3 className="md:pl-12 pl-[3vw] font-semibold">Art Alive.</h3>
   </>
 ) : (
   <><h2 className='font-extralight'>रूपाची</h2>
@@ -199,7 +153,7 @@ function LandingPage({language}) {
 
       </div>
 
-      <div ref={text3Ref} class="flex flex-col items-center text-black z-60 absolute md:right-[20%] right-[10%] md:bottom-[9%] bottom-[43%] cursor-pointer">
+      <div ref={text3Ref} class="flex flex-col items-center text-black z-60 absolute md:right-[40%] right-[10%] md:bottom-[9%] bottom-[43%] cursor-pointer">
 
   <div class="md:w-28 w-10 h-10 md:h-28 border-2 border-black rounded-full flex items-center justify-center md:text-lg text-[10px] font-semibold relative">
   {language === "en"

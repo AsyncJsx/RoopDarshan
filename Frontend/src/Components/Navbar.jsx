@@ -23,9 +23,13 @@ function Navbar() {
   }, [menuOpen]);
 
   return (
-    <div className="fixed md:top-[10%] top-[5%] z-[9999] w-screen md:px-36 flex items-center justify-between text-black px-[10vw]">
+    <div className="fixed md:top-[5%] top-[5%] z-[9999] w-screen md:px-36 flex items-center justify-between text-black px-[10vw]">
+
+<div className=" cursor-pointer ">
+        <img src="/logo-black.png" className="md:h-20 h-12" alt="Logo" />
+      </div>
       {/* Left: Contact Info */}
-      <div className="flex items-center md:gap-3 font-thin">
+      <div className="flex items-center md:gap-3 font-thin absolute left-1/2 transform -translate-x-1/2">
         <div className="flex items-center md:gap-2 md:flex-row flex-col">
           <h2 className="text-[10px] md:text-xl">
             <i className="ri-phone-line text-sm md:text-xl"></i>
@@ -36,9 +40,7 @@ function Navbar() {
       </div>
 
       {/* Center: Logo */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer">
-        <img src="/logo-black.png" className="h-32" alt="Logo" />
-      </div>
+      
 
       {/* Right: Desktop Icons */}
       <div className="md:flex items-center text-xl gap-4 hidden">

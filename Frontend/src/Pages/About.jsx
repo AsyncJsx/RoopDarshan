@@ -64,11 +64,35 @@ function About() {
             <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
               {language === 'en' ? 'Video Showcase' : 'व्हिडिओ प्रदर्शन'}
             </h2>
-            <div className="  w-screen flex justify-center items-center gap-[5vw] flex-wrap">
-             <video src="https://res.cloudinary.com/dm1lsindg/video/upload/v1763707372/about1_ekb2eh.mp4" controls muted autoPlay className='w-[25%]'></video>
-             <video src="https://res.cloudinary.com/dm1lsindg/video/upload/v1763707583/about2_s0amd9.mp4" controls muted autoPlay className='w-[25%]'></video>
-             <video src="https://res.cloudinary.com/dm1lsindg/video/upload/v1763707353/about3_mjpzjt.mp4" controls muted autoPlay className='w-[25%]'></video>
-            </div>
+            <div className="w-screen flex justify-center items-center gap-[5vw] flex-wrap">
+  <video 
+    src="https://res.cloudinary.com/dm1lsindg/video/upload/v1763707372/about1_ekb2eh.mp4" 
+    controls 
+    controlsList="nodownload noplaybackrate"
+    muted 
+    autoPlay 
+    className="w-[25%]"
+  ></video>
+
+  <video 
+    src="https://res.cloudinary.com/dm1lsindg/video/upload/v1763707583/about2_s0amd9.mp4" 
+    controls 
+    controlsList="nodownload noplaybackrate"
+    muted 
+    autoPlay 
+    className="w-[25%]"
+  ></video>
+
+  <video 
+    src="https://res.cloudinary.com/dm1lsindg/video/upload/v1763707353/about3_mjpzjt.mp4" 
+    controls 
+    controlsList="nodownload noplaybackrate"
+    muted 
+    autoPlay 
+    className="w-[25%]"
+  ></video>
+</div>
+
           </div>
 
           
