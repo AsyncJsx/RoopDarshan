@@ -131,7 +131,7 @@ function LandingPage({language}) {
         />
       </div> */}
 
-      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[9vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[20%] bottom-[70%] md:left-32 left-[10vw]  tracking-wide  max-w-none md:max-w-[650px] font-bold'>
+      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[9vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[20%] bottom-[70%] md:left-32 left-[10vw]  tracking-wide  max-w-none md:max-w-[650px] '>
       {language === "en"
   ? "Exclusive Collections for Every Occasion"
   : "प्रत्येक प्रसंगासाठी खास संग्रह"}
