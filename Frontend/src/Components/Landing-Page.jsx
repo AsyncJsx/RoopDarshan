@@ -131,18 +131,18 @@ function LandingPage({language}) {
         />
       </div> */}
 
-      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[9vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[20%] bottom-[70%] md:left-32 left-[10vw]  tracking-wide  max-w-none md:max-w-[650px] '>
+      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[9vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[20%] bottom-[70%] md:left-32 left-[10vw]  tracking-wide  max-w-none md:max-w-[650px] font-extrabold '>
       {language === "en"
   ? "Exclusive Collections for Every Occasion"
   : "प्रत्येक प्रसंगासाठी खास संग्रह"}
 
       </h4>
 
-      <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-8xl md:leading-20 leading-14 text-[10vw] text-black z-[50] absolute tracking-wider font-sans md:left-[5vw] text-center top-[30%] md:top-[30%] text-nowrap '>
+      <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-9xl md:leading-20 leading-14 text-[10vw] text-black z-[50] absolute tracking-wider font-sans md:left-[5vw] text-center top-[30%] md:top-[25%] text-nowrap '>
       {language === "en" ? (
   <>
-    <h2 className='font-semibold'>Bringing</h2>
-    <h3 className="md:pl-12 pl-[3vw] font-semibold">Art Alive.</h3>
+    <h2 className='font-extrabold '>Bringing</h2>
+    <h3 className="md:pl-12 pl-[3vw] font-extrabold">Art Alive.</h3>
   </>
 ) : (
   <><h2 className='font-extralight'>रूपाची</h2>

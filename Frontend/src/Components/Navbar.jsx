@@ -21,9 +21,43 @@ function Navbar() {
       gsap.to(menuRef.current, { y: -50, opacity: 0, duration: 0.4, ease: "power3.in" });
     }
   }, [menuOpen]);
+  useEffect(() => {
+    let lastScroll = 0;
+    const navbar = document.querySelector(".navbar");
+
+    gsap.set(navbar, { opacity: 1 });
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      // Scroll down 40px → hide navbar
+      if (currentScroll > lastScroll && currentScroll > 40) {
+       
+        gsap.to(navbar, {
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+      }
+
+      // Scroll up → show navbar
+      if (currentScroll < lastScroll) {
+        gsap.to(navbar, {
+          opacity: 1,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+      }
+
+      lastScroll = currentScroll;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="fixed md:top-[5%] top-[5%] z-[9999] w-screen md:px-36 flex items-center justify-between text-black px-[10vw]">
+    <div className="navbar fixed md:top-[5%] top-[5%] z-[9999] w-screen md:px-36 flex items-center justify-between text-black px-[10vw]">
 
 <div className=" cursor-pointer ">
         <img src="/logo-black.png" className="md:h-20 h-12" alt="Logo" />

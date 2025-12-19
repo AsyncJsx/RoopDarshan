@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '../Components/Navbar'
 import Product from '../Product/Product';
 import axios from '../config/axios';
+import gsap from 'gsap';
 
 function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,11 +42,47 @@ function SearchPage() {
     return () => clearTimeout(delaySearch);
   }, [searchQuery]);
 
+  useEffect(() => {
+    let lastScroll = 0;
+    const navbar = document.querySelector(".form");
+
+    gsap.set(navbar, { opacity: 1 });
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      // Scroll down 40px → hide navbar
+      if (currentScroll > lastScroll && currentScroll > 40) {
+       
+        gsap.to(navbar, {
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+      }
+
+      // Scroll up → show navbar
+      if (currentScroll < lastScroll) {
+        gsap.to(navbar, {
+          opacity: 1,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+      }
+
+      lastScroll = currentScroll;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  
+
   return (
     <div className='min-h-screen w-full  text-white relative overflow-x-hidden'>
       <Navbar/>
 
-      <div className="w-full flex justify-center mt-6 px-4 fixed md:top-[35%] top-[20%] z-[9999]">
+      <div className="form w-full flex justify-center mt-6 px-4 fixed md:top-[35%] top-[20%] z-[9999]">
         <form 
           onSubmit={handleSubmit} 
           className="w-full max-w-xl flex items-center gap-3"
