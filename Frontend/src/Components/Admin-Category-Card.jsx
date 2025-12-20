@@ -46,7 +46,7 @@ function AdminCategoryCard({ category }) {
       <p className="text-[11px] sm:text-xs mt-2 text-gray-600 font-medium">
         {category.products?.length || 0} {language === "en" ? "Products" : "उत्पादने"}
       </p>
-      <div className=" w-full h-8 flex items-center justify-end gap-3">
+      <div className=" w-full h-8 flex items-center justify-end gap-3 hidden">
       <Link to={`/category/edit/${category._id}`} class="ri-edit-2-line text-green-500 text-xl hover:text-green-700 hover:underline underline-offset-4"></Link>
       <Link to={`/category/delete/${category._id}`}  class="ri-delete-bin-line text-red-500 text-xl hover:text-red-700 hover:underline underline-offset-4"></Link>
       </div>
