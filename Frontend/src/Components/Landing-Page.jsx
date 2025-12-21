@@ -112,10 +112,10 @@ function LandingPage({language}) {
 
       {/* Box 2 */}
       {/* div className="box h-[85vh] w-[90%] border border-black/20 absolute bottom-[20%] left-[5%] top-[7%] overflow-hidden  " */}
-      <div  className="box md:h-screen md:w-[30vw] w-full    h-[80vh]  border-2 border-white/10 absolute md:bottom-[0%] bottom-[-5%] right-[5%]  overflow-hidden  ">
+      <div  className="box md:h-screen md:w-[30vw] w-full    h-[80vh]  border-2 border-white/10 absolute bottom-[10%] bottom-[-5%] md:right-[5%]  overflow-hidden  ">
         <img
           
-          src="./landing.png"
+          src="./p2.png"
           className="absolute w-full md:h-screen h-[80vh] object-cover object-top  "
           alt="Landing 2"
         />
@@ -131,7 +131,7 @@ function LandingPage({language}) {
         />
       </div> */}
 
-      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[9vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[20%] bottom-[70%] md:left-32 left-[10vw]  tracking-wide  max-w-none md:max-w-[650px] font-extrabold '>
+      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-7xl text-[9vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[15%] bottom-[70%] md:left-32 left-[10vw]  tracking-tight  max-w-none md:max-w-[650px] font-extrabold '>
       {language === "en"
   ? "Exclusive Collections for Every Occasion"
   : "प्रत्येक प्रसंगासाठी खास संग्रह"}

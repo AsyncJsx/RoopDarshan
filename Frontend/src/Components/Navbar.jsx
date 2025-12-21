@@ -57,7 +57,7 @@ function Navbar() {
   }, []);
 
   return (
-    <div className="navbar fixed md:top-[5%] top-[5%] z-[9999] w-screen md:px-36 flex items-center justify-between text-black px-[10vw]">
+    <div className="navbar fixed md:top-[5%] top-[5%] z-[9999] w-screen md:px-32 flex items-center justify-between text-black px-[3vw]">
 
 <div className=" cursor-pointer ">
         <img src="/logo-black.png" className="md:h-20 h-12" alt="Logo" />
@@ -118,14 +118,24 @@ function Navbar() {
       {/* Mobile Dropdown Menu */}
       <div
         ref={menuRef}
-        className={`absolute top-[100%] left-4 w-full text-black text-xl flex items-center justify-center gap-5 py-4 shadow-md md:hidden ${
+        className={`absolute top-[100%] left-4 w-full text-black text-xl flex items-center justify-center gap-2 py-4 shadow-md md:hidden ${
           menuOpen ? "flex" : "hidden"
         }`}
       >
-        <Link to="/search" onClick={() => setMenuOpen(false)} className="ri-search-line"></Link>
-        <Link to="/" onClick={() => setMenuOpen(false)} className="ri-home-4-line"></Link>
-        <Link to="/products" onClick={() => setMenuOpen(false)} className="ri-t-shirt-line"></Link>
-        <Link to="/about" onClick={() => setMenuOpen(false)} className="ri-information-line"></Link>
+        <Link to="/search" className=" flex items-center justify-center" onClick={() => setMenuOpen(false)} >
+        <i className="ri-search-line"></i>
+        <p className=" text-sm">Search</p>
+        </Link>
+        <Link to="/" onClick={() => setMenuOpen(false)} className=" flex items-center justify-center">
+        <i className="ri-home-4-line"></i>
+        <p className=" text-sm">Home</p>
+        </Link>
+        <Link to="/products" onClick={() => setMenuOpen(false)}  className=" flex items-center justify-center">
+        <i className="ri-t-shirt-line"></i>
+        <p className="text-sm">Product</p></Link>
+        <Link to="/about" onClick={() => setMenuOpen(false)} className=" flex items-center justify-center" >
+        <i className="ri-information-line"></i>
+        <p className=" text-sm">About</p></Link>
 
         {/* Language Dropdown */}
         <div className="flex items-center gap-1">
