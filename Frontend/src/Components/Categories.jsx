@@ -70,6 +70,7 @@ function Categories() {
   {category?.products && category.products.length > 0 ? (
     category.products.map((product, index) => (
       <Product
+      key={index}
        product ={product}
       />
     ))
