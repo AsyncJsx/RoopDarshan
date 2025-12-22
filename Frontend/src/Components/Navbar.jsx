@@ -69,7 +69,7 @@ function Navbar() {
             <i className="ri-phone-line text-sm md:text-xl"></i>
             {language === "en" ? " Contact" : " संपर्क"}
           </h2>
-          <h2 className="text-[10px] md:text-xl">917498811073</h2>
+          <h2 className="text-[10px] md:text-lg">9561000027</h2>
         </div>
       </div>
 

@@ -21,7 +21,7 @@ function CategoryCard({ category }) {
         <img
           src="./logo-black.png"
           alt="watermark"
-          className="absolute inset-0 w-[90%] h-[90%] object-contain rotate-[-25deg] scale-150 translate-x-[20%] translate-y-[10%]"
+          className="absolute inset-0 w-[100%] h-[100%] object-contain rotate-[-30deg] scale-[180%] translate-x-[10%] translate-y-[0%]"
         />
 
         {/* Main Category Image */}

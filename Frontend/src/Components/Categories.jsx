@@ -13,14 +13,18 @@ function Categories() {
   const { id } = useParams()
   const navigate = useNavigate()
   const token = localStorage.getItem('Admin-Token')
+  const [loading, setLoading] = useState(true)
 
   useEffect(()=>{
+    setLoading(true);
     axios.get(`/category/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((res)=>{
       setCategory(res.data.category)
     }).catch((err)=>{
       console.log(err);
+    }).finally(()=>{
+      setLoading(false)
     })
   },[token])
 
@@ -52,9 +56,17 @@ function Categories() {
 
       {/* Product Grid */}
       <div className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 mb-8">
-
-        {/* Products Section */}
-<div className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 my-8">
+{loading ? <div className="flex flex-col items-center">
+                <div className="w-12 h-12 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                <p className="mt-4 text-gray-600 font-medium">
+                  Loading products...
+                </p>
+                <img
+                  src="/loading.gif"
+                  className="h-[30vh] w-auto"
+                  alt="Loading"
+                />
+              </div> :<div className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 my-8">
   {category?.products && category.products.length > 0 ? (
     category.products.map((product, index) => (
       <Product
@@ -66,7 +78,9 @@ function Categories() {
       No products available in this category.
     </p>
   )}
-</div>
+</div>}
+       
+
 
       </div>
     </div>
