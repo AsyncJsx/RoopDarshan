@@ -150,151 +150,215 @@ const searchProductsService = async (searchCriteria) => {
 };
 
 const fuzzySearchService = async (searchTerm, limit = 24) => {
-    try {
-      if (!searchTerm || searchTerm.trim().length < 2) {
-        return [];
+  try {
+    if (!searchTerm || searchTerm.trim().length < 2) {
+      return [];
+    }
+
+    const cleanSearchTerm = searchTerm.trim();
+    
+    // OPTIMIZED: Use MongoDB text search instead of loading all products
+    // First, try text search which is much faster
+    const textSearchResults = await ProductModel.aggregate([
+      {
+        $match: {
+          $text: { $search: cleanSearchTerm }
+        }
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      {
+        $unwind: {
+          path: '$category',
+          preserveNullAndMissingFields: true
+        }
+      },
+      {
+        $addFields: {
+          score: { $meta: "textScore" }
+        }
+      },
+      {
+        $sort: { score: -1, createdAt: -1 }
+      },
+      {
+        $limit: limit
       }
-  
-      const cleanSearchTerm = searchTerm.trim().toLowerCase();
+    ]);
+
+    // If text search returns enough results, return them
+    if (textSearchResults.length >= limit / 2) {
+      return textSearchResults;
+    }
+
+    // If not enough results from text search, fall back to manual search
+    // But fetch fewer products (100 instead of 1000)
+    const allProducts = await ProductModel.find()
+      .populate('category')
+      .sort({ createdAt: -1 })
+      .limit(100); // Reduced for free tier memory constraints
+
+    const matchedProducts = [];
+    const searchTermLower = cleanSearchTerm.toLowerCase();
+    const searchWords = searchTermLower.split(/\s+/).filter(w => w.length >= 2);
+
+    // OPTIMIZED: Early exit if no search words
+    if (searchWords.length === 0) {
+      return [];
+    }
+
+    // OPTIMIZED: Use simple includes first for better performance
+    for (const product of allProducts) {
+      const engName = product.eng_name?.toLowerCase() || '';
+      const marName = product.mar_name?.toLowerCase() || '';
       
-      const allProducts = await ProductModel.find()
-        .populate('category')
-        .sort({ createdAt: -1 })
-        .limit(1000);
-  
-      const matchedProducts = allProducts.filter(product => {
-        const engName = product.eng_name.toLowerCase();
-        const marName = product.mar_name.toLowerCase();
+      let productScore = 0;
+      
+      // Quick checks first
+      if (engName.includes(searchTermLower) || marName.includes(searchTermLower)) {
+        productScore += 20;
+      }
+      
+      // Check for word matches
+      for (const word of searchWords) {
+        if (word.length < 2) continue;
         
+        if (engName.includes(word)) productScore += 5;
+        if (marName.includes(word)) productScore += 5;
+        
+        // Check word boundaries for better matches
         const engWords = engName.split(/\s+/);
         const marWords = marName.split(/\s+/);
         
-        let engMatch = false;
-        let marMatch = false;
-  
-        for (const word of engWords) {
-          if (word.length < 2) continue;
-          
-          const similarity = calculateSimilarity(cleanSearchTerm, word);
-          if (similarity >= 0.7) {
-            engMatch = true;
-            break;
-          }
-          
-          if (cleanSearchTerm.includes(word) || word.includes(cleanSearchTerm)) {
-            engMatch = true;
-            break;
-          }
-        }
-  
-        for (const word of marWords) {
-          if (word.length < 2) continue;
-          
-          const similarity = calculateSimilarity(cleanSearchTerm, word);
-          if (similarity >= 0.7) {
-            marMatch = true;
-            break;
-          }
-          
-          if (cleanSearchTerm.includes(word) || word.includes(cleanSearchTerm)) {
-            marMatch = true;
-            break;
-          }
-        }
-  
-        if (engName.includes(cleanSearchTerm) || marName.includes(cleanSearchTerm)) {
-          return true;
-        }
-  
-        if (cleanSearchTerm.length >= 3) {
-          const directEngMatch = calculateSimilarity(cleanSearchTerm, engName) >= 0.6;
-          const directMarMatch = calculateSimilarity(cleanSearchTerm, marName) >= 0.6;
-          if (directEngMatch || directMarMatch) {
-            return true;
-          }
-        }
-  
-        return engMatch || marMatch;
-      });
-  
-      const scoredProducts = matchedProducts.map(product => {
-        const engName = product.eng_name.toLowerCase();
-        const marName = product.mar_name.toLowerCase();
-        
-        let score = 0;
-        
-        if (engName.includes(cleanSearchTerm) || marName.includes(cleanSearchTerm)) {
-          score += 10;
+        for (const engWord of engWords) {
+          if (engWord === word) productScore += 10;
+          else if (engWord.includes(word) && word.length >= 3) productScore += 3;
         }
         
-        const engSimilarity = calculateSimilarity(cleanSearchTerm, engName);
-        const marSimilarity = calculateSimilarity(cleanSearchTerm, marName);
-        score += Math.max(engSimilarity, marSimilarity) * 5;
-        
-        const engWords = engName.split(/\s+/);
-        const marWords = marName.split(/\s+/);
-        
-        engWords.forEach(word => {
-          if (word === cleanSearchTerm) score += 3;
-          else if (word.includes(cleanSearchTerm) || cleanSearchTerm.includes(word)) score += 2;
-        });
-        
-        marWords.forEach(word => {
-          if (word === cleanSearchTerm) score += 3;
-          else if (word.includes(cleanSearchTerm) || cleanSearchTerm.includes(word)) score += 2;
-        });
-        
-        return { product, score };
-      });
-  
-      scoredProducts.sort((a, b) => b.score - a.score);
+        for (const marWord of marWords) {
+          if (marWord === word) productScore += 10;
+          else if (marWord.includes(word) && word.length >= 3) productScore += 3;
+        }
+      }
       
-      return scoredProducts.slice(0, limit).map(item => item.product);
-    } catch (err) {
-      throw new Error('Error in fuzzy search: ' + err.message);
-    }
-  };
-  
-  function calculateSimilarity(str1, str2) {
-    if (str1 === str2) return 1.0;
-    
-    const longer = str1.length > str2.length ? str1 : str2;
-    const shorter = str1.length > str2.length ? str2 : str1;
-    
-    if (shorter.length === 0) return 0.0;
-    
-    const distance = levenshteinDistance(str1, str2);
-    
-    return 1 - (distance / longer.length);
-  }
-  
-  function levenshteinDistance(str1, str2) {
-    const matrix = [];
-    
-    for (let i = 0; i <= str2.length; i++) {
-      matrix[i] = [i];
-    }
-    
-    for (let j = 0; j <= str1.length; j++) {
-      matrix[0][j] = j;
-    }
-    
-    for (let i = 1; i <= str2.length; i++) {
-      for (let j = 1; j <= str1.length; j++) {
-        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
-        } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1
-          );
+      // Only use expensive similarity calculation for products with some score
+      if (productScore > 0) {
+        // Calculate similarity only for top candidates
+        const engSimilarity = searchTermLower.length >= 3 ? 
+          simpleSimilarity(searchTermLower, engName) : 0;
+        const marSimilarity = searchTermLower.length >= 3 ? 
+          simpleSimilarity(searchTermLower, marName) : 0;
+        
+        productScore += Math.max(engSimilarity, marSimilarity) * 2;
+        
+        if (productScore > 5) { // Threshold to include
+          matchedProducts.push({ product, score: productScore });
         }
       }
     }
+
+    // Sort and limit
+    matchedProducts.sort((a, b) => b.score - a.score);
     
-    return matrix[str2.length][str1.length];
+    const finalResults = matchedProducts
+      .slice(0, limit)
+      .map(item => item.product);
+    
+    // Combine with text search results (remove duplicates)
+    const combinedResults = [...textSearchResults];
+    const existingIds = new Set(textSearchResults.map(p => p._id.toString()));
+    
+    for (const product of finalResults) {
+      if (!existingIds.has(product._id.toString()) && combinedResults.length < limit) {
+        combinedResults.push(product);
+      }
+    }
+    
+    return combinedResults;
+    
+  } catch (err) {
+   
+    // Fallback to simple search on error
+    return await simpleSearchFallback(searchTerm, limit);
   }
+};
+
+// OPTIMIZED: Simpler similarity calculation
+function simpleSimilarity(str1, str2) {
+  if (!str1 || !str2) return 0;
+  
+  // Quick equality check
+  if (str1 === str2) return 1.0;
+  
+  // Length similarity
+  const maxLen = Math.max(str1.length, str2.length);
+  if (maxLen === 0) return 0;
+  
+  // Check if one contains the other
+  if (str1.includes(str2) || str2.includes(str1)) {
+    const minLen = Math.min(str1.length, str2.length);
+    return minLen / maxLen;
+  }
+  
+  // Simple character overlap
+  let matches = 0;
+  for (let i = 0; i < Math.min(str1.length, str2.length); i++) {
+    if (str1[i] === str2[i]) matches++;
+  }
+  
+  return matches / maxLen;
+}
+
+// Fallback search function for error recovery
+async function simpleSearchFallback(searchTerm, limit = 24) {
+  try {
+    if (!searchTerm || searchTerm.trim().length < 2) return [];
+    
+    const cleanSearchTerm = searchTerm.trim().toLowerCase();
+    
+    // Use regex for basic search
+    return await ProductModel.find({
+      $or: [
+        { eng_name: { $regex: cleanSearchTerm, $options: 'i' } },
+        { mar_name: { $regex: cleanSearchTerm, $options: 'i' } }
+      ]
+    })
+    .populate('category')
+    .sort({ createdAt: -1 })
+    .limit(limit);
+  } catch (err) {
+    console.error('Fallback search error:', err.message);
+    return [];
+  }
+}
+
+// Setup text index (run this once)
+async function setupSearchIndex() {
+  try {
+    await ProductModel.collection.createIndex(
+      { 
+        eng_name: "text", 
+        mar_name: "text"
+      },
+      {
+        name: "search_index",
+        weights: {
+          eng_name: 2,
+          mar_name: 1
+        }
+      }
+    );
+    console.log('Search index created successfully');
+  } catch (err) {
+    console.log('Search index already exists or error:', err.message);
+  }
+}
 
 // Add to module exports
 module.exports = {
