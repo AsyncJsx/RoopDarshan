@@ -58,7 +58,7 @@ function MostPopular({ language }) {
               ref={(el) => (videoRefs.current[i] = el)}
               src={item.video}
               loop
-              className="absolute inset-0 w-full h-[430px] object-cover rounded-xl z-10 opacity-0 transition-all duration-700 group-hover:opacity-100"
+              className="absolute inset-0 w-full md:h-[430px] object-cover rounded-xl z-10 opacity-0 transition-all duration-700 group-hover:opacity-100"
               onMouseEnter={() => {
                 const vid = videoRefs.current[i];
                 vid.muted = false;
