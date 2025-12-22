@@ -1,7 +1,8 @@
 const categoryService = require('../service/category.service');
 const { CategoryModel, validateCategoryModel } = require('../models/category');
 const {cloudinary,deleteFromCloudinary} = require('../config/cloudinary');
-
+const { findAdminById} = require('../service/admin.service')
+const { comparePassword} = require('../utils/hash-password');
 const createController = async (req, res) => {
   try {
     const imageData = req.optimizedImages ? req.optimizedImages[0] : null; // Access first element
@@ -94,22 +95,53 @@ const editController = async (req, res) => {
 const deleteController = async (req, res) => {
   try {
     const { id } = req.params;
-    const category = await categoryService.findCategoryById(id);
-    if (!category) {
-      return res.status(404).json({ success: false, message: 'Category not found' });
+    const { password } = req.body;
+
+    // find admin
+    const admin = await findAdminById(req.admin._id);
+    if (!admin) {
+      return res.status(401).json({
+        success: false,
+        message: "Admin not found",
+      });
     }
 
+    // compare password
+    const isMatch = await comparePassword(password, admin.password);
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid password",
+      });
+    }
+
+    // find category
+    const category = await categoryService.findCategoryById(id);
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    // delete category
     await categoryService.deleteCategoryById(id);
-    return res.status(200).json({ success: true, message: 'Category deleted successfully' });
+
+    return res.status(200).json({
+      success: true,
+      message: "Category deleted successfully",
+    });
+
   } catch (error) {
-    console.error('Error deleting category:', error);
+    console.error("Error deleting category:", error);
     return res.status(500).json({
       success: false,
-      message: 'Error deleting category',
-      error: error.message
+      message: "Error deleting category",
+      error: error.message,
     });
   }
 };
+
 
 const findController = async (req, res) => {
   try {

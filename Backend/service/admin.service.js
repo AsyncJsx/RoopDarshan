@@ -3,6 +3,7 @@ const { adminModel } = require('../models/admin');
 // Create Admin
 const createAdminService = async (data) => {
     const { username, email, phone, password } = data;
+   
 
     if (!username || !email || !phone || !password) {
         throw new Error('All fields are required');

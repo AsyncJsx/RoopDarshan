@@ -7,6 +7,7 @@ const redisClient = require('../service/redis.service')
 const signUpController =async (req,res)=>{
         try {
             const { error } = validateAdminModel(req.body);
+            
             if (error) return res.status(400).json({ error: error.details[0].message });
             const hashedPassword = await hashPassword(req.body.password)
             const admin = await adminService.createAdminService({ username: req.body.username, email:req.body.email, phone : req.body.phone, password:hashedPassword });

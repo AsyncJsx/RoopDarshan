@@ -17,6 +17,7 @@ import Edit_Category from '../Pages/Edit-Category';
 import Delete_Category from '../Pages/Delete-Category';
 import Categories from '../Components/Categories';
 import Admin_Categories from '../Components/Admin-Category';
+import Logout from '../Pages/Logout';
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
         <Route path='/about' element={<About/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/logout" element={< Logout/>} />
         <Route path='/admin/dashboard' element={<AdminAuth><AdminDashboard/></AdminAuth>}/>
         <Route path='/product/add' element ={<AdminAuth><Add_Product/></AdminAuth>} />
         <Route path='/product/edit/:id' element ={<AdminAuth><Edit_Product/></AdminAuth>} />

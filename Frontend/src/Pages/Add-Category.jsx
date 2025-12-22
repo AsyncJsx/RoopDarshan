@@ -3,8 +3,10 @@ import Navbar from '../Components/Navbar'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, X, Upload } from 'lucide-react'
 import axios from '../config/axios'
+import { toast, Toaster } from 'react-hot-toast';
 
 function Add_Category() {
+
   const [category, setCategory] = useState({
     eng_name: '',
     mar_name: '',
@@ -87,10 +89,9 @@ function Add_Category() {
           },
         }
       )
-      
-      alert('Category created successfully!')
-      navigate(-1)
+      toast.success('Category created successfully!');
     } catch (err) {
+      toast.error('Error creating category:');
       console.error('Error creating category:', err);
       setError(err.response?.data?.error || 'Something went wrong')
     } finally {
@@ -110,7 +111,7 @@ function Add_Category() {
           <ArrowLeft className="w-5 h-5 cursor-pointer" />
           <span className="cursor-pointer font-medium">Back</span>
         </div>
-
+        <Toaster />
         {/* Form Card */}
         <div className="bg-white border border-gray-300 shadow-md rounded-2xl p-8">
           <h4 className="text-2xl font-semibold mb-6 text-center text-gray-800">

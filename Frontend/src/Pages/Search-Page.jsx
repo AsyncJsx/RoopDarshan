@@ -105,17 +105,40 @@ function SearchPage() {
       </div>
       
       <div className="result absolute z-[9999] md:top-[50%] top-[25%] products w-full flex flex-wrap justify-center md:gap-6 gap-3 my-8">
-        {searchResults.map((product, index) => (
-         <Product
-         key={index}
-         product ={product}
-        />
-        ))}
-        
-        {searchQuery && searchResults.length === 0 && !loading && (
-          <div className="text-white">No products found</div>
-        )}
-      </div>
+  
+  {/* 🔄 Loading State */}
+  {loading && (
+    <div className="flex flex-col items-center">
+      <div className="w-12 h-12 border-4 border-gray-300 border-t-white rounded-full animate-spin"></div>
+      <p className="mt-4 text-gray-300 font-medium">
+        Searching products...
+      </p>
+      <img
+        src="/loading.gif"
+        className="h-[30vh] w-auto"
+        alt="Loading"
+      />
+    </div>
+  )}
+
+  {/* ✅ Results */}
+  {!loading &&
+    searchResults.map((product, index) => (
+      <Product
+        key={index}
+        product={product}
+      />
+    ))
+  }
+
+  {/* ❌ No Results */}
+  {searchQuery && searchResults.length === 0 && !loading && (
+    <div className="text-white text-lg mt-6">
+      No products found
+    </div>
+  )}
+</div>
+
     </div>
   )
 }
