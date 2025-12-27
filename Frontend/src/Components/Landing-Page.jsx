@@ -112,11 +112,11 @@ function LandingPage({language}) {
 
       {/* Box 2 */}
       {/* div className="box h-[85vh] w-[90%] border border-black/20 absolute bottom-[20%] left-[5%] top-[7%] overflow-hidden  " */}
-      <div  className="box md:h-screen md:w-[30vw] w-full    h-[80vh]  border-2 border-white/10 absolute bottom-[10%] bottom-[-5%] md:right-[5%]  overflow-hidden  ">
+      <div  className="box md:h-[70vh] md:w-[30vw] w-full    h-[80vh]  border-2 border-white/10 absolute md:bottom-[10%] bottom-[5%] md:right-[5%]  overflow-hidden  ">
         <img
           
-          src="./p2.png"
-          className="absolute w-full md:h-screen h-[80vh] object-cover object-top  "
+          src="./landing.jpg"
+          className="absolute w-full md:h-full h-[80vh] object-cover object-top  "
           alt="Landing 2"
         />
       </div>
@@ -131,18 +131,18 @@ function LandingPage({language}) {
         />
       </div> */}
 
-      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-7xl text-[9vw]  md:leading-20 leading-10  text-black absolute z-[50] md:bottom-[15%] bottom-[70%] md:left-32 left-[10vw]  tracking-tight  max-w-none md:max-w-[650px] font-extrabold '>
+      <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[9vw]  md:leading-20 leading-10  md:text-black text-white absolute z-[50] md:bottom-[15%] bottom-[70%] md:left-32 left-[10vw]  tracking-tight  max-w-none md:max-w-[650px] font-bold md:text-start text-center'>
       {language === "en"
   ? "Exclusive Collections for Every Occasion"
   : "प्रत्येक प्रसंगासाठी खास संग्रह"}
 
       </h4>
 
-      <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-9xl md:leading-20 leading-14 text-[10vw] text-black z-[50] absolute tracking-wider font-sans md:left-[5vw] text-center top-[30%] md:top-[25%] text-nowrap '>
+      <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-9xl md:leading-12 leading-14 text-[10vw] md:text-black text-white z-[50] absolute tracking-normal font-sans md:left-[5vw] text-center top-[30%] md:top-[30%] text-nowrap '>
       {language === "en" ? (
   <>
-    <h2 className='font-extrabold '>Bringing</h2>
-    <h3 className="md:pl-12 pl-[3vw] font-extrabold">Art Alive.</h3>
+    <h2 className='font-bold '>Bringing</h2>
+    <h3 className="md:pl-12 pl-[3vw] font-bold">Art Alive.</h3>
   </>
 ) : (
   <><h2 className='font-extralight'>रूपाची</h2>
@@ -153,7 +153,7 @@ function LandingPage({language}) {
 
       </div>
 
-      <div ref={text3Ref} class="flex flex-col items-center text-black z-60 absolute md:right-[40%] right-[10%] md:bottom-[9%] bottom-[43%] cursor-pointer">
+      <div ref={text3Ref} class="flex flex-col items-center text-black z-60 absolute md:right-[45%] right-[10%] md:bottom-[9%] bottom-[43%] cursor-pointer">
 
   <div class="md:w-28 w-10 h-10 md:h-28 border-2 border-black rounded-full flex items-center justify-center md:text-lg text-[10px] font-semibold relative">
   {language === "en"
