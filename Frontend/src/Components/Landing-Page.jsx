@@ -96,7 +96,7 @@ function LandingPage({language}) {
   
   
   return (
-    <div className='h-screen w-full flex relative overflow-hidden items-center justify-center border-4 md:border-none border-black'>
+    <div className='h-screen w-full flex relative overflow-hidden items-center justify-center border-4 md:border-none border-black overflow-hidden'>
       <div className=' w-full z-[99999] ' ref={navRef}>
       <Navbar/>
       </div>
@@ -122,7 +122,7 @@ function LandingPage({language}) {
          <img
           
           src="./mobile2.png"
-          className="absolute w-full md:h-[85%] h-[80%] object-cover md:object-cover  md:opacity-0  "
+          className="absolute w-full md:h-[85%] h-[75%] object-cover md:object-cover  md:opacity-0  "
           alt="Landing 2"
         />
       </div>
@@ -147,7 +147,7 @@ function LandingPage({language}) {
       <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-9xl md:leading-12 leading-14 text-[10vw] md:text-black text-white z-[50] absolute tracking-normal font-sans md:right-[3%] right-[-5%] text-center top-[75%] md:top-[30%] text-nowrap '>
       {language === "en" ? (
   <>
-    <img src="/logo-black.png" className=' h-[20vw] w-auto mt-[5vw]' alt="" />
+    <img src="/logo-black.png" className=' h-[25vw] w-auto mt-[vw]' alt="" />
     <h3 className="md:pl- pl-[3vw] font-bold text-2xl absolute top-[105%] right-[16%]  text-black">Rental Hub</h3>
   </>
 ) : (

@@ -47,7 +47,7 @@ function Navbar() {
   }, []);
 
   return (
-    <div className="navbar fixed md:top-[10%] top-[75%] z-[9999] w-screen md:px-32 flex items-center justify-end text-black px-[3vw] ">
+    <div className="navbar fixed md:top-[10%] top-[65%] z-[9999] w-screen md:px-32 flex items-center justify-end text-black px-[3vw] ">
 
 {/* <div className=" cursor-pointer ">
         <img src="/logo-black.png" className="md:h-20 h-12" alt="Logo" />
