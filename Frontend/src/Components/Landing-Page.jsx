@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import Navbar from './Navbar'
 import gsap from 'gsap';
+import MiniNavbar from './MiniNavbar';
  
 function LandingPage({language}) {
   const navRef = useRef(null);
@@ -96,9 +96,9 @@ function LandingPage({language}) {
   
   
   return (
-    <div className='h-screen w-full flex relative overflow-hidden items-center justify-center border-4 md:border-none border-black overflow-hidden'>
+    <div className='h-screen w-full flex relative overflow-hidden items-center justify-center border-4 md:border-none border-black '>
       <div className=' w-full z-[99999] ' ref={navRef}>
-      <Navbar/>
+      <MiniNavbar/>
       </div>
       {/* Box 1 */}
       {/* <div ref={box1Ref} className="box h-[65vh] w-[20%] border-2 border-white/10 absolute bottom-[20%] left-[15%] overflow-hidden  ">

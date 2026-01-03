@@ -15,7 +15,7 @@ function Admin_Product({product}) {
         <img
           src={'/logo-black.png'}
           alt="logo watermark"
-          className="absolute inset-0 w-[80%] h-[80%] object-contain  rotate-[-25deg] scale-125 translate-x-[20%] translate-y-[10%]"
+          className="absolute inset-0 w-[80%] h-[80%] object-contain  rotate-[-25deg] scale-125 opacity-50 translate-x-[20%] translate-y-[10%]"
         />
 
         {/* Main Product Image */}

@@ -16,7 +16,7 @@ function Product({product}) {
         <img
           src={'/logo-black.png'}
           alt="logo watermark"
-          className="absolute inset-0 w-[100%] h-[100%] object-contain  rotate-[-25deg] scale-150 translate-x-[10%] translate-y-[0%]"
+          className="absolute inset-0 w-[100%] h-[100%] object-contain  rotate-[-25deg] scale-140 opacity-50 translate-x-[10%] translate-y-[0%]"
         />
 
         {/* Main Product Image */}

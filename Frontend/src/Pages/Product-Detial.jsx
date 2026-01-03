@@ -106,6 +106,13 @@ function ProductDetail() {
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
   };
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth' // optional, use 'auto' if you want instant scroll
+    });
+  }, []);
 
  
   return (
@@ -145,7 +152,7 @@ function ProductDetail() {
                   <img
                     src="/logo-black.png"
                     alt="logo background"
-                    className="absolute top-1/2 left-1/2 w-[80%] h-[80%] object-contain -translate-x-1/2 -translate-y-1/2 scale-125 -rotate-[35deg] mix-blend-multiply"
+                    className="absolute top-1/2 left-1/2 w-[80%] h-[80%] object-contain -translate-x-1/2 -translate-y-1/2 scale-125 opacity-50 -rotate-[35deg] mix-blend-multiply"
                     onContextMenu={handleContextMenu}
                     draggable="false"
                   />
@@ -175,7 +182,7 @@ function ProductDetail() {
                         <img
                           src="/logo-black.png"
                           alt="logo watermark"
-                          className="absolute top-1/2 left-1/2 w-[70%] h-[70%] object-contain -translate-x-1/2 -translate-y-1/2 rotate-[-35deg] mix-blend-multiply"
+                          className="absolute top-1/2 left-1/2 w-[70%] h-[70%] object-contain opacity-50 -translate-x-1/2 -translate-y-1/2 rotate-[-35deg] mix-blend-multiply"
                           onContextMenu={handleContextMenu}
                           draggable="false"
                         />
@@ -229,7 +236,7 @@ function ProductDetail() {
                       <img
                         src="/logo-black.png"
                         alt="logo background"
-                        className="absolute top-1/2 left-1/2 w-[60%] h-[60%] object-contain -translate-x-1/2 -translate-y-1/2 scale-125 -rotate-[35deg] mix-blend-multiply"
+                        className="absolute top-1/2 left-1/2 w-[60%] h-[60%] object-contain -translate-x-1/2 -translate-y-1/2 opacity-50 scale-125 -rotate-[35deg] mix-blend-multiply"
                       />
                       {relatedProduct.img?.[0]?.url && (
                         <img

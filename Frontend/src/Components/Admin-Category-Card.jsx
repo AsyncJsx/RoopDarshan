@@ -21,7 +21,7 @@ function AdminCategoryCard({ category }) {
         <img
           src="/logo-black.png"
           alt="watermark"
-          className="absolute inset-0 w-[90%] h-[90%] object-contain rotate-[-25deg] scale-150 translate-x-[20%] translate-y-[10%]"
+          className="absolute inset-0 w-[90%] h-[90%] object-contain rotate-[-25deg] scale-140 opacity-50 translate-x-[20%] translate-y-[10%]"
         />
 
         {/* Main Category Image */}
