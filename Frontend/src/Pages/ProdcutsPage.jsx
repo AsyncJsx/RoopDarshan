@@ -22,23 +22,60 @@ function ProductsPage() {
     console.log(filters);
   };
 
-  // 🔄 Fetch categories with loading
   useEffect(() => {
-    setLoading(true);
-
-    axios
-      .get("/category/all")
-      .then((res) => {
-        setCategories(res?.data?.categories || []);
-      })
-      .catch((err) => {
-        console.log(err);
+    const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
+  
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+  
+        const cachedData = localStorage.getItem("categories");
+        const cachedMeta = JSON.parse(
+          localStorage.getItem("categories_meta") || "{}"
+        );
+  
+        const now = Date.now();
+  
+        const { lastUpdated } = await axios
+          .get("/category/lastUpdated")
+          .then((r) => r.data);
+  
+        const isCacheValid =
+          cachedData &&
+          cachedMeta.expiresAt &&
+          now < cachedMeta.expiresAt &&
+          cachedMeta.lastUpdated === lastUpdated;
+  
+        if (isCacheValid) {
+          setCategories(JSON.parse(cachedData));
+          return;
+        }
+  
+        const res = await axios.get("/category/all");
+        const categories = res?.data?.categories || [];
+  
+        setCategories(categories);
+  
+        localStorage.setItem("categories", JSON.stringify(categories));
+        localStorage.setItem(
+          "categories_meta",
+          JSON.stringify({
+            lastUpdated,
+            expiresAt: now + CACHE_TTL,
+          })
+        );
+      } catch (err) {
+        console.error(err);
         setCategories([]);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+  
+    fetchCategories();
   }, []);
+  
+  
 
   // 🔍 Filter categories
   const filteredCategories = categories.filter((category) => {

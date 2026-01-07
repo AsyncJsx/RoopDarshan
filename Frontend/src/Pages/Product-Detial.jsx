@@ -21,56 +21,112 @@ function ProductDetail() {
 
   useEffect(() => {
     if (!id) return;
-
+  
     setLoading(true);
-
+  
+    try {
+      const cachedCategories =
+        JSON.parse(localStorage.getItem("categories")) || [];
+  
+      let foundProduct = null;
+      let parentCategory = null;
+  
+      for (const category of cachedCategories) {
+        const product = category.products?.find(p => p._id === id);
+        if (product) {
+          foundProduct = product;
+          parentCategory = category;
+          break;
+        }
+      }
+  
+      if (foundProduct) {
+        setProduct(foundProduct);
+        setSelectedImage(foundProduct?.img?.[0]?.url || null);
+  
+        if (parentCategory?.products) {
+          const related = parentCategory.products
+            .filter(p => p._id !== id)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3);
+  
+          setRelatedProducts(related);
+        }
+  
+        setLoading(false);
+        return;
+      }
+    } catch (err) {
+      console.warn("Local cache failed, falling back to API");
+    }
+  
+    // 🔁 FALLBACK (only if cache miss)
     axios
       .get(`/product/${id}`)
-      .then((res) => {
-        setProduct(res.data.product);
-        if (res.data.product?.img?.[0]?.url) {
-          setSelectedImage(res.data.product.img[0].url);
-        }
-        
-        if (res.data.product?.category) {
-          fetchRelatedProducts(res.data.product.category, res.data.product._id);
+      .then(res => {
+        const product = res.data.product;
+        setProduct(product);
+        setSelectedImage(product?.img?.[0]?.url || null);
+  
+        if (product?.category) {
+          fetchRelatedProducts(product.category, product._id);
         }
       })
-      .catch((err) => {
-        console.log(err);
-        setProduct(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .catch(() => setProduct(null))
+      .finally(() => setLoading(false));
+  
   }, [id]);
-
+  
   const fetchRelatedProducts = (categoryId, currentProductId) => {
+    try {
+      const cachedCategories =
+        JSON.parse(localStorage.getItem("categories")) || [];
+  
+      const cachedCategory = cachedCategories.find(
+        cat => cat._id === categoryId
+      );
+  
+      if (cachedCategory?.products?.length) {
+        const related = cachedCategory.products
+          .filter(p => p._id !== currentProductId)
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 3);
+  
+        setRelatedProducts(related);
+        return; // ✅ STOP — no API call needed
+      }
+    } catch (err) {
+      console.warn("LocalStorage failed, using API");
+    }
+  
+    // 🔁 Fallback to API
     axios
       .get(`/category/${categoryId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => {
-        
+      .then(res => {
         if (res.data.category?.products) {
-          const availableProducts = res.data.category.products
-          .filter(p => p._id !== currentProductId);
-        
-        // Get available count (max 3, but less if not enough products)
-        const count = Math.min(3, availableProducts.length);
-        
-        // Shuffle the array and take available count
-        const shuffledProducts = availableProducts
-          .sort(() => Math.random() - 0.5)
-          .slice(0, count);
-        
-        setRelatedProducts(shuffledProducts);
-      }
+          const related = res.data.category.products
+            .filter(p => p._id !== currentProductId)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3);
+  
+          setRelatedProducts(related);
+  
+          // ♻️ Optional: update cache
+          const existing =
+            JSON.parse(localStorage.getItem("categories")) || [];
+  
+          const updated = existing.map(cat =>
+            cat._id === categoryId ? res.data.category : cat
+          );
+  
+          localStorage.setItem("categories", JSON.stringify(updated));
+        }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(err => console.log(err));
   };
+  
 
   const handleImageClick = (imageUrl) => {
     setZoomImage(imageUrl);

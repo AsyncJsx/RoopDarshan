@@ -142,6 +142,16 @@ const deleteController = async (req, res) => {
   }
 };
 
+const getLastUpdatedController = async (req, res) => {
+  try {
+   
+    const lastUpdated = await categoryService.getLastUpdatedService();
+    res.json({ lastUpdated });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch last updated timestamp" });
+  }
+};
 
 const findController = async (req, res) => {
   try {
@@ -199,5 +209,6 @@ module.exports = {
   deleteController,
   findController,
   getAllController,
-  getProductsController
+  getProductsController,
+  getLastUpdatedController
 };

@@ -26,6 +26,16 @@ const createCategoryService = async (data) => {
         throw new Error('Error creating category: ' + err.message);
     }
 };
+const getLastUpdatedService = async () => {
+    
+    const latestCategory = await CategoryModel.findOne()
+      .sort({ updatedAt: -1 })
+      .select("updatedAt")
+      .lean();
+  
+    
+    return latestCategory ? latestCategory.updatedAt : new Date(0);
+  };
 
 const findCategoryById = async (id) => {
     try {
@@ -116,5 +126,6 @@ module.exports = {
     removeProductFromCategory,
     updateCategoryService,
     deleteCategoryById,
-    deleteCategoryByName
+    deleteCategoryByName,
+    getLastUpdatedService
 };
