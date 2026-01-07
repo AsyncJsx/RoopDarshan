@@ -4,6 +4,7 @@ import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../config/axios";
 import { LanguageContext } from "../context/LanguageContext";
+import {setWithExpiry,getWithExpiry} from '../utils/localStorage'
 
 function ProductDetail() {
   const navigate = useNavigate();
@@ -21,12 +22,10 @@ function ProductDetail() {
 
   useEffect(() => {
     if (!id) return;
-  
     setLoading(true);
   
     try {
-      const cachedCategories =
-        JSON.parse(localStorage.getItem("categories")) || [];
+      const cachedCategories = getWithExpiry("categories") || [];
   
       let foundProduct = null;
       let parentCategory = null;
@@ -60,7 +59,6 @@ function ProductDetail() {
       console.warn("Local cache failed, falling back to API");
     }
   
-    // 🔁 FALLBACK (only if cache miss)
     axios
       .get(`/product/${id}`)
       .then(res => {
@@ -74,17 +72,14 @@ function ProductDetail() {
       })
       .catch(() => setProduct(null))
       .finally(() => setLoading(false));
-  
   }, [id]);
   
-  const fetchRelatedProducts = (categoryId, currentProductId) => {
-    try {
-      const cachedCategories =
-        JSON.parse(localStorage.getItem("categories")) || [];
   
-      const cachedCategory = cachedCategories.find(
-        cat => cat._id === categoryId
-      );
+  
+  const fetchRelatedProducts = async (categoryId, currentProductId) => {
+    try {
+      let cachedCategories = getWithExpiry("categories") || [];
+      let cachedCategory = cachedCategories.find(cat => cat._id === categoryId);
   
       if (cachedCategory?.products?.length) {
         const related = cachedCategory.products
@@ -93,39 +88,34 @@ function ProductDetail() {
           .slice(0, 3);
   
         setRelatedProducts(related);
-        return; // ✅ STOP — no API call needed
+        return; // stop — cache hit
       }
     } catch (err) {
-      console.warn("LocalStorage failed, using API");
+      console.warn("LocalStorage failed, falling back to API");
     }
   
-    // 🔁 Fallback to API
-    axios
-      .get(`/category/${categoryId}`, {
+    // Fallback: fetch ALL categories to update cache
+    try {
+      const res = await axios.get("/category/all", {
         headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(res => {
-        if (res.data.category?.products) {
-          const related = res.data.category.products
-            .filter(p => p._id !== currentProductId)
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 3);
+      });
+      const allCategories = res?.data?.categories || [];
+      setWithExpiry("categories", allCategories, 6 * 60 * 60 * 1000); // 6h TTL
   
-          setRelatedProducts(related);
+      const thisCategory = allCategories.find(cat => cat._id === categoryId);
+      if (thisCategory?.products?.length) {
+        const related = thisCategory.products
+          .filter(p => p._id !== currentProductId)
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 3);
   
-          // ♻️ Optional: update cache
-          const existing =
-            JSON.parse(localStorage.getItem("categories")) || [];
-  
-          const updated = existing.map(cat =>
-            cat._id === categoryId ? res.data.category : cat
-          );
-  
-          localStorage.setItem("categories", JSON.stringify(updated));
-        }
-      })
-      .catch(err => console.log(err));
+        setRelatedProducts(related);
+      }
+    } catch (err) {
+      console.error("Failed to fetch categories:", err);
+    }
   };
+  
   
 
   const handleImageClick = (imageUrl) => {
