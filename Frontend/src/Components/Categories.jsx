@@ -18,12 +18,14 @@ function Categories() {
   const { language } = useContext(LanguageContext);
 
   useEffect(() => {
+    const CACHE_TTL = 6 * 60 * 60 * 1000;
+  
     const fetchCategory = async () => {
       setLoading(true);
   
       try {
-        const cachedCategories = getWithExpiry("categories") || [];
-        const cachedCategory = cachedCategories.find((c) => c._id === id);
+        let cachedCategories = getWithExpiry("categories") || [];
+        let cachedCategory = cachedCategories.find(c => c._id === id);
   
         if (cachedCategory) {
           setCategory(cachedCategory);
@@ -31,13 +33,18 @@ function Categories() {
           return;
         }
   
-        const res = await axios.get(`/category/${id}`, {
+        const res = await axios.get("/category/all", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        const allCategories = res?.data?.categories || [];
   
-        setCategory(res.data.category);
+        setWithExpiry("categories", allCategories, CACHE_TTL);
+  
+        const thisCategory = allCategories.find(c => c._id === id) || {};
+        setCategory(thisCategory);
+  
       } catch (err) {
-        console.error("Error fetching category:", err);
+        console.error("Error fetching categories:", err);
         setCategory({});
         toast.error("Failed to load category");
       } finally {

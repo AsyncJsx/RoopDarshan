@@ -12,7 +12,6 @@ router.get("/lastUpdated", async (req, res) => {
   categoryController.getLastUpdatedController(req,res);
  });
  router.get("/all", async (req, res) => {
-  console.log("called");
   categoryController.getAllController(req, res);
 });
 

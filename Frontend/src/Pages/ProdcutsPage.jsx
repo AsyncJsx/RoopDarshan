@@ -6,6 +6,7 @@ import { RiFilter3Line } from "react-icons/ri";
 import gsap from "gsap";
 import axios from "../config/axios";
 import CategoryCard from "../Components/Category-Card";
+import {setWithExpiry,getWithExpiry} from '../utils/localStorage'
 
 function ProductsPage() {
   const [showFilter, setShowFilter] = useState(false);
@@ -23,22 +24,17 @@ function ProductsPage() {
   };
 
   useEffect(() => {
-    const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
+    const CACHE_TTL = 6 * 60 * 60 * 1000;
   
     const fetchCategories = async () => {
       try {
         setLoading(true);
   
-        const cachedData = localStorage.getItem("categories");
-        const cachedMeta = JSON.parse(
-          localStorage.getItem("categories_meta") || "{}"
-        );
-  
+        const cachedData = getWithExpiry("categories");
+        const cachedMeta = getWithExpiry("categories_meta") || {};
         const now = Date.now();
   
-        const { lastUpdated } = await axios
-          .get("/category/lastUpdated")
-          .then((r) => r.data);
+        const { lastUpdated } = await axios.get("/category/lastUpdated").then(r => r.data);
   
         const isCacheValid =
           cachedData &&
@@ -47,7 +43,7 @@ function ProductsPage() {
           cachedMeta.lastUpdated === lastUpdated;
   
         if (isCacheValid) {
-          setCategories(JSON.parse(cachedData));
+          setCategories(cachedData); // cachedData is array, no parse
           return;
         }
   
@@ -55,15 +51,9 @@ function ProductsPage() {
         const categories = res?.data?.categories || [];
   
         setCategories(categories);
+        setWithExpiry("categories", categories, CACHE_TTL);
+        setWithExpiry("categories_meta", { lastUpdated, expiresAt: now + CACHE_TTL }, CACHE_TTL);
   
-        localStorage.setItem("categories", JSON.stringify(categories));
-        localStorage.setItem(
-          "categories_meta",
-          JSON.stringify({
-            lastUpdated,
-            expiresAt: now + CACHE_TTL,
-          })
-        );
       } catch (err) {
         console.error(err);
         setCategories([]);
@@ -74,6 +64,8 @@ function ProductsPage() {
   
     fetchCategories();
   }, []);
+  
+  
   
   
 
