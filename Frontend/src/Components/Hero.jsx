@@ -134,7 +134,7 @@ function Hero({ language }) {
               : "जुन्या कालातिल शोभा , आधुनिक डिझाइन -"}
           </h3>
           <div className="img absolute md:bottom-[10%] bottom-[30%] md:left-[5%] left-0">
-            <img src="./h1.jpg" className="md:h-[300px] h-[40vw]" alt="" />
+            <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778891/h1_lancdg.jpg" className="md:h-[300px] h-[40vw]" alt="" />
             <div className="hero-text2 flex justify-between items-center text-black text-sm py-2">
               <p className="hover:underline cursor-pointer">
                 {language === "en" ? "View More" : "अधिक पहा"}
@@ -156,7 +156,7 @@ function Hero({ language }) {
             </h3>
           </div>
           <div className="img absolute md:bottom-[1%] bottom-[30%] md:right-[8%] right-0">
-            <img src="./h2.jpg" className="md:h-[350px] h-[40vw] md:w-[530px] object-cover" alt="" />
+            <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778900/h2_rkpree.jpg" className="md:h-[350px] h-[40vw] md:w-[530px] object-cover" alt="" />
             <div className="hero-text2 flex justify-between items-center text-white text-sm py-2">
               <Link to={'/products'} className="hover:underline cursor-pointer">
                 {language === "en" ? "View More" : "अधिक पहा"}

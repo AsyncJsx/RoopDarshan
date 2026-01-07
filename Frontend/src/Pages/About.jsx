@@ -31,7 +31,7 @@ function About() {
 
           <div className="bg-white rounded-lg shadow-lg p-8 ">
             {/* <video src="./videos/about1.mp4" controls ></video> */}
-            <img src="./about2.jpg" alt="" />
+            <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778881/about2_fhodeb.jpg" alt="" />
             </div>
             {/* Text Content */}
             <div className="">

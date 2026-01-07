@@ -49,7 +49,7 @@ function Footer({ language }) {
         </div>
 
         <div className="flex justify-center mt-8">
-          <img src="./logo.png" alt="Roopdarshan Logo" className="h-12 md:h-14 opacity-90" />
+          <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778975/logo_fdy5er.png" alt="Roopdarshan Logo" className="h-12 md:h-14 opacity-90" />
         </div>
 
         <div className="mt-6 pt-4 border-t border-gray-800 text-center">

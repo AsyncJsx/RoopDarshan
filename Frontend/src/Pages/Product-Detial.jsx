@@ -134,7 +134,7 @@ function ProductDetail() {
             Loading product...
           </p>
           <img
-            src="/loading.gif"
+            src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778973/loading_tifftz.gif"
             className="h-[30vh] w-auto"
             alt="Loading"
           />
@@ -150,7 +150,7 @@ function ProductDetail() {
                   onClick={() => handleImageClick(selectedImage)}
                 >
                   <img
-                    src="/logo-black.png"
+                    src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png"
                     alt="logo background"
                     className="absolute top-1/2 left-1/2 w-[80%] h-[80%] object-contain -translate-x-1/2 -translate-y-1/2 scale-125 opacity-50 -rotate-[35deg] mix-blend-multiply"
                     onContextMenu={handleContextMenu}
@@ -180,7 +180,7 @@ function ProductDetail() {
                         }}
                       >
                         <img
-                          src="/logo-black.png"
+                          src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png"
                           alt="logo watermark"
                           className="absolute top-1/2 left-1/2 w-[70%] h-[70%] object-contain opacity-50 -translate-x-1/2 -translate-y-1/2 rotate-[-35deg] mix-blend-multiply"
                           onContextMenu={handleContextMenu}
@@ -234,7 +234,7 @@ function ProductDetail() {
                   >
                     <div className="relative h-48 w-full overflow-hidden bg-gray-100">
                       <img
-                        src="/logo-black.png"
+                        src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png"
                         alt="logo background"
                         className="absolute top-1/2 left-1/2 w-[60%] h-[60%] object-contain -translate-x-1/2 -translate-y-1/2 opacity-50 scale-125 -rotate-[35deg] mix-blend-multiply"
                       />
@@ -306,7 +306,7 @@ function ProductDetail() {
             
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
               <div className="text-white text-opacity-20 text-6xl font-bold rotate-[-30deg] select-none">
-               <img src="/logo.png" alt="" />
+               <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778975/logo_fdy5er.png" alt="" />
               </div>
             </div>
             

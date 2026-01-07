@@ -86,7 +86,7 @@ function Categories() {
                   Loading products...
                 </p>
                 <img
-                  src="/loading.gif"
+                  src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778973/loading_tifftz.gif"
                   className="h-[30vh] w-auto"
                   alt="Loading"
                 />

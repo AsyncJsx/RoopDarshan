@@ -19,7 +19,7 @@ function CategoryCard({ category }) {
 
         {/* Watermark */}
         <img
-          src="./logo-black.png"
+          src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png"
           alt="watermark"
           className="absolute inset-0 w-[100%] h-[100%] opacity-50 object-contain rotate-[-30deg] scale-[140%] translate-x-[10%] translate-y-[0%]"
         />

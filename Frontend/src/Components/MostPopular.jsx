@@ -7,19 +7,19 @@ function MostPopular({ language }) {
 
   const items = [
     {
-      img: './banner1.jpeg',
+      img: 'https://res.cloudinary.com/dm1lsindg/image/upload/v1767778898/banner1_ttniun.jpg',
       video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035744/v4_mpyndk.mp4',
       titleEn: 'Signature Jewelry for Every Story',
       titleMr: 'प्रत्येक कथेसाठी खास दागिने',
     },
     {
-      img: './banner2.jpeg',
+      img: 'https://res.cloudinary.com/dm1lsindg/image/upload/v1767778882/banner2_auho3u.jpg',
       video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035814/v5_hoffw1.mp4',
       titleEn: 'The Pride of Every Celebration',
       titleMr: 'प्रत्येक उत्सवाचा अभिमान',
     },
     {
-      img: './banner3.jpeg',
+      img: 'https://res.cloudinary.com/dm1lsindg/image/upload/v1767778928/banner3_gizqge.jpg',
       video: 'https://res.cloudinary.com/dm1lsindg/video/upload/v1763035749/v6_aintjs.mp4',
       titleEn: 'Every Thread Tells a Story',
       titleMr: 'प्रत्येक धागा एक कथा सांगतो',

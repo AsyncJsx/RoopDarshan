@@ -13,7 +13,7 @@ function Admin_Product({product}) {
       <div className="w-full h-32 sm:h-40 md:h-60 overflow-hidden rounded-md relative border border-gray-100 ">
         {/* Logo Watermark */}
         <img
-          src={'/logo-black.png'}
+          src={'https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png'}
           alt="logo watermark"
           className="absolute inset-0 w-[80%] h-[80%] object-contain  rotate-[-25deg] scale-125 opacity-50 translate-x-[20%] translate-y-[10%]"
         />
