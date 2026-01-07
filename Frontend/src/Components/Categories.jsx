@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import Product from "../Product/Product";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { LanguageContext } from "../context/LanguageContext";
 import axios from '../config/axios';
 import Navbar from "./Navbar";
-import { ArrowLeft, X, Upload } from "lucide-react"
+import { ArrowLeft, X, Upload,Clipboard } from "lucide-react"
+import toast from "react-hot-toast";
 
 
 function Categories() {
@@ -14,6 +15,8 @@ function Categories() {
   const navigate = useNavigate()
   const token = localStorage.getItem('Admin-Token')
   const [loading, setLoading] = useState(true)
+  const location = useLocation();
+
 
   useEffect(()=>{
     setLoading(true);
@@ -27,6 +30,18 @@ function Categories() {
       setLoading(false)
     })
   },[token])
+
+
+  const copyLinkToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success("Link copied to clipboard!");
+    } catch (err) {
+      toast.error("Failed to copy link");
+    }
+  };
+  
+  
 
   const { language, setLanguage }  = useContext(LanguageContext)
 
@@ -47,11 +62,20 @@ function Categories() {
       {language === "en" ? category.eng_description : category.mar_description}
       </h2>
       <div
-          className="w-[80%] flex items-center gap-2 mt-6 text-gray-700 hover:text-black cursor-pointer transition"
-          onClick={() => navigate(-1)}
+          className="w-full flex items-center justify-between mt-6 text-gray-700 hover:text-black cursor-pointer transition"
+         
         >
+          <div className="flex items-center gap-2"  onClick={() => navigate(-1)}>
           <ArrowLeft className="w-5 h-5" />
           <span className="font-medium">Back</span>
+          </div>
+          <div className="flex items-center gap-2"  onClick={() => copyLinkToClipboard()}>
+          <Clipboard className="w-5 h-5" />
+          <span className="font-medium">Copy Link</span>
+          </div>
+          
+
+
         </div>
 
       {/* Product Grid */}

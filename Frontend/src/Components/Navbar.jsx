@@ -47,21 +47,8 @@ function Navbar() {
   }, []);
 
   return (
-    <div className="navbar fixed md:top-[10%] top-[7%] z-[9999] w-screen md:px-32 flex items-center justify-end text-black px-[3vw] ">
+    <div className="navbar fixed md:top-[10%] top-[7%] z-[9999] w-screen md:px-32 flex items-center justify-end text-black px-[6vw] ">
 
-{/* <div className=" cursor-pointer ">
-        <img src="/logo-black.png" className="md:h-20 h-12" alt="Logo" />
-      </div> */}
-      {/* Left: Contact Info */}
-      {/* <div className="flex items-center md:gap-3 font-thin absolute left-1/2 transform -translate-x-1/2">
-        <div className="flex items-center md:gap-2 md:flex-row flex-col">
-          <h2 className="text-[10px] md:text-xl">
-            <i className="ri-phone-line text-sm md:text-xl"></i>
-            {language === "en" ? " Contact" : " संपर्क"}
-          </h2>
-          <h2 className="text-[10px] md:text-lg">9561000027</h2>
-        </div>
-      </div> */}
 
       {/* Center: Logo */}
       

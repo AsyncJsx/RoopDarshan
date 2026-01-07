@@ -1,8 +1,8 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
+import React, { useContext, useRef } from "react";
 import "remixicon/fonts/remixicon.css";
 import { LanguageContext } from "../context/LanguageContext";
 import { Link } from "react-router-dom";
-import gsap from "gsap";
+
 
 function MiniNavbar() {
   const { language, setLanguage } = useContext(LanguageContext);
@@ -11,43 +11,10 @@ function MiniNavbar() {
 
   // GSAP animation for menu slide-down
  
-  useEffect(() => {
-    let lastScroll = 0;
-    const navbar = document.querySelector(".navbar");
-
-    gsap.set(navbar, { opacity: 1 });
-
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-
-      // Scroll down 40px → hide navbar
-      if (currentScroll > lastScroll && currentScroll > 40) {
-       
-        gsap.to(navbar, {
-          opacity: 0,
-          duration: 0.4,
-          ease: "power2.out",
-        });
-      }
-
-      // Scroll up → show navbar
-      if (currentScroll < lastScroll) {
-        gsap.to(navbar, {
-          opacity: 1,
-          duration: 0.4,
-          ease: "power2.out",
-        });
-      }
-
-      lastScroll = currentScroll;
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  
 
   return (
-    <div className="navbar fixed md:top-[10%] top-[65%] z-[9999] w-screen md:px-32 flex items-center justify-end text-black px-[3vw] ">
+    <div className="navbar absolute md:top-[10%] top-[65%] z-[9999] w-screen md:px-32 flex items-center justify-end text-black px-[5vw] ">
 
 
       
