@@ -16,15 +16,24 @@ function Product({product}) {
         <img
           src={'https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png'}
           alt="logo watermark"
+          loading="lazy"
           className="absolute inset-0 w-[100%] h-[100%] object-contain  rotate-[-25deg] scale-140 opacity-50 translate-x-[10%] translate-y-[0%]"
         />
 
         {/* Main Product Image */}
         <img
-          src={product.img[0].url}
-          alt={product.eng_name}
-          className="relative z-10 w-full h-full object-contain transition-transform duration-500 hover:scale-110"
-        />
+  src={`${product.img[0].url}?f_auto,q_auto:eco,w=800`} 
+  srcSet={`
+    ${product.img[0].url}?f_auto,q_auto:eco,w=400 400w,
+    ${product.img[0].url}?f_auto,q_auto:eco,w=800 800w,
+    ${product.img[0].url}?f_auto,q_auto:eco,w=1200 1200w
+  `}
+  sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px"
+  alt={product.eng_name}
+  loading="lazy"
+  className="relative z-10 w-full h-full object-contain transition-transform duration-500 hover:scale-110"
+/>
+
       </div>
 
       {/* Product Info */}

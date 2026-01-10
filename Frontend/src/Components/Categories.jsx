@@ -6,10 +6,13 @@ import axios from "../config/axios";
 import Navbar from "./Navbar";
 import { ArrowLeft, Clipboard } from "lucide-react";
 import toast from "react-hot-toast";
-import {setWithExpiry,getWithExpiry} from '../utils/localStorage'
+import { setWithExpiry, getWithExpiry } from '../utils/localStorage';
 
 function Categories() {
   const [category, setCategory] = useState({});
+  const [visibleProducts, setVisibleProducts] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0); // tracks loaded products
+  const [itemsPerPage, setItemsPerPage] = useState(20); // default desktop
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("Admin-Token");
@@ -17,32 +20,49 @@ function Categories() {
 
   const { language } = useContext(LanguageContext);
 
+  // Detect screen size to adjust items per page
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerPage(10); // mobile
+      } else {
+        setItemsPerPage(20); // desktop
+      }
+    };
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
+  }, []);
+
+  // Fetch category
   useEffect(() => {
     const CACHE_TTL = 6 * 60 * 60 * 1000;
-  
+
     const fetchCategory = async () => {
       setLoading(true);
-  
+
       try {
         let cachedCategories = getWithExpiry("categories") || [];
         let cachedCategory = cachedCategories.find(c => c._id === id);
-  
+
         if (cachedCategory) {
           setCategory(cachedCategory);
+          setVisibleProducts(cachedCategory.products.slice(0, itemsPerPage));
+          setCurrentIndex(itemsPerPage);
           setLoading(false);
           return;
         }
-  
+
         const res = await axios.get("/category/all", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const allCategories = res?.data?.categories || [];
-  
         setWithExpiry("categories", allCategories, CACHE_TTL);
-  
+
         const thisCategory = allCategories.find(c => c._id === id) || {};
         setCategory(thisCategory);
-  
+        setVisibleProducts(thisCategory.products.slice(0, itemsPerPage));
+        setCurrentIndex(itemsPerPage);
       } catch (err) {
         console.error("Error fetching categories:", err);
         setCategory({});
@@ -51,11 +71,16 @@ function Categories() {
         setLoading(false);
       }
     };
-  
+
     fetchCategory();
-  }, [id, token]);
-  
-  
+  }, [id, token, itemsPerPage]);
+
+  // Show more products
+  const showMore = () => {
+    const nextProducts = category.products.slice(currentIndex, currentIndex + itemsPerPage);
+    setVisibleProducts(prev => [...prev, ...nextProducts]);
+    setCurrentIndex(prev => prev + itemsPerPage);
+  };
 
   const copyLinkToClipboard = async () => {
     try {
@@ -93,7 +118,7 @@ function Categories() {
       </div>
 
       {/* Product Grid */}
-      <div className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 mb-8">
+      <div className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 mb-4">
         {loading ? (
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
@@ -104,8 +129,8 @@ function Categories() {
               alt="Loading"
             />
           </div>
-        ) : category?.products && category.products.length > 0 ? (
-          category.products.map((product) => (
+        ) : visibleProducts && visibleProducts.length > 0 ? (
+          visibleProducts.map((product) => (
             <Product key={product._id} product={product} />
           ))
         ) : (
@@ -114,6 +139,20 @@ function Categories() {
           </p>
         )}
       </div>
+
+      {/* Show More Button */}
+      {!loading && currentIndex < (category.products?.length || 0) && (
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={showMore}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Show More
+          </button>
+        </div>
+      )}
+
+      
     </div>
   );
 }

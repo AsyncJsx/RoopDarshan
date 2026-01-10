@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../Components/Navbar";
 import Filter from "../Components/Filter";
-import Categories from "../Components/Categories";
-import { RiFilter3Line } from "react-icons/ri";
+import Footer from '../Components/Footer';
 import gsap from "gsap";
 import axios from "../config/axios";
 import CategoryCard from "../Components/Category-Card";
@@ -201,6 +200,7 @@ function ProductsPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

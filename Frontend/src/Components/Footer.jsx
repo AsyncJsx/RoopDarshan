@@ -1,6 +1,7 @@
 import React from 'react'
 
 function Footer({ language }) {
+  
   return (
     <div className='w-full flex flex-col items-center bg-black text-gray-200 py-8 md:py-10 px-4 sm:px-6 lg:px-8 md:mt-0 mt-[-30vh]'>
       <footer className="w-full max-w-6xl text-sm">

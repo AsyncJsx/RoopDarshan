@@ -286,13 +286,21 @@ function ProductDetail() {
                       />
                       {relatedProduct.img?.[0]?.url && (
                         <img
-                          src={relatedProduct.img[0].url}
-                          alt={relatedProduct.eng_name}
-                          className="relative z-10 w-full h-full object-contain p-4"
-                          onContextMenu={handleContextMenu}
-                          onDragStart={handleDragStart}
-                          draggable="false"
-                        />
+                        src={`${relatedProduct.img[0].url}?f_auto,q_auto:eco,w=400`}
+                        srcSet={`
+                          ${relatedProduct.img[0].url}?f_auto,q_auto:eco,w=400 400w,
+                          ${relatedProduct.img[0].url}?f_auto,q_auto:eco,w=800 800w,
+                          ${relatedProduct.img[0].url}?f_auto,q_auto:eco,w=1200 1200w
+                        `}
+                        sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px"
+                        alt={relatedProduct.eng_name}
+                        loading="lazy"
+                        className="relative z-10 w-full h-full object-contain p-4"
+                        onContextMenu={handleContextMenu}
+                        onDragStart={handleDragStart}
+                        draggable="true"
+                      />
+                      
                       )}
                     </div>
                     <div className="p-4">
