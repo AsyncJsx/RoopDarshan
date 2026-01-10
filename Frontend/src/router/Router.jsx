@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AdminAuth from '../auth/AdminAuth';
+import VideoGallary from '../Pages/VideoGallary';
 
 const Home = lazy(() => import('../Pages/Home'));
 const About = lazy(() => import('../Pages/About'));
@@ -28,6 +29,7 @@ function Router() {
           <Route path='/' element={<Home />} />
           <Route path='/search' element={<SearchPage />} />
           <Route path='/products' element={<ProdcutsPage />} />
+          <Route path='/gallary' element={<VideoGallary />} />
           <Route path='/product/:id' element={<ProductDetial />} />
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
