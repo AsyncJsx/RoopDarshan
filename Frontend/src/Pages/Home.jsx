@@ -1,30 +1,34 @@
-import React, { useContext, useEffect } from 'react'
-import LandingPage from '../Components/Landing-Page'
-import Hero from '../Components/Hero'
-import Banner from '../Components/Banner'
-import Page4 from '../Components/Page4'
-import MostPopular from '../Components/MostPopular'
+import React, { useContext, useEffect, lazy, Suspense } from 'react'
 import Footer from '../Components/Footer'
 import { LanguageContext } from '../context/LanguageContext'
 import axios from '../config/axios'
 
-function Home() {
-  const { language, setLanguage }  = useContext(LanguageContext)
+const LandingPage = lazy(() => import('../Components/Landing-Page'))
+const Hero = lazy(() => import('../Components/Hero'))
+const Banner = lazy(() => import('../Components/Banner'))
+const Page4 = lazy(() => import('../Components/Page4'))
+const MostPopular = lazy(() => import('../Components/MostPopular'))
 
-  useEffect(()=>{
-      axios.get('/awake').catch((err)=>{
-        console.log(err);
-      })
-  },[])
+function Home() {
+  const { language} = useContext(LanguageContext)
+
+  useEffect(() => {
+    axios.get('/awake').catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
   return (
-    <div className='w-screen min-h-screen bg-[#fdfbfb] overflow-x-hidden'>
-            <LandingPage language ={language}/>
-            <Hero language ={language}/>
-            <Banner language ={language}/>
-            <Page4 language ={language}/>
-            <MostPopular language ={language}/>
-            <Footer language ={language}/>
-            
+    <div className="w-screen min-h-screen bg-[#fdfbfb] overflow-x-hidden">
+      <Suspense fallback={null}>
+        <LandingPage language={language} />
+        <Hero language={language} />
+        <Banner language={language} />
+        <Page4 language={language} />
+        <MostPopular language={language} />
+      </Suspense>
+
+      <Footer language={language} />
     </div>
   )
 }
