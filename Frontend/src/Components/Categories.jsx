@@ -36,7 +36,7 @@ function Categories() {
 
   // Fetch category
   useEffect(() => {
-    const CACHE_TTL = 6 * 60 * 60 * 1000;
+    const CACHE_TTL = 2 * 24 * 60 * 60 * 1000;
 
     const fetchCategory = async () => {
       setLoading(true);

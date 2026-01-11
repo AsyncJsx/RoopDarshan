@@ -7,17 +7,6 @@ cloudinary.config({
 });
 
 
-const checkUsage = async () => {
-  try {
-    const usage = await cloudinary.api.usage();
-    console.log('Current usage info:', usage);
-  } catch (err) {
-    console.error('Error fetching usage:', err.message);
-  }
-};
-
-
-
 
 
 const deleteFromCloudinary = async (public_id) => {
