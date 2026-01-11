@@ -4,9 +4,9 @@ const dotenv = require('dotenv');
 const db = require('./config/db');
 const cors = require('cors');
 
-
-
-
+const adminRoutes = require('./router/admin.routes');
+const categoryRoutes = require('./router/category.routes');
+const productRoutes = require('./router/product.routes');
 
 // Load environment variables
 dotenv.config();
@@ -14,8 +14,8 @@ dotenv.config();
 const app = express();
 
 // Middlewares
-app.use(express.json({ limit: "15mb" }));
-app.use(express.urlencoded({ extended: true, limit: "15mb" }));
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use(cors({
     origin: ["http://localhost:5173", process.env.FRONTEND_LINK],
@@ -26,17 +26,22 @@ app.use(cors({
 
 db();
 
-app.use('/admin', (req,res,next)=> {
+app.use('/admin', (req, res, next) => {
+    // Lazy load router only when route is accessed
     const adminRoutes = require('./router/admin.routes');
-    adminRoutes(req,res,next);
+    adminRoutes.handle(req, res, next); // ✅ Use .handle to call router
 });
 
-app.use('/category',(req,res,next)=>{
+app.use('/category', (req, res, next) => {
     const categoryRoutes = require('./router/category.routes');
-    categoryRoutes});
-app.use('/product',(req,res,next)=>{
+    categoryRoutes.handle(req, res, next);
+});
+
+app.use('/product', (req, res, next) => {
     const productRoutes = require('./router/product.routes');
-    productRoutes});
+    productRoutes.handle(req, res, next);
+});
+
 
 
 app.get('/awake',async (req,res)=>{

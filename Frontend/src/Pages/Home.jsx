@@ -2,8 +2,8 @@ import React, { useContext, useEffect, lazy, Suspense } from 'react'
 import Footer from '../Components/Footer'
 import { LanguageContext } from '../context/LanguageContext'
 import axios from '../config/axios'
+import LandingPage from '../Components/Landing-Page';
 
-const LandingPage = lazy(() => import('../Components/Landing-Page'))
 const Hero = lazy(() => import('../Components/Hero'))
 const Banner = lazy(() => import('../Components/Banner'))
 const Page4 = lazy(() => import('../Components/Page4'))

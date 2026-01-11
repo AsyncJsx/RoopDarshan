@@ -12,6 +12,7 @@ router.get("/lastUpdated", async (req, res) => {
   categoryController.getLastUpdatedController(req,res);
  });
  router.get("/all", async (req, res) => {
+ 
   categoryController.getAllController(req, res);
 });
 
