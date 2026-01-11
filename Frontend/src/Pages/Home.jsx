@@ -9,6 +9,7 @@ const Banner = lazy(() => import('../Components/Banner'))
 const Page4 = lazy(() => import('../Components/Page4'))
 const MostPopular = lazy(() => import('../Components/MostPopular'))
 
+
 function Home() {
   const { language} = useContext(LanguageContext)
 
@@ -20,8 +21,9 @@ function Home() {
 
   return (
     <div className="w-screen min-h-screen bg-[#fdfbfb] overflow-x-hidden">
+      <LandingPage language={language} />
       <Suspense fallback={null}>
-        <LandingPage language={language} />
+        
         <Hero language={language} />
         <Banner language={language} />
         <Page4 language={language} />
