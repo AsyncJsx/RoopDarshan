@@ -12,6 +12,7 @@ function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [displayCount, setDisplayCount] = useState(25);
 
   const filterRef = useRef(null);
   const text1Ref = useRef(null);
@@ -42,7 +43,7 @@ function ProductsPage() {
           cachedMeta.lastUpdated === lastUpdated;
   
         if (isCacheValid) {
-          setCategories(cachedData); // cachedData is array, no parse
+          setCategories(cachedData);
           return;
         }
   
@@ -64,11 +65,16 @@ function ProductsPage() {
     fetchCategories();
   }, []);
   
-  
-  
-  
+  useEffect(() => {
+    const updateDisplayCount = () => {
+      setDisplayCount(window.innerWidth <= 768 ? 10 : 25);
+    };
+    
+    updateDisplayCount();
+    window.addEventListener('resize', updateDisplayCount);
+    return () => window.removeEventListener('resize', updateDisplayCount);
+  }, []);
 
-  // 🔍 Filter categories
   const filteredCategories = categories.filter((category) => {
     if (!searchQuery) return true;
 
@@ -79,12 +85,17 @@ function ProductsPage() {
     );
   });
 
-  // Sidebar initial position
+  const displayedCategories = filteredCategories.slice(0, displayCount);
+
+  const loadMore = () => {
+    const increment = window.innerWidth <= 768 ? 10 : 25;
+    setDisplayCount(prev => prev + increment);
+  };
+
   useEffect(() => {
     gsap.set(filterRef.current, { x: -300 });
   }, []);
 
-  // Sidebar animation
   useEffect(() => {
     if (!filterRef.current) return;
 
@@ -96,7 +107,6 @@ function ProductsPage() {
     });
   }, [showFilter]);
 
-  // Entry animations
   useEffect(() => {
     const tl = gsap.timeline();
 
@@ -133,7 +143,6 @@ function ProductsPage() {
       <Navbar />
 
       <div className="flex md:p-8 relative">
-        {/* Filter Sidebar */}
         <div
           ref={filterRef}
           className="pt-32 p-4 fixed top-[10%] left-0 z-[9998] bg-white/90 backdrop-blur-md rounded-r-2xl shadow-lg opacity-0 border-r border-gray-200"
@@ -141,7 +150,6 @@ function ProductsPage() {
           <Filter onFilterChange={handleFilterChange} />
         </div>
 
-        {/* Products Section */}
         <div className="Products w-screen md:px-8">
           <h3
             ref={text1Ref}
@@ -150,7 +158,6 @@ function ProductsPage() {
             Explore Collections
           </h3>
 
-          {/* Search Bar */}
           <div ref={searchRef} className="flex justify-center mb-8">
             <input
               type="text"
@@ -161,13 +168,11 @@ function ProductsPage() {
             />
           </div>
 
-          {/* Categories Section */}
           <div
             ref={categoryRef}
             className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 my-8"
           >
             {loading ? (
-              // 🔄 Loading UI
               <div className="flex flex-col items-center">
                 <div className="w-12 h-12 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
                 <p className="mt-4 text-gray-600 font-medium">
@@ -181,7 +186,7 @@ function ProductsPage() {
               </div>
             ) : (
               <>
-                {filteredCategories.map((category, index) => (
+                {displayedCategories.map((category, index) => (
                   <CategoryCard
                     key={category._id || index}
                     category={category}
@@ -198,9 +203,20 @@ function ProductsPage() {
               </>
             )}
           </div>
+
+          {!loading && displayCount < filteredCategories.length && (
+            <div className="flex justify-center mt-8 mb-12">
+              <button
+                onClick={loadMore}
+                className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+              >
+                Show More
+              </button>
+            </div>
+          )}
         </div>
       </div>
-      <Footer/>
+      
     </div>
   );
 }
