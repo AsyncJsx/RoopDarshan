@@ -75,7 +75,7 @@ function MostPopular({ language }) {
             {/* Logo only for middle card */}
             {i === 1 && (
               <img
-                src="./logo.png"
+                src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778975/logo_fdy5er.png"
                 alt="Logo"
                 className="absolute inset-0 m-auto mt-[80%] w-36 h-36 object-contain z-30 opacity-0 transition-all duration-700 group-hover:opacity-100"
               />

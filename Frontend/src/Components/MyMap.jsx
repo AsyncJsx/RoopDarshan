@@ -2,8 +2,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 export default function MyMap() {
-  const lat = 17.68586396134537;   // replace with your latitude
-  const lng =  73.98819262121535;   // replace with your longitude
+  const lat = 17.6861093;   // replace with your latitude
+  const lng =  73.9888914;   // replace with your longitude
 
   return (
     <MapContainer
