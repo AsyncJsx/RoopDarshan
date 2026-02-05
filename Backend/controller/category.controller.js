@@ -3,6 +3,7 @@ const { CategoryModel, validateCategoryModel } = require('../models/category');
 const {cloudinary,deleteFromCloudinary} = require('../config/cloudinary');
 const { findAdminById} = require('../service/admin.service')
 const { comparePassword} = require('../utils/hash-password');
+
 const createController = async (req, res) => {
   try {
     const imageData = req.optimizedImages ? req.optimizedImages[0] : null; // Access first element
@@ -203,6 +204,37 @@ const getProductsController = async (req, res) => {
   }
 };
 
+const setVisibility = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const category = await categoryService.setVisibility(id);
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Category visibility updated successfully",
+      visibility: category.visibility,
+      data: category
+    });
+
+  } catch (error) {
+    console.error("Set visibility error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+
 module.exports = {
   createController,
   editController,
@@ -210,5 +242,6 @@ module.exports = {
   findController,
   getAllController,
   getProductsController,
-  getLastUpdatedController
+  getLastUpdatedController,
+  setVisibility
 };

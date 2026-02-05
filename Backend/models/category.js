@@ -6,6 +6,10 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: [true, "English category name is required."]
     },
+    visible :{
+        type : Boolean,
+        default : true
+    },
     mar_name: {
         type: String,
         required: [true, "Marathi category name is required."]
@@ -43,6 +47,7 @@ const validateCategoryModel = (data) => {
         mar_name: Joi.string().min(3).max(100).required(),
         eng_description: Joi.string().min(10).max(500).required(),
         mar_description: Joi.string().min(10).max(500).required(),
+        visible: Joi.boolean().default(true),
         image: Joi.object({
             url: Joi.string().uri().required().messages({
                 'string.uri': 'Image URL must be a valid URI',

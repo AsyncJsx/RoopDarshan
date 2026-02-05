@@ -85,7 +85,10 @@ function ProductsPage() {
     );
   });
 
-  const displayedCategories = filteredCategories.slice(0, displayCount);
+  const displayedCategories = filteredCategories
+  .filter(category => category.visible !== false)
+  .slice(0, displayCount);
+
 
   const loadMore = () => {
     const increment = window.innerWidth <= 768 ? 10 : 25;

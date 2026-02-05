@@ -8,6 +8,9 @@ router.post("/create",adminAuth,upload.single("image"),optimizeAndUpload,async (
     
     categoryController.createController(req, res);
 });
+router.post('/visibility/:id',adminAuth,(req,res)=>{
+  categoryController.setVisibility(req,res);
+})
 router.get("/lastUpdated", async (req, res) => {
   categoryController.getLastUpdatedController(req,res);
  });
@@ -23,6 +26,7 @@ router.put("/:id", adminAuth,upload.single("image"),optimizeAndUpload, async (re
 router.delete("/:id", adminAuth, async (req, res) => {
   categoryController.deleteController(req, res);
 });
+
 
 
 

@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AdminAuth from '../auth/AdminAuth';
 import VideoGallary from '../Pages/VideoGallary';
+import Visible from '../Pages/Visible';
 
 const Home = lazy(() => import('../Pages/Home'));
 const About = lazy(() => import('../Pages/About'));
@@ -43,6 +44,7 @@ function Router() {
           <Route path='/category/:id' element={<Categories />} />
           <Route path='/admin-category/:id' element={<AdminAuth><Admin_Categories /></AdminAuth>} />
           <Route path='/category/edit/:id' element={<AdminAuth><Edit_Category /></AdminAuth>} />
+          <Route path='/category/visible/:id' element={<AdminAuth><Visible /></AdminAuth>} />
           <Route path='/category/delete/:id' element={<AdminAuth><Delete_Category /></AdminAuth>} />
         </Routes>
       </Suspense>

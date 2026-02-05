@@ -117,6 +117,22 @@ const deleteCategoryByName = async (eng_name) => {
     }
 };
 
+const setVisibility = async (id) => {
+    const category = await CategoryModel.findById(id);
+    if (!category) return null;
+  
+    if (category.visible === undefined) {
+      category.visible = false;
+    } else {
+      category.visible = !category.visible;
+    }
+  
+    await category.save();
+   
+    return category;
+  };
+  
+
 module.exports = {
     createCategoryService,
     findCategoryById,
@@ -127,5 +143,6 @@ module.exports = {
     updateCategoryService,
     deleteCategoryById,
     deleteCategoryByName,
-    getLastUpdatedService
+    getLastUpdatedService,
+    setVisibility
 };

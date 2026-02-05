@@ -24,7 +24,7 @@ function Categories() {
   useEffect(() => {
     const updateItemsPerPage = () => {
       if (window.innerWidth < 768) {
-        setItemsPerPage(10); // mobile
+        setItemsPerPage(16); // mobile
       } else {
         setItemsPerPage(20); // desktop
       }
