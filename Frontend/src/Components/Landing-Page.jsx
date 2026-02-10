@@ -112,17 +112,18 @@ function LandingPage({language}) {
 
       {/* Box 2 */}
       {/* div className="box h-[85vh] w-[90%] border border-black/20 absolute bottom-[20%] left-[5%] top-[7%] overflow-hidden  " */}
-      <div  className="box md:h-[100vh] md:w-[30vw] w-full     h-[100vh]  border-2 border-white/10 absolute md:bottom-[5%] bottom-[15%]  md:left-[8%]  overflow-hidden  ">
+      <div  className="box md:h-[100vh] md:w-[30vw] w-full     h-[100vh]  border-2 border-white/10 absolute md:bottom-[5%] bottom-[-1%]  md:left-[8%]  overflow-hidden  ">
         <img
           
           src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778909/pc_yipxhh.png"
           className="absolute w-full md:h-[95%] h-full object-contain md:object-contain opacity-0 md:opacity-100  "
           alt="Landing 2"
         />
-         <img
+       
+        <img
           
-          src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778894/mobile2_bcelze.png"
-          className="absolute w-full md:h-[85%] h-[75%] object-cover md:object-cover  md:opacity-0  "
+          src="https://res.cloudinary.com/daai6xwtd/image/upload/v1770722546/l1_jxqvks.jpg"
+          className="absolute w-full md:h-[85%] h-[60%] object-cover md:object-cover  md:opacity-0  "
           alt="Landing 2"
         />
       </div>
@@ -147,7 +148,7 @@ function LandingPage({language}) {
       <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-9xl md:leading-12 leading-14 text-[10vw] md:text-black text-white z-[50] absolute tracking-normal font-sans md:right-[3%] right-[-5%] text-center top-[75%] md:top-[30%] text-nowrap '>
       {language === "en" ? (
   <>
-    <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png" className=' h-[25vw] w-auto mt-[vw]' alt="" />
+    <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png" className=' md:h-[25vw] h-[28vw] w-auto mt-[vw]' alt="" />
     <h3 className="md:pl- pl-[3vw] font-bold text-2xl absolute top-[105%] right-[16%]  text-black">Rental Hub</h3>
   </>
 ) : (

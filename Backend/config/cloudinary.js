@@ -9,6 +9,8 @@ cloudinary.config({
 
 
 
+
+
 const deleteFromCloudinary = async (public_id) => {
   try {
     await cloudinary.uploader.destroy(public_id);
