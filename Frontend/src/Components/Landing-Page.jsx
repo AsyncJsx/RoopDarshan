@@ -137,7 +137,7 @@ function LandingPage({language}) {
           alt="Landing 3"
         />
       </div> */}
-   <div className="flex items-center md:text-lg text-sm md:gap-4 gap-2 absolute md:hidden top-[88%] left-[12%]  ">
+   <div className="flex items-center md:text-lg text-sm md:gap-4 gap-2 absolute md:hidden top-[89%] left-[12%]  ">
         <a href="https://www.instagram.com/roupdarshanrentalhub/"className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
              bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885266/instagram_cno9jk.avif')] bg-cover bg-center bg-no-repeat
              px-4 py-4 rounded-md"
@@ -178,7 +178,7 @@ function LandingPage({language}) {
       </h4>
 
 
-      <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-9xl md:leading-12 leading-14 text-[10vw] md:text-black text-white z-[50] absolute tracking-normal font-sans md:right-[3%] right-[-5%] text-center top-[75%] md:top-[30%] text-nowrap '>
+      <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-9xl md:leading-12 leading-14 text-[10vw] md:text-black text-white z-[50] absolute tracking-normal font-sans md:right-[3%] right-[-5%] text-center top-[73%] md:top-[30%] text-nowrap '>
       {language === "en" ? (
   <>
     <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png" className=' md:h-[25vw] h-[28vw] w-auto mt-[vw]' alt="" />
