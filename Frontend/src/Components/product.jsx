@@ -52,7 +52,6 @@ function Product({product}) {
   )}
 </div>
 
-
     </Link>
   );
 }

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AdminAuth from '../auth/AdminAuth';
 import VideoGallary from '../Pages/VideoGallary';
 import Visible from '../Pages/Visible';
+import Cart from '../Pages/Cart';
 
 const Home = lazy(() => import('../Pages/Home'));
 const About = lazy(() => import('../Pages/About'));
@@ -29,6 +30,7 @@ function Router() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/search' element={<SearchPage />} />
+          <Route path='/cart' element={<Cart />} />
           <Route path='/products' element={<ProdcutsPage />} />
           <Route path='/gallary' element={<VideoGallary />} />
           <Route path='/product/:id' element={<ProductDetial />} />

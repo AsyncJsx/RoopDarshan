@@ -1,14 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ArrowLeft, X } from "lucide-react";
 import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../config/axios";
+import { toast, Toaster } from 'react-hot-toast';
 import { LanguageContext } from "../context/LanguageContext";
 import {setWithExpiry,getWithExpiry} from '../utils/localStorage'
+import gsap from "gsap";
 
 function ProductDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const wpRef = useRef(null);
+  
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,6 +23,21 @@ function ProductDetail() {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   const { language } = useContext(LanguageContext);
+  const CART_KEY = "cartproducts";
+
+  const addToCart = (e) => {
+    e.preventDefault();
+
+    const existing =
+      JSON.parse(localStorage.getItem(CART_KEY)) || [];
+
+    const updated = [...existing, product];
+
+    localStorage.setItem(
+      CART_KEY,
+      JSON.stringify(updated)
+    );
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -160,19 +179,47 @@ function ProductDetail() {
     });
   }, []);
 
+  const handleCopyLink = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    toast.success('Product Copied Successfully!');
+  };
+  
+  useEffect(() => {
+    gsap.to(wpRef.current, {
+      scale: 1.3,
+      
+      duration: 0.8,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut"
+    });
+  }, []);
  
   return (
     <div className="min-h-screen w-full bg-[#f9f5f5] flex flex-col items-center p-4 md:p-10 overflow-hidden relative">
       <Navbar />
+      <a href="https://wa.me/919561000027?text=Hello%20I%20want%20to%20know%20more"
+   target="_blank"
+   ref={wpRef}
+   class="inline-flex items-center gap-2 fixed right-0 top-[60%]  z-[99999]
+   bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885268/wp_wbpw2n.png')] bg-cover bg-center bg-no-repeat
+          px-10 py-10 text-sm font-medium 
+          text-green-700  rounded-lg
+          shadow-sm 
+          hover:bg-green-200 hover:text-green-800 
+          transition">
+   
+</a>
 
-      <div className="w-[90%] md:w-[80%] flex items-center gap-2 mt-24 mb-4 text-gray-700 hover:text-black transition">
+      <div className="w-[90%] md:w-[80%] flex items-center gap-2 mt-24 mb-4 text-gray-700 hover:text-black transition z-[999999]">
         <ArrowLeft
           onClick={() => navigate(-1)}
           className="w-5 h-5 cursor-pointer"
         />
         <span className="cursor-pointer font-medium">Back</span>
       </div>
-
+      <Toaster />
       {loading ? (
         <div className="flex flex-col items-center justify-center mt-20">
           <div className="w-12 h-12 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
@@ -250,6 +297,7 @@ function ProductDetail() {
                   {language === "en"
                     ? product.eng_name
                     : product.mar_name}
+                    <i className="ri-link mx-6 cursor-pointer" onClick={()=>{handleCopyLink()}}></i>
                 </h2>
 
                 <p className="text-gray-700 text-base leading-6">
@@ -257,11 +305,18 @@ function ProductDetail() {
                     ? product.eng_description
                     : product.mar_description}
                 </p>
-
+                    
                 <p className="text-sm text-gray-600 italic opacity-80 mt-4">
                   *Disclaimer: Actual product may vary slightly from the image shown.
                 </p>
                 <p className="text-sm text-gray-600 italic opacity-80 mt-4">Contact now : 9561000027</p>
+                <button
+        onClick={addToCart}
+        className="mt-3 w-full flex items-center justify-center gap-2 text-sm font-semibold text-black bg-gray-100 hover:scale-105 py-2 rounded-md transition"
+      >
+        <i className="ri-shopping-cart-2-line text-lg"></i>
+        Add to Cart
+      </button>
               </div>
             </div>
           </div>

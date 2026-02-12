@@ -28,6 +28,14 @@ function MiniNavbar() {
           </h2>
           <h2 className="text-[12px] md:text-lg md:mt-0 mt-1 links md:tracking-normal tracking-wider md:pr-0 pr-3 font-semibold">9561000027</h2>
         </div>
+        <div className="flex items-center gap-[-2px] ">
+          <Link to='/cart' className="text-[12px] md:text-lg links flex gap-2 hover:scale-105">
+            <i className="ri-shopping-cart-2-line text-sm md:text-lg"></i>
+           
+           <p className="links text-[13px] md:text-lg">{language === "en" ? "Cart" : ""}</p>
+          </Link>
+          
+        </div>
         <div className="flex items-center gap-2 ">
           <Link to='/gallary' className="text-[12px] md:text-lg links flex gap-2 hover:scale-105">
             <i className="ri-video-ai-line text-sm md:text-lg"></i>

@@ -4,26 +4,13 @@ import { LanguageContext } from "../context/LanguageContext";
 
 const CART_KEY = "cartproducts";
 
-function Product({product}) {
+function CardProduct({product}) {
 
   const { language }  = useContext(LanguageContext)
 
-  const addToCart = (e) => {
-    e.preventDefault();
-
-    const existing =
-      JSON.parse(localStorage.getItem(CART_KEY)) || [];
-
-    const updated = [...existing, product];
-
-    localStorage.setItem(
-      CART_KEY,
-      JSON.stringify(updated)
-    );
-  };
   
   return (
-    <Link to={`/product/${product._id}`} className="w-[48%] sm:w-[45%] md:w-60 p-3 bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+    <Link to={`/product/${product._id}`} className="w-[48%] sm:w-[45%] md:w-60 p-3    hover:-translate-y-1 transition-all duration-300 cursor-pointer">
       
       <div className="w-full h-32 sm:h-40 md:h-60 overflow-hidden rounded-md relative border border-gray-100 ">
 
@@ -73,17 +60,10 @@ function Product({product}) {
       </div>
 
       {/* CART BUTTON */}
-      {}
-      <button
-        onClick={addToCart}
-        className="mt-3 w-full flex items-center justify-center gap-2 text-sm font-semibold text-black bg-gray-100 hover:scale-105 py-2 rounded-md transition"
-      >
-        <i className="ri-shopping-cart-2-line text-lg"></i>
-        Add to Cart
-      </button>
+      
 
     </Link>
   );
 }
 
-export default Product;
+export default CardProduct;
