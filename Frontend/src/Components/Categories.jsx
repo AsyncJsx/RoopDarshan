@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Product from "../Product/Product";
 import { useParams, useNavigate } from "react-router-dom";
 import { LanguageContext } from "../context/LanguageContext";
@@ -7,6 +7,7 @@ import Navbar from "./Navbar";
 import { ArrowLeft, Clipboard } from "lucide-react";
 import toast from "react-hot-toast";
 import { setWithExpiry, getWithExpiry } from '../utils/localStorage';
+import gsap from "gsap";
 
 function Categories() {
   const [category, setCategory] = useState({});
@@ -19,6 +20,9 @@ function Categories() {
   const [loading, setLoading] = useState(true);
 
   const { language } = useContext(LanguageContext);
+  const wpRef = useRef(null);
+  
+
 
   // Detect screen size to adjust items per page
   useEffect(() => {
@@ -90,11 +94,33 @@ function Categories() {
       toast.error("Failed to copy link");
     }
   };
+  
+  useEffect(() => {
+    gsap.to(wpRef.current, {
+      scale: 1.3,
+      
+      duration: 0.8,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut"
+    });
+  }, []);
 
   return (
     <div className="w-full min-h-[50vh] flex flex-col relative md:p-12 p-4 bg-white rounded-2xl shadow-md border border-gray-200 mb-10 transition-all hover:shadow-lg">
       <Navbar />
-
+      <a href="https://wa.me/919422384294?text=Hello%20I%20want%20to%20know%20more"
+   target="_blank"
+   ref={wpRef}
+   class="inline-flex items-center gap-2 fixed right-0 top-[60%]  z-[99999]
+   bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885268/wp_wbpw2n.png')] bg-cover bg-center bg-no-repeat
+          px-12 py-12 text-sm font-medium 
+          text-green-700  rounded-lg
+          shadow-sm 
+          hover:bg-green-200 hover:text-green-800 
+          transition">
+   
+</a>
       {/* Category Title */}
       <h3 className="categoryname text-gray-900 tracking-wide md:text-2xl text-lg font-semibold text-center mb-2 mt-44">
         {language === "en" ? category.eng_name : category.mar_name}

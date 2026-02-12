@@ -185,8 +185,9 @@ function LandingPage({language}) {
     <h3 className="md:pl- pl-[3vw] font-bold text-2xl absolute top-[105%] right-[16%]  text-black">Rental Hub</h3>
   </>
 ) : (
-  <><h2 className='font-extralight'>रूपाची</h2>
-  <h3 className='font-extralight'>नवी ओळख.</h3>
+  <>
+  <img src="https://res.cloudinary.com/dm1lsindg/image/upload/v1767778918/logo-black_sv2suh.png" className=' md:h-[25vw] h-[28vw] w-auto mt-[vw]' alt="" />
+  <h3 className="md:pl- pl-[3vw] font-bold text-2xl absolute top-[105%] right-[16%]  text-black">Rental Hub</h3>
   
   </>
 )}
