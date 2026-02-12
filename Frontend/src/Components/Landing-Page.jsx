@@ -137,13 +137,46 @@ function LandingPage({language}) {
           alt="Landing 3"
         />
       </div> */}
+   <div className="flex items-center md:text-lg text-sm md:gap-4 gap-2 absolute md:hidden top-[88%] left-[12%]  ">
+        <a href="https://www.instagram.com/roupdarshanrentalhub/"className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
+             bg-[url('./instagram.png')] bg-cover bg-center bg-no-repeat
+             px-4 py-4 rounded-md"
+>
+        <p className="links text-[13px] md:text-lg">
+          </p></a>
 
+          <a href="https://www.facebook.com/share/18CKjVnAFw/" className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
+             bg-[url('./facebook.png')] bg-cover bg-center bg-no-repeat
+             px-4 py-4 rounded-md"
+>
+        <p className="links text-[13px] md:text-lg">
+          </p></a>
+          
+          
+          <a
+  href="https://jsdl.in/DT-9971EN5L"
+  className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
+             bg-[url('./jdlogo.png')] bg-cover bg-center bg-no-repeat
+             px-4 py-2 rounded-md"
+>
+ 
+</a>
+
+          <a href="https://youtube.com/@rupdarshan?si=jsK3KOB1GHBrDot4" className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
+             bg-[url('./youtube.png')] bg-cover bg-center bg-no-repeat
+             px-4 py-4 rounded-md"
+>
+        <p className="links text-[13px] md:text-lg">
+          </p></a>
+
+      </div>
       <h4 ref={text1Ref}  className=' cursor-pointer landing-text1 md:text-6xl text-[9vw]  md:leading-20 leading-10  md:text-black text-white absolute z-[50] md:bottom-[15%] bottom-[70%] md:left-32 left-[10vw]  tracking-tight  max-w-none md:max-w-[650px] font-bold md:text-start text-center hidden'>
       {language === "en"
   ? "Exclusive Collections for Every Occasion"
   : "प्रत्येक प्रसंगासाठी खास संग्रह"}
 
       </h4>
+
 
       <div ref={text2Ref} className='cursor-pointer flex md:flex-col landing-text2 md:text-9xl md:leading-12 leading-14 text-[10vw] md:text-black text-white z-[50] absolute tracking-normal font-sans md:right-[3%] right-[-5%] text-center top-[75%] md:top-[30%] text-nowrap '>
       {language === "en" ? (

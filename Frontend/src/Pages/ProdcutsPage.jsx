@@ -18,6 +18,7 @@ function ProductsPage() {
   const text1Ref = useRef(null);
   const searchRef = useRef(null);
   const categoryRef = useRef(null);
+  const wpRef = useRef(null);
 
   const handleFilterChange = (filters) => {
     console.log(filters);
@@ -98,7 +99,7 @@ function ProductsPage() {
   useEffect(() => {
     gsap.set(filterRef.current, { x: -300 });
   }, []);
-
+  
   useEffect(() => {
     if (!filterRef.current) return;
 
@@ -140,10 +141,38 @@ function ProductsPage() {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+  
+  useEffect(() => {
+    gsap.to(wpRef.current, {
+      scale: 1.3,
+      
+      duration: 0.8,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut"
+    });
+  }, []);
+
 
   return (
     <div className="min-h-screen w-screen bg-[#f9f9f9] relative pt-36 overflow-hidden text-gray-900">
+
+
       <Navbar />
+      <a href="https://wa.me/919422384294?text=Hello%20I%20want%20to%20know%20more"
+   target="_blank"
+   ref={wpRef}
+   class="inline-flex items-center gap-2 fixed right-0 top-[60%]  z-[99999]
+   bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885268/wp_wbpw2n.png')] bg-cover bg-center bg-no-repeat
+          px-12 py-12 text-sm font-medium 
+          text-green-700  rounded-lg
+          shadow-sm 
+          hover:bg-green-200 hover:text-green-800 
+          transition">
+   
+</a>
+
+
 
       <div className="flex md:p-8 relative">
         <div
