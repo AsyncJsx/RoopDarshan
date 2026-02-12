@@ -139,14 +139,14 @@ function LandingPage({language}) {
       </div> */}
    <div className="flex items-center md:text-lg text-sm md:gap-4 gap-2 absolute md:hidden top-[88%] left-[12%]  ">
         <a href="https://www.instagram.com/roupdarshanrentalhub/"className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
-             bg-[url('./instagram.png')] bg-cover bg-center bg-no-repeat
+             bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885266/instagram_cno9jk.avif')] bg-cover bg-center bg-no-repeat
              px-4 py-4 rounded-md"
 >
         <p className="links text-[13px] md:text-lg">
           </p></a>
 
           <a href="https://www.facebook.com/share/18CKjVnAFw/" className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
-             bg-[url('./facebook.png')] bg-cover bg-center bg-no-repeat
+             bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885266/facebook_zhbwg8.avif')] bg-cover bg-center bg-no-repeat
              px-4 py-4 rounded-md"
 >
         <p className="links text-[13px] md:text-lg">
@@ -156,14 +156,14 @@ function LandingPage({language}) {
           <a
   href="https://jsdl.in/DT-9971EN5L"
   className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
-             bg-[url('./jdlogo.png')] bg-cover bg-center bg-no-repeat
+             bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885267/jdlogo_nkhcbo.png')] bg-cover bg-center bg-no-repeat
              px-4 py-2 rounded-md"
 >
  
 </a>
 
           <a href="https://youtube.com/@rupdarshan?si=jsK3KOB1GHBrDot4" className="link hover:scale-105 transition md:text-lg text-sm flex md:gap-1
-             bg-[url('./youtube.png')] bg-cover bg-center bg-no-repeat
+             bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885266/youtube_oayjqv.avif')] bg-cover bg-center bg-no-repeat
              px-4 py-4 rounded-md"
 >
         <p className="links text-[13px] md:text-lg">
