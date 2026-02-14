@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { LanguageContext } from "../context/LanguageContext";
+import { toast, Toaster } from 'react-hot-toast';
 
 const CART_KEY = "cartproducts";
 
@@ -8,19 +9,36 @@ function Product({product}) {
 
   const { language }  = useContext(LanguageContext)
 
-  const addToCart = (e) => {
-    e.preventDefault();
+  let addToCartCooldown = false;
 
-    const existing =
-      JSON.parse(localStorage.getItem(CART_KEY)) || [];
+const addToCart = (e) => {
+  e.preventDefault();
 
-    const updated = [...existing, product];
+  if (addToCartCooldown) {
+    toast.error("Please wait a few seconds before adding again!");
+    return;
+  }
 
-    localStorage.setItem(
-      CART_KEY,
-      JSON.stringify(updated)
-    );
-  };
+  const existing = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+ 
+
+  const alreadyAdded = existing.find(item => item._id === product._id);
+  if (alreadyAdded) {
+    toast.error("This product is already in your cart!");
+    return;
+  }
+
+  const updated = [...existing, { ...product }]; // clone to avoid reference issues
+  localStorage.setItem(CART_KEY, JSON.stringify(updated));
+
+  toast.success("Added Successfully");
+
+  addToCartCooldown = true;
+  setTimeout(() => {
+    addToCartCooldown = false;
+  }, 3000);
+};
+  
   
   return (
     <Link to={`/product/${product._id}`} className="w-[48%] sm:w-[45%] md:w-60 p-3 bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">

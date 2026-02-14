@@ -8,6 +8,7 @@ import { ArrowLeft, Clipboard } from "lucide-react";
 import toast from "react-hot-toast";
 import { setWithExpiry, getWithExpiry } from '../utils/localStorage';
 import gsap from "gsap";
+import {  Toaster } from 'react-hot-toast';
 
 function Categories() {
   const [category, setCategory] = useState({});
@@ -109,6 +110,8 @@ function Categories() {
   return (
     <div className="w-full min-h-[50vh] flex flex-col relative md:p-12 p-4 bg-white rounded-2xl shadow-md border border-gray-200 mb-10 transition-all hover:shadow-lg">
       <Navbar />
+<Toaster />
+
       <a href="https://wa.me/919561000027?text=Hello%20I%20want%20to%20know%20more"
    target="_blank"
    ref={wpRef}

@@ -25,19 +25,37 @@ function ProductDetail() {
   const { language } = useContext(LanguageContext);
   const CART_KEY = "cartproducts";
 
-  const addToCart = (e) => {
-    e.preventDefault();
+  let addToCartCooldown = false;
 
-    const existing =
-      JSON.parse(localStorage.getItem(CART_KEY)) || [];
+const addToCart = (e) => {
+  e.preventDefault();
 
-    const updated = [...existing, product];
+  if (addToCartCooldown) {
+    toast.error("Please wait a few seconds before adding again!");
+    return;
+  }
 
-    localStorage.setItem(
-      CART_KEY,
-      JSON.stringify(updated)
-    );
-  };
+  const existing = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+ 
+
+  const alreadyAdded = existing.find(item => item._id === product._id);
+  if (alreadyAdded) {
+    toast.error("This product is already in your cart!");
+    return;
+  }
+
+  const updated = [...existing, { ...product }]; // clone to avoid reference issues
+  localStorage.setItem(CART_KEY, JSON.stringify(updated));
+
+  toast.success("Added Successfully");
+
+  addToCartCooldown = true;
+  setTimeout(() => {
+    addToCartCooldown = false;
+  }, 3000);
+};
+
+  
 
   useEffect(() => {
     if (!id) return;
@@ -169,7 +187,13 @@ function ProductDetail() {
   };
 
   const handleProductClick = (productId) => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth' // optional, use 'auto' if you want instant scroll
+    });
     navigate(`/product/${productId}`);
+    
   };
   useEffect(() => {
     window.scrollTo({

@@ -17,9 +17,7 @@ function Cart() {
 
   // Remove single item
   const handleRemove = (id) => {
-    const updatedCart = cartItems.filter(
-      (item) => item._id !== id
-    );
+    const updatedCart = cartItems.filter((item) => item._id !== id);
     setCartItems(updatedCart);
     localStorage.setItem(CART_KEY, JSON.stringify(updatedCart));
   };
@@ -35,20 +33,14 @@ function Cart() {
       <Navbar />
 
       <div className="max-w-7xl mx-auto mt-[28vh] px-4">
-
         {/* Cart Box */}
         <div className="bg-white rounded-xl shadow-md border">
-
           {/* Header */}
           <div className="px-6 py-4 border-b flex justify-between items-center">
-            <h1 className="text-xl font-semibold">
-              Shopping Cart
-            </h1>
+            <h1 className="text-xl font-semibold">Shopping Cart</h1>
 
             <div className="flex items-center gap-4">
-              <span className="text-gray-500">
-                {cartItems.length} Items
-              </span>
+              <span className="text-gray-500">{cartItems.length} Items</span>
 
               {cartItems.length > 0 && (
                 <button
@@ -63,12 +55,9 @@ function Cart() {
 
           {/* Body */}
           <div className="p-6 overflow-y-auto">
-
             {cartItems.length === 0 ? (
               <div className="text-center py-20">
-                <p className="text-gray-500 text-lg">
-                  Your cart is empty 🛒
-                </p>
+                <p className="text-gray-500 text-lg">Your cart is empty 🛒</p>
               </div>
             ) : (
               <div
@@ -83,40 +72,33 @@ function Cart() {
                 "
               >
                 {cartItems.map((product) => (
-                  <div
-                    key={product._id}
-                    className="relative group"
-                  >
-                    <Product
-                      product={product}
-                      isCart={true}
-                    />
+                  <div key={product._id} className="relative group">
+                    <Product product={product} isCart={true} />
 
                     {/* Remove Button */}
+                    {/* Remove Button */}
                     <button
-                      onClick={() =>
-                        handleRemove(product._id)
-                      }
+                      onClick={() => handleRemove(product._id)}
                       className="
-                        absolute top-2 right-2
-                        bg-red-500 text-white
-                        text-xs px-2 py-1
-                        rounded
-                        opacity-0 group-hover:opacity-100
-                        transition
-                      "
+    absolute -top-2 -right-2
+    w-6 h-6
+    bg-red-500 text-white
+    rounded-full
+    flex items-center justify-center
+    text-sm font-bold
+    shadow-md
+    hover:bg-red-600
+    transition
+  "
                     >
-                      Remove
+                      ×
                     </button>
                   </div>
                 ))}
               </div>
             )}
-
           </div>
-
         </div>
-
       </div>
     </div>
   );
