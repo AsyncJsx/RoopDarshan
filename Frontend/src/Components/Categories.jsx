@@ -8,7 +8,26 @@ import { ArrowLeft, Clipboard } from "lucide-react";
 import toast from "react-hot-toast";
 import { setWithExpiry, getWithExpiry } from '../utils/localStorage';
 import gsap from "gsap";
-import {  Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+
+// Custom hook for media query
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const media = window.matchMedia(query);
+      setMatches(media.matches);
+
+      const listener = (e) => setMatches(e.matches);
+      media.addEventListener('change', listener);
+      
+      return () => media.removeEventListener('change', listener);
+    }
+  }, [query]);
+
+  return matches;
+}
 
 function Categories() {
   const [category, setCategory] = useState({});
@@ -23,21 +42,13 @@ function Categories() {
   const { language } = useContext(LanguageContext);
   const wpRef = useRef(null);
   
+  // Media query hook
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
-
-  // Detect screen size to adjust items per page
+  // Update items per page based on screen size
   useEffect(() => {
-    const updateItemsPerPage = () => {
-      if (window.innerWidth < 768) {
-        setItemsPerPage(16); // mobile
-      } else {
-        setItemsPerPage(20); // desktop
-      }
-    };
-    updateItemsPerPage();
-    window.addEventListener("resize", updateItemsPerPage);
-    return () => window.removeEventListener("resize", updateItemsPerPage);
-  }, []);
+    setItemsPerPage(isMobile ? 16 : 20);
+  }, [isMobile]);
 
   // Fetch category
   useEffect(() => {
@@ -99,7 +110,6 @@ function Categories() {
   useEffect(() => {
     gsap.to(wpRef.current, {
       scale: 1.3,
-      
       duration: 0.8,
       repeat: -1,
       yoyo: true,
@@ -110,20 +120,20 @@ function Categories() {
   return (
     <div className="w-full min-h-[50vh] flex flex-col relative md:p-12 p-4 bg-white rounded-2xl shadow-md border border-gray-200 mb-10 transition-all hover:shadow-lg">
       <Navbar />
-<Toaster />
+      <Toaster />
 
       <a href="https://wa.me/919561000027?text=Hello%20I%20want%20to%20know%20more"
-   target="_blank"
-   ref={wpRef}
-   class="inline-flex items-center gap-2 fixed right-0 top-[60%]  z-[99999]
-   bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885268/wp_wbpw2n.png')] bg-cover bg-center bg-no-repeat
+        target="_blank"
+        ref={wpRef}
+        className="inline-flex items-center gap-2 fixed right-0 top-[60%]  z-[99999]
+        bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885268/wp_wbpw2n.png')] bg-cover bg-center bg-no-repeat
           px-12 py-12 text-sm font-medium 
           text-green-700  rounded-lg
           shadow-sm 
           hover:bg-green-200 hover:text-green-800 
           transition">
-   
-</a>
+      </a>
+      
       {/* Category Title */}
       <h3 className="categoryname text-gray-900 tracking-wide md:text-2xl text-lg font-semibold text-center mb-2 mt-44">
         {language === "en" ? category.eng_name : category.mar_name}
@@ -147,7 +157,7 @@ function Categories() {
       </div>
 
       {/* Product Grid */}
-      <div className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 mb-4">
+      <div className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 mb-4 mt-4">
         {loading ? (
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
@@ -180,8 +190,6 @@ function Categories() {
           </button>
         </div>
       )}
-
-      
     </div>
   );
 }

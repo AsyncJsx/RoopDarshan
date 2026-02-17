@@ -7,6 +7,25 @@ import axios from "../config/axios";
 import CategoryCard from "../Components/Category-Card";
 import {setWithExpiry,getWithExpiry} from '../utils/localStorage'
 
+// Custom hook for media query
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const media = window.matchMedia(query);
+      setMatches(media.matches);
+
+      const listener = (e) => setMatches(e.matches);
+      media.addEventListener('change', listener);
+      
+      return () => media.removeEventListener('change', listener);
+    }
+  }, [query]);
+
+  return matches;
+}
+
 function ProductsPage() {
   const [showFilter, setShowFilter] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,6 +38,14 @@ function ProductsPage() {
   const searchRef = useRef(null);
   const categoryRef = useRef(null);
   const wpRef = useRef(null);
+
+  // Media query hook
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Update display count based on screen size
+  useEffect(() => {
+    setDisplayCount(isMobile ? 10 : 25);
+  }, [isMobile]);
 
   const handleFilterChange = (filters) => {
     console.log(filters);
@@ -65,16 +92,6 @@ function ProductsPage() {
   
     fetchCategories();
   }, []);
-  
-  useEffect(() => {
-    const updateDisplayCount = () => {
-      setDisplayCount(window.innerWidth <= 768 ? 10 : 25);
-    };
-    
-    updateDisplayCount();
-    window.addEventListener('resize', updateDisplayCount);
-    return () => window.removeEventListener('resize', updateDisplayCount);
-  }, []);
 
   const filteredCategories = categories.filter((category) => {
     if (!searchQuery) return true;
@@ -90,9 +107,8 @@ function ProductsPage() {
   .filter(category => category.visible !== false)
   .slice(0, displayCount);
 
-
   const loadMore = () => {
-    const increment = window.innerWidth <= 768 ? 10 : 25;
+    const increment = isMobile ? 10 : 25;
     setDisplayCount(prev => prev + increment);
   };
 
@@ -145,7 +161,6 @@ function ProductsPage() {
   useEffect(() => {
     gsap.to(wpRef.current, {
       scale: 1.3,
-      
       duration: 0.8,
       repeat: -1,
       yoyo: true,
@@ -153,26 +168,20 @@ function ProductsPage() {
     });
   }, []);
 
-
   return (
     <div className="min-h-screen w-screen bg-[#f9f9f9] relative pt-36 overflow-hidden text-gray-900">
-
-
       <Navbar />
       <a href="https://wa.me/919561000027?text=Hello%20I%20want%20to%20know%20more"
-   target="_blank"
-   ref={wpRef}
-   class="inline-flex items-center gap-2 fixed right-0 top-[60%]  z-[99999]
-   bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885268/wp_wbpw2n.png')] bg-cover bg-center bg-no-repeat
+        target="_blank"
+        ref={wpRef}
+        class="inline-flex items-center gap-2 fixed right-0 top-[60%]  z-[99999]
+        bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885268/wp_wbpw2n.png')] bg-cover bg-center bg-no-repeat
           px-12 py-12 text-sm font-medium 
           text-green-700  rounded-lg
           shadow-sm 
           hover:bg-green-200 hover:text-green-800 
           transition">
-   
-</a>
-
-
+      </a>
 
       <div className="flex md:p-8 relative">
         <div
