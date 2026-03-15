@@ -7,35 +7,37 @@ const createCategoryService = async (data) => {
         throw new Error('All fields are required');
     }
 
-    // Additional validation for image object
     if (!image.url || !image.public_id) {
         throw new Error('Image URL and public ID are required');
     }
 
     try {
+        // ✅ new category goes to the bottom
+        const last = await CategoryModel.findOne().sort({ order: -1 }).select('order');
+        const nextOrder = last ? last.order + 1 : 0;
+
         const category = await CategoryModel.create({
             eng_name,
             mar_name,
             eng_description,
             mar_description,
             products,
-            image // Add the image field here
+            image,
+            order: nextOrder
         });
         return category;
     } catch (err) {
         throw new Error('Error creating category: ' + err.message);
     }
 };
+
 const getLastUpdatedService = async () => {
-    
     const latestCategory = await CategoryModel.findOne()
-      .sort({ updatedAt: -1 })
-      .select("updatedAt")
-      .lean();
-  
-    
+        .sort({ updatedAt: -1 })
+        .select("updatedAt")
+        .lean();
     return latestCategory ? latestCategory.updatedAt : new Date(0);
-  };
+};
 
 const findCategoryById = async (id) => {
     try {
@@ -57,7 +59,9 @@ const findCategoryByName = async (eng_name) => {
 
 const getAllCategories = async () => {
     try {
-        const categories = await CategoryModel.find().populate("products");
+        const categories = await CategoryModel.find()
+            .populate("products")
+            .sort({ order: 1 }); // ✅ sort by order
         return categories;
     } catch (err) {
         throw new Error('Error fetching categories: ' + err.message);
@@ -122,16 +126,25 @@ const setVisibility = async (id) => {
     if (!category) return null;
   
     if (category.visible === undefined) {
-      category.visible = false;
+        category.visible = false;
     } else {
-      category.visible = !category.visible;
+        category.visible = !category.visible;
     }
   
     await category.save();
-   
     return category;
-  };
-  
+};
+
+// ✅ bulk reorder service
+const bulkReorderCategoryService = async (orderedIds) => {
+    const bulkOps = orderedIds.map((id, index) => ({
+        updateOne: {
+            filter: { _id: id },
+            update: { $set: { order: index } }
+        }
+    }));
+    await CategoryModel.bulkWrite(bulkOps);
+};
 
 module.exports = {
     createCategoryService,
@@ -144,5 +157,6 @@ module.exports = {
     deleteCategoryById,
     deleteCategoryByName,
     getLastUpdatedService,
-    setVisibility
+    setVisibility,
+    bulkReorderCategoryService, // ✅ added
 };

@@ -7,7 +7,7 @@ const productService = require('../service/product.service');
 
 const createController = async (req, res) => {
   try {
-    const imageData = req.optimizedImages ? req.optimizedImages[0] : null; // Access first element
+    const imageData = req.optimizedImages ? req.optimizedImages[0] : null;
    
     if (!imageData) {
       return res.status(400).json({ error: "Category image is required" });
@@ -37,7 +37,6 @@ const createController = async (req, res) => {
     res.status(500).json({ error: "Error creating category" });
   }
 };
-  
 
 const editController = async (req, res) => {
   try {
@@ -49,31 +48,24 @@ const editController = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
 
-    // Check if user wants to keep existing image or replace it
     const keepExistingImage = req.body.keepExistingImage === 'true';
 
     if (req.optimizedImages && req.optimizedImages.length > 0) {
-      // Delete old image from Cloudinary if it exists
       if (category.image && category.image.public_id) {
         try {
           await cloudinary.uploader.destroy(category.image.public_id);
-          console.log("✅ Deleted old category image from Cloudinary:", category.image.public_id);
         } catch (err) {
           console.warn("⚠️ Failed to delete old image:", category.image.public_id, err.message);
         }
       }
 
-      // Use the new uploaded image
       updateData.image = {
         url: req.optimizedImages[0].url,
         public_id: req.optimizedImages[0].public_id
       };
     } else if (!keepExistingImage) {
-      // If user explicitly wants to remove image (though schema requires it, so this might not apply)
-      // This would need schema changes to make image optional for updates
-      updateData.image = category.image; // Keep existing as fallback
+      updateData.image = category.image;
     } else {
-      // Keep existing image
       updateData.image = category.image;
     }
 
@@ -99,37 +91,23 @@ const deleteController = async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;
 
-    // find admin
     const admin = await findAdminById(req.admin._id);
     if (!admin) {
-      return res.status(401).json({
-        success: false,
-        message: "Admin not found",
-      });
+      return res.status(401).json({ success: false, message: "Admin not found" });
     }
 
-    // compare password
     const isMatch = await comparePassword(password, admin.password);
     if (!isMatch) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid password",
-      });
+      return res.status(401).json({ success: false, message: "Invalid password" });
     }
 
-    // find category
     const category = await categoryService.findCategoryById(id);
     if (!category) {
-      return res.status(404).json({
-        success: false,
-        message: "Category not found",
-      });
+      return res.status(404).json({ success: false, message: "Category not found" });
     }
 
-    // ✅ Delete all products belonging to this category
     if (category.products && category.products.length > 0) {
       for (const product of category.products) {
-        // Delete images from Cloudinary
         if (product.img && product.img.length > 0) {
           for (const image of product.img) {
             if (image.public_id) {
@@ -137,17 +115,14 @@ const deleteController = async (req, res) => {
             }
           }
         }
-        // Delete product from DB
         await productService.deleteProductById(product._id);
       }
     }
 
-    // ✅ Delete category image from Cloudinary
     if (category.image?.public_id) {
       await deleteFromCloudinary(category.image.public_id);
     }
 
-    // ✅ Delete category from DB
     await categoryService.deleteCategoryById(id);
 
     return res.status(200).json({
@@ -167,7 +142,6 @@ const deleteController = async (req, res) => {
 
 const getLastUpdatedController = async (req, res) => {
   try {
-   
     const lastUpdated = await categoryService.getLastUpdatedService();
     res.json({ lastUpdated });
   } catch (err) {
@@ -233,29 +207,39 @@ const setVisibility = async (req, res) => {
     const category = await categoryService.setVisibility(id);
 
     if (!category) {
-      return res.status(404).json({
-        success: false,
-        message: "Category not found"
-      });
+      return res.status(404).json({ success: false, message: "Category not found" });
     }
 
     return res.status(200).json({
       success: true,
       message: "Category visibility updated successfully",
-      visibility: category.visibility,
+      visibility: category.visible,
       data: category
     });
 
   } catch (error) {
     console.error("Set visibility error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error"
-    });
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
+// ✅ bulk reorder controller
+const bulkReorderController = async (req, res) => {
+  try {
+    const { orderedIds } = req.body;
+
+    if (!Array.isArray(orderedIds) || orderedIds.length === 0) {
+      return res.status(400).json({ success: false, message: "orderedIds array is required" });
+    }
+
+    await categoryService.bulkReorderCategoryService(orderedIds);
+
+    return res.status(200).json({ success: true, message: "Categories reordered successfully" });
+  } catch (error) {
+    console.error("Error reordering categories:", error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 module.exports = {
   createController,
@@ -265,5 +249,6 @@ module.exports = {
   getAllController,
   getProductsController,
   getLastUpdatedController,
-  setVisibility
+  setVisibility,
+  bulkReorderController, // ✅ added
 };

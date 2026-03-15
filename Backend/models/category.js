@@ -6,9 +6,13 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: [true, "English category name is required."]
     },
-    visible :{
-        type : Boolean,
-        default : true
+    visible: {
+        type: Boolean,
+        default: true
+    },
+    order: {
+        type: Number,
+        default: 0
     },
     mar_name: {
         type: String,
@@ -30,13 +34,13 @@ const categorySchema = new mongoose.Schema({
         }
     ],
     image: {
-        url: { 
-            type: String, 
-            required: true 
+        url: {
+            type: String,
+            required: true
         },
-        public_id: { 
-            type: String, 
-            required: true 
+        public_id: {
+            type: String,
+            required: true
         },
     },
 }, { timestamps: true });
@@ -48,6 +52,7 @@ const validateCategoryModel = (data) => {
         eng_description: Joi.string().min(10).max(500).required(),
         mar_description: Joi.string().min(10).max(500).required(),
         visible: Joi.boolean().default(true),
+        order: Joi.number().integer().min(0).default(0),
         image: Joi.object({
             url: Joi.string().uri().required().messages({
                 'string.uri': 'Image URL must be a valid URI',
