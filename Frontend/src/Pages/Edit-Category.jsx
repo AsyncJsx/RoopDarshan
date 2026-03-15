@@ -35,7 +35,7 @@ function Edit_Category() {
           eng_description: categoryData.eng_description || '',
           mar_description: categoryData.mar_description || ''
         })
-        
+
         // Set existing image if available
         if (categoryData.image && categoryData.image.url) {
           setExistingImage(categoryData.image)
@@ -78,40 +78,47 @@ function Edit_Category() {
     }
   }
 
+  // FIX 1: Clear preview completely and reset file input
   const removeImage = () => {
     setImage(null)
-    setImagePreview(existingImage ? existingImage.url : '')
+    setImagePreview('')  // Clear completely so upload box reappears
+    const fileInput = document.getElementById('image-upload')
+    if (fileInput) fileInput.value = ''  // Reset file input so same file can be re-selected
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-  
+
     try {
-      // Create FormData to handle file upload
       const formData = new FormData()
-      
-      // Append the image if a new one is selected - use 'image' (singular)
+
+      // FIX 2: Properly handle image cases
       if (image) {
-        formData.append('image', image) // Changed from 'images' to 'image'
+        // New image selected — send it
+        formData.append('image', image)
+      } else if (!imagePreview && existingImage) {
+        // User removed the existing image — tell backend to delete it
+        formData.append('remove_image', 'true')
       }
-      
-      // Append category data
+      // If imagePreview still has the old URL and no new image, backend keeps the existing image
+
       formData.append('eng_name', category.eng_name)
       formData.append('mar_name', category.mar_name)
       formData.append('eng_description', category.eng_description)
       formData.append('mar_description', category.mar_description)
-  
-      const res = await axios.put(
+
+      await axios.put(
         `/category/${id}`,
         formData,
         {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`,
-            // Remove Content-Type header - let axios set it automatically
+            // Do NOT set Content-Type manually — axios sets multipart/form-data automatically
           },
         }
       )
+
       alert("Category updated successfully ✅")
       navigate('/admin/dashboard')
     } catch (err) {
@@ -208,13 +215,14 @@ function Edit_Category() {
             <div>
               <label className="block text-gray-700 mb-2 font-medium">
                 Category Image
-                {existingImage && !image && (
+                {existingImage && !image && imagePreview && (
                   <span className="text-sm text-gray-500 ml-2 font-normal">
-                    (Current image - upload new one to replace)
+                    (Current image — upload new one to replace)
                   </span>
                 )}
               </label>
-              
+
+              {/* FIX 3: Show upload box when imagePreview is empty */}
               {!imagePreview ? (
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition">
                   <input
@@ -230,7 +238,7 @@ function Edit_Category() {
                   >
                     <Upload className="w-8 h-8 text-gray-400 mb-2" />
                     <span className="text-gray-600 font-medium">
-                      Click to upload new image
+                      Click to upload image
                     </span>
                     <span className="text-gray-500 text-sm mt-1">
                       PNG, JPG, JPEG up to 5MB
@@ -256,6 +264,20 @@ function Edit_Category() {
                       New Image
                     </div>
                   )}
+                  {/* FIX 4: Allow replacing image by clicking on it */}
+                  <label
+                    htmlFor="image-upload-replace"
+                    className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded cursor-pointer hover:bg-opacity-80 transition"
+                  >
+                    Replace
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    id="image-upload-replace"
+                  />
                 </div>
               )}
             </div>
