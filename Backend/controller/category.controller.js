@@ -3,6 +3,7 @@ const { CategoryModel, validateCategoryModel } = require('../models/category');
 const {cloudinary,deleteFromCloudinary} = require('../config/cloudinary');
 const { findAdminById} = require('../service/admin.service')
 const { comparePassword} = require('../utils/hash-password');
+const productService = require('../service/product.service');
 
 const createController = async (req, res) => {
   try {
@@ -125,12 +126,33 @@ const deleteController = async (req, res) => {
       });
     }
 
-    // delete category
+    // ✅ Delete all products belonging to this category
+    if (category.products && category.products.length > 0) {
+      for (const product of category.products) {
+        // Delete images from Cloudinary
+        if (product.img && product.img.length > 0) {
+          for (const image of product.img) {
+            if (image.public_id) {
+              await deleteFromCloudinary(image.public_id);
+            }
+          }
+        }
+        // Delete product from DB
+        await productService.deleteProductById(product._id);
+      }
+    }
+
+    // ✅ Delete category image from Cloudinary
+    if (category.image?.public_id) {
+      await deleteFromCloudinary(category.image.public_id);
+    }
+
+    // ✅ Delete category from DB
     await categoryService.deleteCategoryById(id);
 
     return res.status(200).json({
       success: true,
-      message: "Category deleted successfully",
+      message: "Category and all its products deleted successfully",
     });
 
   } catch (error) {
