@@ -54,7 +54,7 @@ function AdminDashboard() {
 
     // send one bulk request
     try {
-      await axios.post('/category/reorder/bulk',
+      await axios.patch('/category/reorder/bulk',
         { orderedIds: updated.map(c => c._id) },
         { headers: { Authorization: `Bearer ${token}` } }
       )
