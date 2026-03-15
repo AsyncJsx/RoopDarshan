@@ -10,7 +10,6 @@ import { setWithExpiry, getWithExpiry } from '../utils/localStorage';
 import gsap from "gsap";
 import { Toaster } from 'react-hot-toast';
 
-// Custom hook for media query
 function useMediaQuery(query) {
   const [matches, setMatches] = useState(false);
 
@@ -32,8 +31,8 @@ function useMediaQuery(query) {
 function Categories() {
   const [category, setCategory] = useState({});
   const [visibleProducts, setVisibleProducts] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0); // tracks loaded products
-  const [itemsPerPage, setItemsPerPage] = useState(20); // default desktop
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("Admin-Token");
@@ -42,15 +41,12 @@ function Categories() {
   const { language } = useContext(LanguageContext);
   const wpRef = useRef(null);
   
-  // Media query hook
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  // Update items per page based on screen size
   useEffect(() => {
     setItemsPerPage(isMobile ? 16 : 20);
   }, [isMobile]);
 
-  // Fetch category
   useEffect(() => {
     const CACHE_TTL = 2 * 24 * 60 * 60 * 1000;
 
@@ -63,7 +59,9 @@ function Categories() {
 
         if (cachedCategory) {
           setCategory(cachedCategory);
-          setVisibleProducts(cachedCategory.products.slice(0, itemsPerPage));
+          // ✅ Filter hidden products from cache
+          const visibleOnly = cachedCategory.products?.filter(p => p.visible !== false) || [];
+          setVisibleProducts(visibleOnly.slice(0, itemsPerPage));
           setCurrentIndex(itemsPerPage);
           setLoading(false);
           return;
@@ -76,8 +74,13 @@ function Categories() {
         setWithExpiry("categories", allCategories, CACHE_TTL);
 
         const thisCategory = allCategories.find(c => c._id === id) || {};
-        setCategory(thisCategory);
-        setVisibleProducts(thisCategory.products.slice(0, itemsPerPage));
+
+        // ✅ Filter hidden products from API response
+        const visibleOnly = thisCategory.products?.filter(p => p.visible !== false) || [];
+        
+
+        setCategory({ ...thisCategory, products: visibleOnly });
+        setVisibleProducts(visibleOnly.slice(0, itemsPerPage));
         setCurrentIndex(itemsPerPage);
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -91,7 +94,6 @@ function Categories() {
     fetchCategory();
   }, [id, token, itemsPerPage]);
 
-  // Show more products
   const showMore = () => {
     const nextProducts = category.products.slice(currentIndex, currentIndex + itemsPerPage);
     setVisibleProducts(prev => [...prev, ...nextProducts]);
@@ -125,21 +127,19 @@ function Categories() {
       <a href="https://wa.me/919561000027?text=Hello%20I%20want%20to%20know%20more"
         target="_blank"
         ref={wpRef}
-        className="inline-flex items-center gap-2 fixed right-0 top-[60%]  z-[99999]
+        className="inline-flex items-center gap-2 fixed right-0 top-[60%] z-[99999]
         bg-[url('https://res.cloudinary.com/daai6xwtd/image/upload/v1770885268/wp_wbpw2n.png')] bg-cover bg-center bg-no-repeat
           px-12 py-12 text-sm font-medium 
-          text-green-700  rounded-lg
+          text-green-700 rounded-lg
           shadow-sm 
           hover:bg-green-200 hover:text-green-800 
           transition">
       </a>
       
-      {/* Category Title */}
       <h3 className="categoryname text-gray-900 tracking-wide md:text-2xl text-lg font-semibold text-center mb-2 mt-44">
         {language === "en" ? category.eng_name : category.mar_name}
       </h3>
 
-      {/* Category Description */}
       <h2 className="categorydescription text-gray-600 tracking-wide md:text-sm text-sm font-normal text-center max-w-2xl mx-auto">
         {language === "en" ? category.eng_description : category.mar_description}
       </h2>
@@ -156,7 +156,6 @@ function Categories() {
         </div>
       </div>
 
-      {/* Product Grid */}
       <div className="products w-full flex flex-wrap justify-center md:gap-6 gap-3 mb-4 mt-4">
         {loading ? (
           <div className="flex flex-col items-center">
@@ -179,7 +178,6 @@ function Categories() {
         )}
       </div>
 
-      {/* Show More Button */}
       {!loading && currentIndex < (category.products?.length || 0) && (
         <div className="flex justify-center mb-6">
           <button

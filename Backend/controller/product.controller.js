@@ -40,6 +40,25 @@ const createController = async (req, res) => {
   }
 };
 
+const toggleVisibilityController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await productService.toggleProductVisibilityService(id);
+
+    res.status(200).json({
+      message: result.message,
+      product: {
+        id: result.id,
+        visible: result.visible,
+      },
+    });
+  } catch (err) {
+    console.error("❌ Error toggling product visibility:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 const editController = async (req, res) => {
   try {
@@ -237,4 +256,4 @@ const fuzzySearchController = async (req, res) => {
   }
 };
 
-module.exports = {createController,editController,deleteController,getController,getDataController,getAllProductsController,searchProductsController,fuzzySearchController};  
+module.exports = {createController,editController,deleteController,getController,getDataController,getAllProductsController,searchProductsController,fuzzySearchController ,toggleVisibilityController};  

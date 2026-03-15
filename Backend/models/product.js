@@ -18,7 +18,11 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   tag: [{ type: String }],
-  price: { type: Number }, // Optional field
+  visible: {
+    type: Boolean,
+    default: true
+  },
+  price: { type: Number },
 }, { timestamps: true });
 
 const validateProductModel = (data) => {
@@ -31,18 +35,18 @@ const validateProductModel = (data) => {
           url: Joi.string().uri().required(),
           public_id: Joi.string().required(),
           type: Joi.string()
-            .pattern(/^image\/.+$/) // ✅ Accepts all image MIME types (image/png, image/jpeg, etc.)
+            .pattern(/^image\/.+$/)
             .required(),
         })
       )
       .min(1)
       .required(),
-      eng_description: Joi.string().allow("").optional(),
-mar_description: Joi.string().allow("").optional(),
-
+    visible: Joi.boolean().default(true),   // ✅ Fixed: added default value + comma
+    eng_description: Joi.string().allow("").optional(),
+    mar_description: Joi.string().allow("").optional(),
     category: Joi.string().hex().length(24).required(),
     tag: Joi.array().items(Joi.string()).optional(),
-    price: Joi.number().min(0).optional(), // Optional validation
+    price: Joi.number().min(0).optional(),
   });
 
   return schema.validate(data, { abortEarly: false });

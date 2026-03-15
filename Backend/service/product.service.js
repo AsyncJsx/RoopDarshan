@@ -24,6 +24,33 @@ const createProductService = async (data) => {
     }
 };
 
+
+const toggleProductVisibilityService = async (productId) => {
+  if (!productId) {
+      throw new Error('Product ID is required');
+  }
+
+  try {
+      const product = await ProductModel.findById(productId);
+
+      if (!product) {
+          throw new Error('Product not found');
+      }
+
+      product.visible = !product.visible;
+      await product.save();
+
+      return {
+          id: product._id,
+          visible: product.visible,
+          message: `Product is now ${product.visible ? 'visible' : 'hidden'}`,
+      };
+  } catch (err) {
+      throw new Error('Error toggling product visibility: ' + err.message);
+  }
+};
+
+
 const findProductById = async (id) => {
     try {
         const product = await ProductModel.findById(id);
@@ -371,6 +398,7 @@ module.exports = {
   deleteProductById,
   findProductByIdWithCategory,
   searchProductsService,
+  toggleProductVisibilityService,
   fuzzySearchService // Add this
 };
 

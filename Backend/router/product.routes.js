@@ -28,6 +28,9 @@ router.get('/data/:id',adminAuth, async (req, res) => {
   productController.getDataController(req,res);
 });
 
+router.patch('/:id/visibility', adminAuth, async (req, res) => {
+  productController.toggleVisibilityController(req, res);
+});
 
 
 router.get('/search/products', async (req, res) => {
