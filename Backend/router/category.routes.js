@@ -12,7 +12,7 @@ router.post('/visibility/:id', adminAuth, (req, res) => {
   categoryController.setVisibility(req, res);
 });
 
-// ✅ bulk reorder — must be before /:id routes
+
 router.post('/reorder/bulk', adminAuth, async (req, res) => {
   categoryController.bulkReorderController(req, res);
 });
