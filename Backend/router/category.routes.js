@@ -13,7 +13,7 @@ router.post('/visibility/:id', adminAuth, (req, res) => {
 });
 
 
-router.patch('/reorder/bulk', adminAuth, async (req, res) => {
+router.post('/reorder/bulk', adminAuth, async (req, res) => {
   categoryController.bulkReorderController(req, res);
 });
 
