@@ -15,7 +15,10 @@ router.get('/all', async (req, res) => {
 router.put('/:id',adminAuth,upload.array('images', 5),optimizeAndUpload, async (req, res) => {
     productController.editController(req,res);
 });
-
+// product.routes.js
+router.delete('/bulk', adminAuth, async (req, res) => {
+  productController.bulkDeleteController(req, res);
+});
 router.delete('/:id',adminAuth, async (req, res) => {
     productController.deleteController(req,res);
 });

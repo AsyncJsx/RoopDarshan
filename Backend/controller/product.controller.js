@@ -121,7 +121,49 @@ const editController = async (req, res) => {
     res.status(500).json({ success: false, message: "Error updating product" });
   }
 };
+const bulkDeleteController = async (req, res) => {
+  try {
+    const { ids } = req.body;
 
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ success: false, message: "No IDs provided" });
+    }
+
+    for (const id of ids) {
+      // 1️⃣ Find product
+      const product = await productService.findProductById(id);
+      if (!product) continue; // skip if not found, don't break the whole loop
+
+      // 2️⃣ Delete images from Cloudinary
+      if (product.img && product.img.length > 0) {
+        for (const image of product.img) {
+          if (image.public_id) {
+            await deleteFromCloudinary(image.public_id);
+          }
+        }
+      }
+
+      // 3️⃣ Remove from category
+      await categoryService.removeProductFromCategory(product.category, id);
+
+      // 4️⃣ Delete product
+      await productService.deleteProductById(id);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `${ids.length} products deleted successfully`,
+    });
+
+  } catch (error) {
+    console.error("Error bulk deleting products:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error bulk deleting products",
+      error: error.message,
+    });
+  }
+};
 const deleteController = async (req, res) => {
     try {
       const { id } = req.params;
@@ -256,4 +298,4 @@ const fuzzySearchController = async (req, res) => {
   }
 };
 
-module.exports = {createController,editController,deleteController,getController,getDataController,getAllProductsController,searchProductsController,fuzzySearchController ,toggleVisibilityController};  
+module.exports = {createController,editController,deleteController,getController,getDataController,getAllProductsController,searchProductsController,fuzzySearchController ,toggleVisibilityController ,bulkDeleteController};  
