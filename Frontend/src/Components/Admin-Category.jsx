@@ -32,18 +32,13 @@ function Admin_Categories() {
   }, [token, id]);
 
   // ── Single delete ────────────────────────────────────────────────────────────
-  const handleDelete = async (productId) => {
-    if (!window.confirm("Delete this product?")) return;
-    try {
-      await axios.delete(`/product/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+  const handleDelete = (productId) => {
+    return axios.delete(`/product/${productId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then(() => {
       setProducts((prev) => prev.filter((p) => p._id !== productId));
       setSelectedIds((prev) => prev.filter((x) => x !== productId));
-      toast.success("Product deleted");
-    } catch (err) {
-      toast.error("Delete failed");
-    }
+    });
   };
 
   // ── Single visibility toggle ─────────────────────────────────────────────────
@@ -89,6 +84,8 @@ function Admin_Categories() {
         headers: { Authorization: `Bearer ${token}` },
         data: { ids: selectedIds },
       });
+
+      
       setProducts((prev) => prev.filter((p) => !selectedIds.includes(p._id)));
       setSelectedIds([]);
       toast.success(`${selectedIds.length} products deleted`);

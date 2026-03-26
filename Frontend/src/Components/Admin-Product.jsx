@@ -1,10 +1,21 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { LanguageContext } from "../context/LanguageContext";
+import { toast } from "react-hot-toast";
 
 function Admin_Product({ product, onDelete, onToggleVisibility, isSelected, onSelect }) {
   const { language } = useContext(LanguageContext);
-
+  const handleDelete = (e) => {
+    e.stopPropagation();
+  
+    if (!window.confirm("Delete this product?")) return;
+  
+    toast.promise(onDelete(product._id), {
+      loading: "Deleting product...",
+      success: "🗑️ Product deleted!",
+      error: "❌ Delete failed",
+    });
+  };
   return (
     <div className="w-[48%] sm:w-[45%] md:w-60 p-3 bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative">
 
@@ -72,7 +83,7 @@ function Admin_Product({ product, onDelete, onToggleVisibility, isSelected, onSe
       <div className="w-full h-8 flex items-center justify-end gap-3 mt-1">
         {/* Toggle visibility — inline, no page nav */}
         <button
-          onClick={(e) => { e.stopPropagation(); onToggleVisibility(product._id); }}
+          onClick={handleDelete}
           className={`text-xl ${
             product.visible !== false
               ? "ri-eye-line text-blue-500 hover:text-blue-700"
