@@ -6,6 +6,7 @@ const cors = require('cors');
 const fs = require('fs').promises;
 const path = require('path');
 
+
 const adminRoutes = require('./router/admin.routes');
 const categoryRoutes = require('./router/category.routes');
 const productRoutes = require('./router/product.routes');
@@ -27,6 +28,7 @@ app.use(cors({
 
 
 db();
+
 
 app.use('/admin', (req, res, next) => {
     // Lazy load router only when route is accessed

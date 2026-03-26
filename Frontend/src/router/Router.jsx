@@ -5,6 +5,7 @@ import VideoGallary from '../Pages/VideoGallary';
 import Visible from '../Pages/Visible';
 import Cart from '../Pages/Cart';
 import ProductVisible from '../Pages/ProductVisible';
+import HiddenProductsPage from '../Pages/HiddenProductsPage';
 
 const Home = lazy(() => import('../Pages/Home'));
 const About = lazy(() => import('../Pages/About'));
@@ -40,6 +41,7 @@ function Router() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/logout" element={<Logout />} />
           <Route path='/admin/dashboard' element={<AdminAuth><AdminDashboard /></AdminAuth>} />
+          <Route path='/admin/hidden' element={<AdminAuth><HiddenProductsPage/></AdminAuth>} />
           <Route path='/product/add' element={<AdminAuth><Add_Product /></AdminAuth>} />
           <Route path='/product/edit/:id' element={<AdminAuth><Edit_Product /></AdminAuth>} />
           <Route path='/product/visible/:id' element={<AdminAuth><ProductVisible /></AdminAuth>} />

@@ -84,7 +84,7 @@ function AdminDashboard() {
           />
         </div>
 
-        <div className="w-full flex justify-end items-center gap-6 md:px-20 px-4 py-3 text-gray-700">
+        <div className="w-full flex flex-wrap justify-end items-center gap-6 md:px-20 px-4 py-3 text-gray-700">
           <Link to="/product/add" className="flex items-center gap-2 hover:text-black transition">
             <i className="ri-add-circle-line text-lg"></i>
             <span>Add Product</span>
@@ -93,6 +93,10 @@ function AdminDashboard() {
           <Link to="/category/add" className="flex items-center gap-2 hover:text-black transition">
             <i className="ri-function-add-line text-lg"></i>
             <span>Add Category</span>
+          </Link>
+          <Link to="/admin/hidden" className="flex items-center gap-2 hover:text-black transition">
+          <i class="ri-eye-off-line text-lg"></i>
+            <span>Hidden Products</span>
           </Link>
 
           <Link
