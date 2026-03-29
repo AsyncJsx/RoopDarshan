@@ -20,7 +20,9 @@ function HiddenProductsPage() {
     try {
       const res = await axios.get("/product/all", {
         headers: { Authorization: `Bearer ${token}` },
+        validateStatus: (status) => status === 200 || status === 404, // accept both
       });
+      
       const allProducts = res?.data?.products || [];
       const hidden = allProducts.filter((p) => p.visible === false);
       setHiddenProducts(hidden);
