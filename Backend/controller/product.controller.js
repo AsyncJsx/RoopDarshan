@@ -226,11 +226,11 @@ const getDataController = async (req,res)=>{
     return res.status(404).json({ success: false, message: "Product not found",error:error.message });
   }
 }
-
+// status code correct
 const getAllProductsController = async (req,res)=>{
   try {
     const products = await productService.getAllProducts();
-    return res.status(200).json({ success: true,products, message: "Products found Successfully" });
+    return res.status(302).json({ success: true,products, message: "Products found Successfully" });
   } catch (error) {
     return res.status(404).json({ success: false, message: "Products not found",error:error.message });
   }
