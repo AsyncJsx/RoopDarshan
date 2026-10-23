@@ -6,6 +6,7 @@ const cors = require('cors');
 const fs = require('fs').promises;
 const path = require('path');
 
+
 // Load environment variables
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use('/product', productRoutes);
 app.get('/awake', async (req, res) => {
     res.send("awaked");
 });
+console.log("Node version:", process.version);
 
 const cleanUploadsFolder = async () => {
     try {
