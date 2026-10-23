@@ -38,7 +38,7 @@ app.use('/product', productRoutes);
 app.get('/awake', async (req, res) => {
     res.send("awaked");
 });
-console.log("Node version:", process.version);
+
 
 const cleanUploadsFolder = async () => {
     try {
